@@ -1,38 +1,45 @@
 #include <bits/stdc++.h>
-
 using namespace std;
+#define flash                         \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);
+
+void solve();
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    int t;
-    cin >> t;
-
-    while (t--)
+    flash;
+    int T;
+    cin >> T;
+    while (T--)
     {
-        int n, k;
-        cin >> n >> k;
-        int ary[n];
-        for (int i = 0; i < n; i++)
-        {
-            cin >> ary[i];
-        }
-
-        sort(ary, ary + n);
-        int cnt = 1, i, maxx = 1;
-        for (i = 0; i < n - 1; i++)
-        {
-            if ((ary[i + 1] - ary[i]) <= k)
-            {
-                cnt++;
-                maxx = max(maxx, cnt);
-            }
-            else
-            {
-                cnt = 1;
-            }
-        }
-        cout << n - maxx << endl;
+        solve();
     }
+
+    return 0;
+}
+
+void solve()
+{
+    int n, k, cnt = 1, ans = INT_MAX;
+    cin >> n >> k;
+    vector<int> v(n);
+    for (auto &i : v)
+    {
+        cin >> i;
+    }
+    sort(v.begin(), v.end());
+    for (int i = 0; i < n - 1; i++)
+    {
+        if ((v[i + 1] - v[i]) > k)
+        {
+            ans = min(ans, n - cnt);
+
+            cnt = 1;
+        }
+        else
+            cnt++;
+    }
+    ans = min(ans, n - cnt);
+    cout << ans << endl;
 }
