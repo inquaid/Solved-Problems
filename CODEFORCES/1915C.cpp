@@ -1,62 +1,47 @@
 #include <bits/stdc++.h>
-#define ll long long
 using namespace std;
+#define int long long
 
-ll sqrt(ll x)
+int pow(int a, int b)
 {
-    ll low = 1;
-    ll high = INT_MAX;
-
-    while (high - low > 1)
+    int ans = 1;
+    while (b > 0)
     {
-        ll midu = (low + high) / 2;
-
-        if (midu * midu == x)
-        {
-            return midu;
-        }
-        else if (midu * midu < x)
-        {
-            low = midu;
-        }
-        else
-        {
-            high = midu;
-        }
+        if (b & 1)
+            ans = ans * a;
+        a = a * a;
+        b >>= 1;
     }
-    if (low * low == x)
-    {
-        return low;
-    }
-    else if (high * high == x)
-    {
-        return high;
-    }
-    return -1;
+    return ans;
 }
 
+void solve();
+signed main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    int T;
+    cin >> T;
+    while (T--)
+    {
+        solve();
+    }
+}
 void solve()
 {
-    ll n;
+    int n, sum = 0;
     cin >> n;
-
-    vector<ll> v(n);
+    vector<int> v(n);
     for (auto &i : v)
         cin >> i;
-
-    ll sum = accumulate(v.begin(), v.end(), 0ll);
-    if (sqrt(sum) != -1)
+    for (int i = 0; i < n; i++)
+    {
+        sum += v[i];
+    }
+    if (pow(floor(sqrt(sum)), 2) == sum)
+    {
         cout << "YES\n";
+    }
     else
         cout << "NO\n";
-}
-
-int main()
-{
-    ll t = 1;
-    cin >> t;
-    while (t--)
-        solve();
-
-    return 0;
 }
