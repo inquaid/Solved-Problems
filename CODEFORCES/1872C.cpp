@@ -1,48 +1,55 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
-#define flash                         \
-    ios_base::sync_with_stdio(false); \
-    cin.tie(NULL);
+
+int not_prime[(int)1e7];
+
+void seive()
+{
+    not_prime[0] = not_prime[1] = true;
+    for (int i = 2; i < 1e7; i++)
+    {
+        if (!not_prime[i])
+        {
+            for (int j = i + i; j < 1e7; j += i)
+            {
+                not_prime[j] = true;
+            }
+        }
+    }
+}
 
 void solve();
-
-int GCD(int a, int b)
-{
-    return (b == 0 ? a : GCD(b, a % b));
-}
 signed main()
 {
-    flash;
-
+    seive();
     int T;
     cin >> T;
+
     while (T--)
     {
         solve();
     }
-
     return 0;
 }
+
 void solve()
 {
-    int l, r;
-    cin >> l >> r;
-    bool found = false;
-    for (int i = l; i <= r && !found; i++)
+    int a, b, i, j;
+    cin >> a >> b;
+
+    for (int i = a; i <= b; i++)
     {
-        for (int k = 2; k * k <= i; k++)
+        for (int j = 2; j * j <= i; j++)
         {
-            if (i % k == 0)
+            if (i % j == 0)
             {
-                cout << k << " " << i - k << endl;
-                found = true;
-                break;
+                cout << j << " " << i - j << endl;
+                return;
             }
         }
     }
-    if (!found)
-    {
-        cout << -1 << endl;
-    }
+    // cout << -1 << endl;
+
+    cout << -1 << endl;
 }
