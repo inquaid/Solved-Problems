@@ -1,67 +1,64 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef struct node Node;
-
-struct node
+#include <stdbool.h>
+typedef struct Node
 {
     int data;
-    Node *next;
-};
+    struct Node *next;
+    bool even;
+} Node;
+
+bool isEven(int n)
+{
+    return !(n & 1);
+}
 
 int main()
 {
-    Node *head = NULL, *n, *temp, *pos;
-    int t = 5;
-    while (t--)
+    Node *n, *head = NULL, *temp, *temp2, *current, *prev, *next;
+    int times;
+    scanf("%d", &times);
+    for (int i = 0; i < times; i++)
     {
         n = (Node *)malloc(sizeof(Node));
         scanf("%d", &n->data);
         n->next = NULL;
+        n->even = isEven(n->data);
+
         if (head == NULL)
-        {
             head = n;
-            temp = n;
-        }
         else
-        {
             temp->next = n;
-            temp = n;
+        temp = n;
+    }
+    temp = head;
+    while (temp != NULL)
+    {
+        // printf("%d ", temp->data);
+        if (temp->even)
+        {
+            temp2 = temp;
+            while (temp2->even && temp2 != NULL)
+            {
+                temp2 = temp2->next;
+            }
+            current = temp;
+            prev = NULL;
+            while (current != NULL)
+            {
+                next = current->next;
+
+                current->next = prev;
+                prev = current;
+
+                current = next;
+            }
+            head = prev;
         }
-    }
 
-    n = (Node *)malloc(sizeof(Node));
-    n->data = 11;
-    n->next = head;
-    head = n;
-
-    n = (Node *)malloc(sizeof(Node));
-    n->data = 555;
-
-    temp = head;
-    for (int i = 0; i < 2; i++)
-    {
         temp = temp->next;
     }
-
-    n->next = temp->next;
-    temp->next = n;
-
-    n = (Node *)malloc(sizeof(Node));
-    n->data = 99;
-
     temp = head;
-
-    while (temp->next != NULL)
-    {
-        temp = temp->next;
-    }
-
-    temp->next = n;
-    n->next = NULL;
-
-    temp = head;
-
     while (temp != NULL)
     {
         printf("%d ", temp->data);
