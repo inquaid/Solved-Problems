@@ -17,31 +17,16 @@ int main()
         posS--;
         vector<long long> a(n), p(n);
         vector<long long> b, s;
-        vector<bool> bodda(n), sassa(n);
 
         for (int i = 0; i < n; i++)
         {
             cin >> p[i];
-            p[i]--;-
+            p[i]--;
         }
         for (auto &i : a)
             cin >> i;
 
-        while (bodda[posB] == false)
-        {
-            b.push_back(a[posB]);
-            bodda[posB] = true;
-            posB = p[posB];
-        }
-
-        while (sassa[posS] == false)
-        {
-            s.push_back(a[posS]);
-            sassa[posS] = true;
-            posS = p[posS];
-        }
-
-        long long boddy = 0, sassy = 0, cboddy = 0, csassy = 0, sz = b.size();
+        long long boddy = a[posB], sassy = a[posS], cboddy = 0, csassy = 0, sz = b.size();
         for (int i = 0; i < sz && i < k; i++)
         {
             boddy = max(cboddy + b[i] * (k - i), boddy);
