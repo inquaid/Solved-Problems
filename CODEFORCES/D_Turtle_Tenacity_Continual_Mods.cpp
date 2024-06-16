@@ -1,47 +1,37 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define flash                         \
-    ios_base::sync_with_stdio(false); \
-    cin.tie(NULL);
-
-void solve();
-
 int main()
 {
-    flash;
-    int T;
-    cin >> T;
-    while (T--)
+    int t;
+    cin >> t;
+    while (t--)
     {
-        solve();
-    }
-
-    return 0;
-}
-
-void solve()
-{
-    int n;
-    cin >> n;
-    vector<int> v(n);
-    for (auto &i : v)
-        cin >> i;
-    sort(v.begin(), v.end());
-    int mn = v[0];
-    if (v[0] != v[1])
-    {
-        cout << "YES\n";
-    }
-    else
-    {
-        for (int i = 0; i < n; i++)
+        int n;
+        cin >> n;
+        vector<int> v(n);
+        for (auto &i : v)
+            cin >> i;
+        sort(v.begin(), v.end());
+        bool flag = 0;
+        if (v[0] != v[1])
         {
-            if (v[i] % mn != 0 && v[i] != mn)
+            cout << "YES\n";
+        }
+        else
+        {
+            for (int i = 1; i < n; i++)
             {
-                cout << "YES\n";
-                return;
+                if ((v[i] % v[0]) != 0)
+                {
+                    cout << "YES\n";
+                    flag = 1;
+                    break;
+                }
+            }
+            if (flag == 0)
+            {
+                cout << "NO\n";
             }
         }
-        cout << "NO\n";
     }
 }

@@ -1,19 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int m = 2 * 1e5 + 5;
-vector<int> v(m), prex(m);
+vector<int> prex(m);
 
 int sum(int n);
 void fun();
 
 void fun()
 {
-    v[0] = 0;
+    // v[0] = 0;
     prex[0] = 0;
     for (int i = 1; i < m; i++)
     {
-        v[i] = sum(i);
-        prex[i] = v[i] + prex[i - 1];
+        // v[i] = sum(i);
+        prex[i] = sum(i) + prex[i - 1];
     }
 }
 
