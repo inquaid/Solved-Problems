@@ -18,7 +18,7 @@ int bin_expo(int a, int b)
     }
 
     return res;
-}
+ }
 
 signed main()
 {
