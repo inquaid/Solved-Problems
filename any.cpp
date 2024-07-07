@@ -1,23 +1,33 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int main()
+#define ll long long
+#define endl '\n'
+
+int32_t main()
 {
-    deque<int> dq;
-    // dq.push_back(1);
-    // dq.push_back(2);
-    // dq.push_back(3);
-    // dq.push_back(4);
-    // dq.push_back(5);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
 
-    // dq.push_front(1);
-    // dq.push_front(2);
-    // dq.push_front(3);
-    // dq.push_front(4);
-    // dq.push_front(5);
-
-    for (int i = 0; i < 5; i++)
+    int t;
+    cin >> t;
+    while (t--)
     {
-        cout << dq[i] << " ";
+        int n;
+        cin >> n;
+        int d[2 * n + 2] = {};
+        ll s = 0;
+        auto idx = [&](int v)
+        {
+            if (v < 0)
+                v += 2 * n + 2;
+            return v;
+        };
+        for (int i = 1, a; i <= n; i++)
+        {
+            cin >> a;
+            s += d[idx(a - i)]++;
+        }
+        cout << s << endl;
     }
 }
