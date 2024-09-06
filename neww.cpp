@@ -49,8 +49,6 @@ void merge(vi &left, vi &right, vi &v)
 
 int main()
 {
-    vi v = {3, 1, 2, 4, 2, 3, 5, 2};
-    devide(v);
-    for (auto i : v)
-        cout << i << " ";
+    string s = "a9";
+    cout << s[1] - '0';
 }
