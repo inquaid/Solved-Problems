@@ -1,54 +1,72 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define vi vector<int>
 
-void merge(vi &left, vi &right, vi &v);
-
-void devide(vi &v)
+int ary[300][300], pre_sum[300][300];
+int main()
 {
-    int len = v.size();
-    if (len < 2)
-    {
-        return;
-    }
-    int half = len / 2;
-    vi left(half), right(len - half);
-    copy(v.begin(), v.begin() + half, left.begin());
-    copy(v.begin() + half, v.end(), right.begin());
 
-    devide(left);
-    devide(right);
-    merge(left, right, v);
-}
-
-void merge(vi &left, vi &right, vi &v)
-{
-    int l = left.size(), r = right.size(), i = 0, j = 0, k = 0;
-    while (i < l && j < r)
+    int n, m;
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++)
     {
-        if (left[i] < right[j])
+        for (int j = 1; j <= m; j++)
         {
-            v[k++] = left[i];
-            i++;
+            cin >> ary[i][j];
+        }
+    }
+    int res = ary[n][m];
+    // cout << res << " ";
+    // for (int i = n; i > 1; i--)
+    // {
+    //     for (int j = m; j > 1; j--)
+    //     {
+    //         // pre_sum[i][j] = ary[i][j] + pre_sum[i - 1][j] + pre_sum[i][j - 1] - pre_sum[i - 1][j - 1];
+
+    //         int temp = min(ary[i - 1][j], ary[i][j - 1]);
+    //         res += temp;
+    //         cout << temp << " ";
+    //     }
+    // }
+
+    int i = n, j = m;
+    while (i > 1 and j > 1)
+    {
+        // if both are equal then use while loop to check last not equal
+        int tempi = i, tempj = j;
+        if (ary[i - 1][j] == ary[i][j - 1])
+        {
+            res += ary[i - 1][j];
+            i--;
+            j--;
+        }
+
+        if (ary[i - 1][j] < ary[i][j - 1])
+        {
+            res += ary[i - 1][j];
+            // cout << ary[i - 1][j] << " ";
+            i--;
         }
         else
         {
-            v[k++] = right[j];
-            j++;
+            res += ary[i][j - 1];
+            // cout << ary[i][j - 1] << " ";
+            j--;
         }
     }
-    while (i < l)
-    {
-        v[k++] = left[i++];
-    }
-    while (j < r)
-    {
-        v[k++] = right[j++];
-    }
-}
 
-int main()
-{
-    string s = "a9";
-    cout << s[1] - '0';
+    while (j > 1)
+    {
+        j--;
+        res += ary[i][j];
+        // cout << ary[i][j] << " ";
+    }
+
+    while (i > 1)
+    {
+        i--;
+        res += ary[i][j];
+    }
+
+    // res += ary[1][1];
+    cout << res;
 }
