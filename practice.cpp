@@ -1,106 +1,38 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Solution
+// f1
+double func(double x)
 {
-public:
-    int res = 0;
+    // x^2 - 3x + 2
+    double a = 1, b = -3, c = 2;
+    return (a * x * x) + (b * x) + c;
+}
 
-    int countD(int num)
-    {
-        int count = 0;
-        if (num == 0)
-            return 1;
-        while (num > 0)
-        {
-            num /= 10;
-            count++;
-        }
-        return count;
-    }
-    int mx = 0;
-    int generateKey(int num1, int num2, int num3)
-    {
-        if (num1 == 0 and num2 == 0 and num3 == 0)
-        {
-            return res;
-            // int mn = mx - countD(res);
-            // // cout<<mx<<" ";
-            // return res * (pow(10, mn));
-        }
-        // cout << num1 << " ";
-        // cout << num2 << " ";
-        // cout << num3 << " \n";
-
-        vector<int> nums = {num1, num2, num3};
-        sort(nums.begin(), nums.end());
-
-        num1 = nums[2];
-        num2 = nums[1];
-        num3 = nums[0];
-
-        int size1 = countD(num1);
-        int size2 = countD(num2);
-        int size3 = countD(num3);
-        mx = max({mx, size1, size2, size3});
-
-        if (size1 > size2)
-        {
-            res *= 10;
-            // res += num1 / pow(10, size1 - 1);
-            num1 = num1 % (int)pow(10, size1 - 1);
-            if ((size1 - countD(num1)) > 1)
-                res *= 10;
-            // num2 = num2 % (int)pow(10, size2 - 1);
-            // num3 = num3 % (int)pow(10, size3 - 1);
-
-            return generateKey(num1, num2, num3);
-        }
-        else if (size2 > size3)
-        {
-            // int plus = min(num1 / pow(10, size1 - 1), num2 / pow(10, size2 - 1));
-            res *= 10;
-            num1 = num1 % (int)pow(10, size1 - 1);
-            num2 = num2 % (int)pow(10, size2 - 1);
-            // num3 = num3 % (int)pow(10, size3 - 1);
-
-            return generateKey(num1, num2, num3);
-            // res += plus;
-        }
-        else
-        {
-            // cout<<" else  ";
-
-            int plus = min({floor(num1 / pow(10, size1 - 1)), floor(num2 / pow(10, size2 - 1)), floor(num3 / pow(10, size3 - 1))});
-            res *= 10;
-            res += plus;
-        }
-        num1 = num1 % (int)pow(10, size1 - 1);
-        num2 = num2 % (int)pow(10, size2 - 1);
-        num3 = num3 % (int)pow(10, size3 - 1);
-
-        while ((size1 - countD(num1)) > 1 or (size2 - countD(num2)) > 1 or (size2 - countD(num2)) > 1)
-        {
-            size1--;
-            size2--;
-            size3--;
-            num1 = num1 % (int)pow(10, size1 - 1);
-            num2 = num2 % (int)pow(10, size2 - 1);
-            num3 = num3 % (int)pow(10, size3 - 1);
-            res *= 10;
-        }
-        return generateKey(num1, num2, num3);
-    }
-};
+// f`1
+double ddx_func(double x)
+{
+    // 2x - 3
+    double a = 0, b = 2, c = -3;
+    return (a * x) + (b * x) + c;
+    // return ((2 * x) - 3);
+}
 
 int main()
 {
-    int num1, num2, num3;
-    cin >> num1 >> num2 >> num3;
+    cout << fixed << setprecision(5);
+    int i = 0;
+    double x1 = 0;
+    // cout<<ddx_func(x1);
+    // return 0;
+    while (i < 10)
+    {
 
-    Solution sc;
-    cout << sc.generateKey(num1, num2, num3);
-    // sorting for simplicity
+        cout << x1 << "\n";
+        double x2 = x1 - (func(x1) / ddx_func(x1));
 
-    // cout << num1 << " " << num2 << " " << num3;
+        x1 = x2;
+
+        i++;
+    }
 }
