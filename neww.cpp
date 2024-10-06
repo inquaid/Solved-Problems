@@ -1,20 +1,15 @@
-#include<stdio.h>
-int main()
-{
-    long long N,A,sum,sum1;
-    scanf("%lld",&N);
-    long long ara[N];
-    for(A=0;A<N;A++){
-        scanf("%lld",&ara[A]);
-        sum+=ara[A];
-    }
-    if(sum>=0){
-        printf("%lld",sum);
-    }
-    else if(sum<0){
-        sum1=(-1)*sum;
-        printf("%lld",sum1);
-    }
-    return 0;
-    
+#include <bits/stdc++.h>
+using namespace std;
+void swp(int a, int b) {
+    // Cast the integers back to pointers and swap the values at those addresses
+    int temp = *(int*)a;  // Dereference the pointer (int*)a to get the value at address a
+    *(int*)a = *(int*)b;  // Set the value at address a to the value at address b
+    *(int*)b = temp;      // Set the value at address b to temp (original value of a)
+}
+
+int main() {
+    int a, b;
+    scanf("%d%d", &a, &b);  // Read two integers
+    swp((int)&a, (int)&b);  // Pass their addresses as integers to swp
+    printf("%d %d\n", a, b);  // Print the swapped values
 }
