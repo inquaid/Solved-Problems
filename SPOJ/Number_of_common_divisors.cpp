@@ -1,30 +1,28 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-#define endl '\n'
 
-signed main()
-{
+int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    // preCompute();
     int t;
     cin >> t;
-    while (t--)
+    for (int i = 0; i < t; i++)
     {
         int a, b;
         cin >> a >> b;
-        int n = __gcd(a, b);
-        // cout << countDivisors[n] << endl;
-        int res = 0;
-        for (int i = 1; i * i <= n; i++)
+        int x = __gcd(a, b);
+        int cnt = 0;
+        for (int i = 1; i * i <= x; i++)
         {
-            if (n % i == 0)
-            {
-                res++;
-                if (n / i != i)
-                    res++;
+            if(x%i == 0){
+                if( (x / i) == i){
+                    cnt++;
+                }
+                else cnt += 2;
             }
         }
-        cout << res << endl;
+        cout << cnt << "\n";
+
     }
+    
 }
