@@ -1,12 +1,15 @@
 import math
+
+
 def totalProd(max_time):
     product = 0
     for i in machines:
-        product += (max_time // i)
+        product += max_time // i
         if product >= t:
             return True
-        
+
     return product >= t
+
 
 n, t = map(int, input().split())
 machines = list(map(int, input().split()))
@@ -26,4 +29,3 @@ while l <= r:
     else:
         l = mid + 1
 print(int(res))
-    
