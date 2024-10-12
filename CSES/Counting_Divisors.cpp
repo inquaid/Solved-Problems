@@ -1,65 +1,52 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define int long long
-const int mx = 1e6;
-vector<int> primes, tray(mx);
+const int N = 10000000;
+vector<int> lp(N + 1);
+vector<int> pr;
 
-void fill()
-{
-    primes.push_back(2);
-    for (int i = 3; i <= mx; i += 2)
-    {
-        if (tray[i] == 0)
-        {
-            primes.push_back(i);
-            for (int j = i * i; j <= mx; j += i)
-            {
-                tray[j] = 1;
+void seive() {
+    for (int i = 2; i <= N; ++i) {
+        if (lp[i] == 0) {
+            lp[i] = i;
+            pr.push_back(i);
+        }
+        for (int j = 0; i * pr[j] <= N; ++j) {
+            lp[i * pr[j]] = pr[j];
+            if (pr[j] == lp[i]) {
+                break;
             }
         }
     }
 }
 
-int count_factors(int n)
-{
-    int sz = primes.size(), cnt = 1;
-    for (int i = 0; i < sz and primes[i] * primes[i] <= n; i++)
-    {
-        if (n % primes[i] == 0)
-        {
-
-            int expo = 1;
-            while (n % primes[i] == 0)
-            {
-
-                n /= primes[i];
-                expo++;
-            }
-            cout << primes[i] << " ";
-            cnt *= expo;
+int divisorCount(int n) {
+    int res = 1;
+    for (auto i : pr) {
+        if (i * i > n)
+            break;
+        int cnt = 1;
+        while (n % i == 0) {
+            cnt++;
+            n /= i;
         }
+        res *= cnt;
     }
-    if (n > 1)
-    {
-        cnt *= 2;
+    if (n > 1) {
+        res *= 2;
     }
-    return cnt;
+    return res;
 }
 
-signed main()
-{
-    fill();
-    // for (int i = 0; i < 50; i++)
-    // {
-    //     cout << primes[i] << " ";
-    // }
+int main() {
+    seive();
     int t;
     cin >> t;
-    while (t--)
-    {
-        int n;
-        cin >> n;
-        cout << count_factors(n) << endl;
+    for (int i = 0; i < t; i++) {
+        int x;
+        cin >> x;
+        cout << divisorCount(x) << endl;
     }
+
+    return 0;
 }
