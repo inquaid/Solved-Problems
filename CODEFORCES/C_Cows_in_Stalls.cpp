@@ -5,36 +5,37 @@ using namespace std;
 #define ll long long
 #define int long long
 
-int n, k;   
+int n, k;
 std::vector<int> v;
 
-bool isPossible(int probableSum) {
+bool isPossible(int mid) {
     // Conditions
-    int tempSum = 0, tempK = 0;
-    for (int i = 0; i < n; ++i) {
-        if(v[i] > probableSum) return false;
-        tempSum += v[i];
-        if(tempSum > probableSum){
-            tempK++;
-            tempSum = v[i];
+    int cow = 1;
+    int prevCow = v[0];
+    int i = 1;
+    
+    for (int i = 0; i < n; ++i)
+    {
+        if((v[i] - prevCow) >= mid){
+            cow++;
+            prevCow = v[i];
+            if(cow == k) return true;
         }
     }
-    return tempK == k;
+
+    return false;
 }
 
 void binarySearchOnAnswers() {
-    int l = 0, r = 1;
-    while (isPossible(r) == false) {
-        r *= 2;
-    }
+    int l = 0, r = v[n-1] - v[0];
     while (l <= r) {
-        int mid = l + (r - l) / 2;
+        int mid = l + ((r - l) >> 1);
         if (isPossible(mid)) { // lower bound
-            r = mid - 1;
-        } else
             l = mid + 1; // swap r, l for upper bound
+        } else
+            r = mid - 1;
     }
-    cout << r + 1;
+    cout << l - 1;
 }
 
 void tTestCase() {

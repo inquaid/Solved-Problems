@@ -5,31 +5,21 @@ using namespace std;
 #define ll long long
 #define int long long
 
-int n, k;   
-std::vector<int> v;
-
-bool isPossible(int probableSum) {
+bool isPossible(int w, int h, int mid, int n) {
     // Conditions
-    int tempSum = 0, tempK = 0;
-    for (int i = 0; i < n; ++i) {
-        if(v[i] > probableSum) return false;
-        tempSum += v[i];
-        if(tempSum > probableSum){
-            tempK++;
-            tempSum = v[i];
-        }
-    }
-    return tempK == k;
+
+    return n <= ( floor(mid/(w*1.0)) * floor(mid/(h*1.0)) );
 }
 
-void binarySearchOnAnswers() {
+void binarySearchOnAnswers(int w, int h, int n) {
+
     int l = 0, r = 1;
-    while (isPossible(r) == false) {
+    while(isPossible(w,h,r,n) == false){
         r *= 2;
     }
     while (l <= r) {
         int mid = l + (r - l) / 2;
-        if (isPossible(mid)) { // lower bound
+        if (isPossible(w, h, mid, n)) { // lower bound
             r = mid - 1;
         } else
             l = mid + 1; // swap r, l for upper bound
@@ -54,13 +44,9 @@ void tTestCase() {
 
 void solve() { 
     // tTestCase(); 
-    cin >> n >> k;
-    for (int i = 0; i < n; ++i) {
-        int temp;
-        cin >> temp;
-        v.push_back(temp);
-    }
-    binarySearchOnAnswers();
+    int w, h, n;
+    cin >> w >> h >> n;
+    binarySearchOnAnswers(w, h, n);
 }
 
 int32_t main() {

@@ -10,7 +10,7 @@ std::vector<int> v;
 
 bool isPossible(int probableSum) {
     // Conditions
-    int tempSum = 0, tempK = 0;
+    int tempSum = 0, tempK = 1;
     for (int i = 0; i < n; ++i) {
         if(v[i] > probableSum) return false;
         tempSum += v[i];
@@ -19,14 +19,14 @@ bool isPossible(int probableSum) {
             tempSum = v[i];
         }
     }
-    return tempK == k;
+    return tempK <= k;
 }
 
 void binarySearchOnAnswers() {
     int l = 0, r = 1;
     while (isPossible(r) == false) {
         r *= 2;
-    }
+    } 
     while (l <= r) {
         int mid = l + (r - l) / 2;
         if (isPossible(mid)) { // lower bound
@@ -60,6 +60,7 @@ void solve() {
         cin >> temp;
         v.push_back(temp);
     }
+    // for(auto i : v)cout<<i << " ";
     binarySearchOnAnswers();
 }
 

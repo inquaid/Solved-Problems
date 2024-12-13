@@ -5,36 +5,30 @@ using namespace std;
 #define ll long long
 #define int long long
 
-int n, k;   
-std::vector<int> v;
-
-bool isPossible(int probableSum) {
+bool isPossible(int mid, int k, vector<int> &a) {
     // Conditions
-    int tempSum = 0, tempK = 0;
+    int n = a.size();
+    int sum = 0;
     for (int i = 0; i < n; ++i) {
-        if(v[i] > probableSum) return false;
-        tempSum += v[i];
-        if(tempSum > probableSum){
-            tempK++;
-            tempSum = v[i];
-        }
+        sum += min(a[i], mid);
     }
-    return tempK == k;
+    return sum >= (mid * k);
 }
 
-void binarySearchOnAnswers() {
+void binarySearchOnAnswers(int k, vector<int> &a) {
+
     int l = 0, r = 1;
-    while (isPossible(r) == false) {
+    while(isPossible(r, k, a) ){
         r *= 2;
     }
     while (l <= r) {
         int mid = l + (r - l) / 2;
-        if (isPossible(mid)) { // lower bound
-            r = mid - 1;
-        } else
+        if (isPossible(mid, k, a)) { // lower bound
             l = mid + 1; // swap r, l for upper bound
+        } else
+            r = mid - 1;
     }
-    cout << r + 1;
+    cout << l - 1;
 }
 
 void tTestCase() {
@@ -43,10 +37,9 @@ void tTestCase() {
     while (t--) {
         int n;
         cin >> n;
+        std::vector<int> v(n);
         for (int i = 0; i < n; ++i) {
-            int temp;
-            cin >> temp;
-            cout << temp << sp;
+            cin >> v[i];    
         }
         newline;
     }
@@ -54,13 +47,15 @@ void tTestCase() {
 
 void solve() { 
     // tTestCase(); 
-    cin >> n >> k;
+    int k, n;
+    cin >> k >> n;
+    int sum = 0;
+    std::vector<int> v(n);
     for (int i = 0; i < n; ++i) {
-        int temp;
-        cin >> temp;
-        v.push_back(temp);
+        cin>>v[i];
     }
-    binarySearchOnAnswers();
+
+    binarySearchOnAnswers(k, v);
 }
 
 int32_t main() {
