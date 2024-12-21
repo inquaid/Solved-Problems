@@ -2,8 +2,6 @@
 using namespace std;
 #define sp " "
 #define newline cout << "\n"
-#define yes cout << "YES"
-#define no cout << "NO"
 #define ll long long
 #define int long long
 
@@ -12,7 +10,14 @@ void tTestCase() {
     cin >> t;
     while (t--) {
         int n;
+        string s;
         cin >> n;
+        cin >> s;
+        int cnt = 1;
+        for (int i = 0; i < n - 2; ++i) {
+            if(s[i] != s[i + 2]) cnt++;
+        }
+        cout << cnt;
 
         newline;
     }

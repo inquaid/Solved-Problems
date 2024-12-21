@@ -7,20 +7,24 @@ using namespace std;
 #define ll long long
 #define int long long
 
+int sum(int n) { return (n * (n + 1)) / 2; }
+
 void tTestCase() {
     int t;
     cin >> t;
     while (t--) {
-        int n;
-        cin >> n;
-
+        int n, k, x;
+        cin >> n >> k >> x;
+        int minLim = sum(k), maxLim = sum(n) - sum(n - k);
+        if (minLim <= x and x <= maxLim) {
+            yes;
+        } else
+            no;
         newline;
     }
 }
 
-void solve() { 
-    tTestCase(); 
-}
+void solve() { tTestCase(); }
 
 int32_t main() {
     ios_base::sync_with_stdio(false);

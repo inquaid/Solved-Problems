@@ -11,11 +11,12 @@ template <class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,t
 
 #define sp " "
 #define newline cout << "\n"
+#define yes cout << "YES"
+#define no cout << "NO"
 #define ll long long
 #define int long long
 #define yesif(flag) cout << ((flag) ? "YES" : "NO")
 #define all(a)  a.begin(), a.end()
-
 template<typename T>
 void sort_unique(vector<T> &vec){
     sort(vec.begin(),vec.end());
@@ -35,39 +36,23 @@ template<typename T, typename ...S> void _do(T && x, S&&...y) {cerr << x << ", "
 #define bug(...) 777771449
 #endif
 
-bool isPossible() {
-    // Conditions
-
-    return true;
-}
-
-void binarySearchOnAnswers(int w, int h, int n) {
-
-    int l = 0, r = 1;
-    while(isPossible() == false){
-        r *= 2;
-    }
-    while (l <= r) {
-        int mid = l + (r - l) / 2;
-        if (isPossible()) {
-            r = mid - 1;
-        } else
-            l = mid + 1;
-    }
-    cout << r + 1;
-}
-
 void tTestCase() {
     int t;
     cin >> t;
     while (t--) {
         int n;
         cin >> n;
-        for (int i = 0; i < n; ++i) {
-            int temp;
-            cin >> temp;
-            cout << temp << sp;
+        string s;
+        cin >> s;
+
+        if(s.front() == 's'){
+            s.front() = '.';
         }
+        if(s.back() == 'p'){
+            s.back() = '.';
+        }
+        
+        yesif(count(all(s), 's') == 0 or count(all(s), 'p') == 0);
         newline;
     }
 }
@@ -84,6 +69,5 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     solve();
-
     return 0;
 }

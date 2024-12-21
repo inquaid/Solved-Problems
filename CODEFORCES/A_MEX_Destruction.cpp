@@ -11,10 +11,11 @@ template <class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,t
 
 #define sp " "
 #define newline cout << "\n"
+#define yes cout << "YES"
+#define no cout << "NO"
 #define ll long long
 #define int long long
 #define yesif(flag) cout << ((flag) ? "YES" : "NO")
-#define all(a)  a.begin(), a.end()
 
 template<typename T>
 void sort_unique(vector<T> &vec){
@@ -35,38 +36,37 @@ template<typename T, typename ...S> void _do(T && x, S&&...y) {cerr << x << ", "
 #define bug(...) 777771449
 #endif
 
-bool isPossible() {
-    // Conditions
-
-    return true;
-}
-
-void binarySearchOnAnswers(int w, int h, int n) {
-
-    int l = 0, r = 1;
-    while(isPossible() == false){
-        r *= 2;
-    }
-    while (l <= r) {
-        int mid = l + (r - l) / 2;
-        if (isPossible()) {
-            r = mid - 1;
-        } else
-            l = mid + 1;
-    }
-    cout << r + 1;
-}
-
 void tTestCase() {
     int t;
     cin >> t;
     while (t--) {
         int n;
         cin >> n;
+        vector<int> v(n);
+        int notZero = 0;
         for (int i = 0; i < n; ++i) {
-            int temp;
-            cin >> temp;
-            cout << temp << sp;
+            cin >> v[i];
+            if (v[i] != 0) {
+                notZero++;
+            }
+        }
+
+        if (notZero == 0)
+            cout << 0;
+        else {
+            int i = 0;
+            while (v[i] == 0 and i < n) {
+                i++;
+            }
+            int cnt = 0;
+            while (v[i] != 0 and i < n) {
+                i++;
+                cnt++;
+            }
+            if (cnt == notZero) {
+                cout << 1;
+            } else
+                cout << 2;
         }
         newline;
     }
