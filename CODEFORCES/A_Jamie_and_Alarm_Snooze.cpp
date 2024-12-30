@@ -13,18 +13,28 @@ template <class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,t
 #define newline cout << "\n"
 #define yes cout << "YES"
 #define no cout << "NO"
-#define ll long long
 #define int long long
 #define yesif(flag) cout << ((flag) ? "YES" : "NO")
 #define all(a)  a.begin(), a.end()
+#define pb(a) push_back(a)
 
-template<typename T>
-void sort_unique(vector<T> &vec){
-    sort(vec.begin(),vec.end());
-    vec.resize(unique(vec.begin(),vec.end())-vec.begin());
-}
+typedef long long       ll;
+typedef pair<int, int>  pii;
+typedef pair<ll, ll>    pll;
+typedef vector<int>     vi;
+typedef vector<ll>      vll;
+typedef vector<pii>     vpii;
+typedef vector<pll>     vpll;
+typedef map<int, int>   mii;
+typedef map<ll, ll>     mll;
+typedef set<int>        sii;
+typedef set<ll>         sll;
 
-// #define dattebayo
+template<typename T> void sort_unique(vector<T> &vec){sort(vec.begin(),vec.end()); vec.resize(unique(vec.begin(),vec.end())-vec.begin());}
+template<typename T> void scan(vector<T> &v){for(auto &i :v) cin >> i;}
+template<typename T> void print(vector<T> &v){for(auto &i :v) cout << i << " ";}
+
+#define dattebayo
 #ifdef dattebayo
 #define bug(...) cerr << "#" << __LINE__ << ' ' << #__VA_ARGS__ << "- ", _do(__VA_ARGS__)
 template<typename T> void _do(vector<T> x){for(auto i: x) cerr << i << ' ';cerr << "\n";}
@@ -37,19 +47,33 @@ template<typename T, typename ...S> void _do(T && x, S&&...y) {cerr << x << ", "
 #define bug(...) 777771449
 #endif
 
-void tTestCase() {
-    int t;
-    cin >> t;
-    while (t--) {
-        int n;
-        cin >> n;
-
-        newline;
-    }
+bool haveSeven(int n) {
+    if(n <= 0) return false;
+    if(n % 10 == 7) return true;
+    return haveSeven(n/10);
 }
 
-void solve() { 
-    tTestCase(); 
+void solve() {
+    int x;
+    cin >> x;
+    int hh, mm;
+    cin >> hh >> mm;
+    int res = 0;
+    while (haveSeven(mm) == false and haveSeven(hh) == false) {
+        mm -= x;
+        if (mm < 0) {
+            mm = 60 + mm;
+            hh--;
+            if (hh < 0) {
+                hh = 24 + hh;
+            }
+        }
+        bug(mm);
+        res++;
+    }
+    cout << res;
+
+    newline;
 }
 
 int32_t main() {
@@ -60,6 +84,6 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     solve();
-    map<int,
+
     return 0;
 }

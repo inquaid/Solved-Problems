@@ -6,6 +6,7 @@ int main() {
     cin >> t;
 
     while (t--) {
+        
         int n;
         cin >> n;
         for (int i = 0; i < n - 1; i++) {

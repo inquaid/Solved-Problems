@@ -13,18 +13,28 @@ template <class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,t
 #define newline cout << "\n"
 #define yes cout << "YES"
 #define no cout << "NO"
-#define ll long long
 #define int long long
 #define yesif(flag) cout << ((flag) ? "YES" : "NO")
 #define all(a)  a.begin(), a.end()
+#define pb(a) push_back(a)
 
-template<typename T>
-void sort_unique(vector<T> &vec){
-    sort(vec.begin(),vec.end());
-    vec.resize(unique(vec.begin(),vec.end())-vec.begin());
-}
+typedef long long       ll;
+typedef pair<int, int>  pii;
+typedef pair<ll, ll>    pll;
+typedef vector<int>     vi;
+typedef vector<ll>      vll;
+typedef vector<pii>     vpii;
+typedef vector<pll>     vpll;
+typedef map<int, int>   mii;
+typedef map<ll, ll>     mll;
+typedef set<int>        sii;
+typedef set<ll>         sll;
 
-// #define dattebayo
+template<typename T> void sort_unique(vector<T> &vec){sort(vec.begin(),vec.end()); vec.resize(unique(vec.begin(),vec.end())-vec.begin());}
+template<typename T> void scan(vector<T> &v){for(auto &i :v) cin >> i;}
+template<typename T> void print(vector<T> &v){for(auto &i :v) cout << i << " ";}
+
+#define dattebayo
 #ifdef dattebayo
 #define bug(...) cerr << "#" << __LINE__ << ' ' << #__VA_ARGS__ << "- ", _do(__VA_ARGS__)
 template<typename T> void _do(vector<T> x){for(auto i: x) cerr << i << ' ';cerr << "\n";}
@@ -37,29 +47,36 @@ template<typename T, typename ...S> void _do(T && x, S&&...y) {cerr << x << ", "
 #define bug(...) 777771449
 #endif
 
-void tTestCase() {
-    int t;
-    cin >> t;
-    while (t--) {
-        int n;
-        cin >> n;
+bool comp(pii a, pii b) { return a.first > b.first; }
 
-        newline;
+void solve() {
+    int n, k;
+    cin >> n >> k;
+
+    vpii a;
+    for (int i = 0; i < n; ++i) {
+        int temp;
+        cin >> temp;
+        a.push_back({temp, i + 1});
     }
+    sort(all(a), comp);
+    cout << a[k - 1].first;
+    newline;
+    for (int i = 0; i < k; ++i) {
+        cout << a[i].second << " ";
+    }
+    newline;
 }
 
-void solve() { 
-    tTestCase(); 
-}
 
 int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    //freopen("input.txt", "r" , stdin);
-    //freopen("output.txt", "w", stdout);
+    freopen("input.txt", "r" , stdin);
+    freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
     solve();
-    map<int,
+
     return 0;
 }
