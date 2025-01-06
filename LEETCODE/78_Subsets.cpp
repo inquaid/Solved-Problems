@@ -15,3 +15,24 @@ class Solution {
         return res;
     }
 };
+
+class Solution {
+  public:
+    vector<int> temp;
+    void genarateSet(vector<int> &nums, int i, int n, vector<vector<int>> &res) {
+        if (i == n) {
+            res.push_back(temp);
+        } else {
+            temp.push_back(nums[i]);
+            genarateSet(nums, i + 1, n, res);
+            temp.pop_back();
+            genarateSet(nums, i + 1, n, res);
+        }
+    }
+    vector<vector<int>> subsets(vector<int> &nums) {
+        int n = nums.size();
+        vector<vector<int>> res;
+        genarateSet(nums, 0, n, res);
+        return res;
+    }
+};
