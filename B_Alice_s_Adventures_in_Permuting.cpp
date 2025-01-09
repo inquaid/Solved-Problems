@@ -31,9 +31,10 @@ using namespace std;
 
 // template <class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update>;
 
-/** less_equal, greater, greater_equal
+/**
+ *  less_equal, greater, greater_equal
  *  order_of_key(k) : no. of elements < k
- * find_by_order(i) : value at index i (0-based)
+ *  find_by_order(i) : value at index i (0-based)
 **/
 
 #define sp " "
@@ -54,8 +55,8 @@ typedef vector<pii>     vpii;
 typedef vector<pll>     vpll;
 typedef map<int, int>   mii;
 typedef map<ll, ll>     mll;
-typedef set<int>        sii;
-typedef set<ll>         sll;
+typedef set<int>        si;
+typedef set<ll>         sl;
 
 template<typename T> void sort_unique(vector<T> &vec){sort(vec.begin(),vec.end()); vec.resize(unique(vec.begin(),vec.end())-vec.begin());}
 template<typename T> void scan(vector<T> &v){for(auto &i :v) cin >> i;}
@@ -63,7 +64,7 @@ template<typename T> void print(vector<T> &v){for(auto &i :v) cout << i << " ";}
 
 #define dattebayo
 #ifdef dattebayo
-#define bug(...) cerr << "#" << __LINE__ << ' ' << #__VA_ARGS__ << "- ", _do(__VA_ARGS__)
+#define bug(...) cerr << "#" << __LINE__ << ' ' << #__VA_ARGS__ << " = ", _do(__VA_ARGS__)
 template<typename T> void _do(vector<T> x){for(auto i: x) cerr << i << ' ';cerr << "\n";}
 template<typename T> void _do(set<T> x){for(auto i: x) cerr << i << ' ';cerr << "\n";}
 template<typename T> void _do(unordered_set<T> x){for(auto i: x) cerr << i << ' ';cerr << "\n";}
@@ -75,57 +76,53 @@ template<typename T> void _do(vector<pair<T,T>> x) {for(auto [first, second] : x
 #define bug(...) 777771449
 #endif
 
-void solve() { 
-    int n;
-    cin >> n;
-    vi a(n); scan(a);
-    string s; cin >> s;
-    vi preSum(n , 0);
+int f(int i, int b, int c, int n) { return b < ((n - c) / (i * 1.0)); }
 
-    for (int i = 1; i < n; ++i) {
-        preSum[i] = preSum[i - 1] + (s[i - 1] == '1' ? 1 : 0);
-    }
-
-    // bug(preSum);
-
-    for (int i = 1; i <= n; ++i) {
-        int indx = i - 1;
-        if(a[indx] > i){
-            // bug(a[indx]);
-            // bug(i);
-            int temp = a[indx] - i, temp2 = preSum[a[indx] - 1] - preSum[i - 1];
-            // bug(temp);
-            // bug(preSum[a[indx] - 1] - preSum[i - 1]);
-            if(temp > temp2){
-                no; return;
+void tTestCase() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n, b, c;
+        cin >> n >> b >> c;
+        if (n == b and b == c)
+            cout << n;
+        else if (b == 0) {
+            if (n <= (c + 2)) {
+                if (n >= c + 1)
+                    cout << n - 1;
+                else
+                    cout << n;
+            } else
+                cout << -1;
+        } else {
+            int l = 0, r = n - 1;
+            while (l <= r) {
+                int mid = l + (r - l) / 2;
+                if (f(mid, b, c, n)) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
             }
-            // bug(preSum[a[indx] - i]);
+            cout << n - l;
         }
-    }
-    yes;
 
+        newline;
+    }
+}
+
+void solve() { 
+    tTestCase(); 
 }
 
 int32_t main() {
-    set<int> st;
-    st.
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    freopen("input.txt", "r" , stdin);
-    freopen("output.txt", "w", stdout);
+    //freopen("input.txt", "r" , stdin);
+    //freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
-    cout << "OK";
-    // solve();
-    // multiset<int> mst;
-    // mst.insert(1);
-    // mst.insert(1);
-    // mst.insert(1);
-    // mst.insert(1);
-    // for(auto i : mst){
-    //     cout << i;
-    // }
-    pair<int, int> pr;
-    pr = {1, 2};
-    cout << pr.first;
+
+    solve();
+
     return 0;
 }

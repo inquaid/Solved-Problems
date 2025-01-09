@@ -1,28 +1,13 @@
 #include <iostream>
 #include <vector>
-#include <list>
 #include <string>
-#include <sstream>
-#include <bitset>
 #include <set>
-#include <unordered_set>
 #include <map>
-#include <unordered_map>
-#include <stack>
-#include <queue>
-#include <deque>
 #include <algorithm>
-#include <numeric>
-#include <climits>
-#include <iterator>
-#include <cmath>
+#include <unordered_set>
 #include <utility>
 #include <cstdint>
 #include <iterator>
-#include <ios>
-#include <iomanip>
-#include <limits>
-
 // #include <ext/pb_ds/assoc_container.hpp>
 // #include <ext/pb_ds/tree_policy.hpp>
 
@@ -75,57 +60,38 @@ template<typename T> void _do(vector<pair<T,T>> x) {for(auto [first, second] : x
 #define bug(...) 777771449
 #endif
 
-void solve() { 
+void solve() {
     int n;
     cin >> n;
     vi a(n); scan(a);
-    string s; cin >> s;
-    vi preSum(n , 0);
+    string s;
+    cin >> s;
+    vi preSum(n, 0);
 
     for (int i = 1; i < n; ++i) {
         preSum[i] = preSum[i - 1] + (s[i - 1] == '1' ? 1 : 0);
     }
-
-    // bug(preSum);
-
     for (int i = 1; i <= n; ++i) {
         int indx = i - 1;
-        if(a[indx] > i){
-            // bug(a[indx]);
-            // bug(i);
+        if (a[indx] > i) {
             int temp = a[indx] - i, temp2 = preSum[a[indx] - 1] - preSum[i - 1];
-            // bug(temp);
-            // bug(preSum[a[indx] - 1] - preSum[i - 1]);
-            if(temp > temp2){
-                no; return;
+            if (temp > temp2) {
+                no;
+                return;
             }
-            // bug(preSum[a[indx] - i]);
         }
     }
     yes;
-
 }
 
 int32_t main() {
-    set<int> st;
-    st.
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    freopen("input.txt", "r" , stdin);
-    freopen("output.txt", "w", stdout);
+    //freopen("input.txt", "r" , stdin);
+    //freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
-    cout << "OK";
-    // solve();
-    // multiset<int> mst;
-    // mst.insert(1);
-    // mst.insert(1);
-    // mst.insert(1);
-    // mst.insert(1);
-    // for(auto i : mst){
-    //     cout << i;
-    // }
-    pair<int, int> pr;
-    pr = {1, 2};
-    cout << pr.first;
+
+    solve();
+
     return 0;
 }

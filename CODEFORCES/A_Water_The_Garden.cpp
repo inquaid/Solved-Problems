@@ -1,40 +1,13 @@
-#include <iostream>
-#include <vector>
-#include <list>
-#include <string>
-#include <sstream>
-#include <bitset>
-#include <set>
-#include <unordered_set>
-#include <map>
-#include <unordered_map>
-#include <stack>
-#include <queue>
-#include <deque>
-#include <algorithm>
-#include <numeric>
-#include <climits>
-#include <iterator>
-#include <cmath>
-#include <utility>
-#include <cstdint>
-#include <iterator>
-#include <ios>
-#include <iomanip>
-#include <limits>
-
-// #include <ext/pb_ds/assoc_container.hpp>
-// #include <ext/pb_ds/tree_policy.hpp>
-
+#include <bits/stdc++.h>
 using namespace std;
-// using namespace __gnu_pbds;
 
-// template <class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update>;
-
-/** less_equal, greater, greater_equal
- *  order_of_key(k) : no. of elements < k
- * find_by_order(i) : value at index i (0-based)
-**/
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+template <class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update>;
+// less_equal, greater, greater_equal
+// order_of_key(k) : no. of elements < k
+// *find_by_order(i) : value at index i (0-based)
 
 #define sp " "
 #define newline cout << "\n"
@@ -75,57 +48,38 @@ template<typename T> void _do(vector<pair<T,T>> x) {for(auto [first, second] : x
 #define bug(...) 777771449
 #endif
 
-void solve() { 
-    int n;
-    cin >> n;
-    vi a(n); scan(a);
-    string s; cin >> s;
-    vi preSum(n , 0);
+void tTestCase() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n, k;
+        cin >> n >> k;
+        vi x(k);
+        scan(x);
 
-    for (int i = 1; i < n; ++i) {
-        preSum[i] = preSum[i - 1] + (s[i - 1] == '1' ? 1 : 0);
-    }
-
-    // bug(preSum);
-
-    for (int i = 1; i <= n; ++i) {
-        int indx = i - 1;
-        if(a[indx] > i){
-            // bug(a[indx]);
-            // bug(i);
-            int temp = a[indx] - i, temp2 = preSum[a[indx] - 1] - preSum[i - 1];
-            // bug(temp);
-            // bug(preSum[a[indx] - 1] - preSum[i - 1]);
-            if(temp > temp2){
-                no; return;
-            }
-            // bug(preSum[a[indx] - i]);
+        int mn = max(x[0], n - x[k - 1] + 1);
+        for (int i = 0; i < k - 1; ++i) {
+            mn = max(mn, (int)ceil((x[i + 1] - x[i] + 1) / 2.0));
         }
-    }
-    yes;
+        cout << mn;
 
+        newline;
+    }
+}
+
+
+void solve() { 
+    tTestCase(); 
 }
 
 int32_t main() {
-    set<int> st;
-    st.
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    freopen("input.txt", "r" , stdin);
-    freopen("output.txt", "w", stdout);
+    //freopen("input.txt", "r" , stdin);
+    //freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
-    cout << "OK";
-    // solve();
-    // multiset<int> mst;
-    // mst.insert(1);
-    // mst.insert(1);
-    // mst.insert(1);
-    // mst.insert(1);
-    // for(auto i : mst){
-    //     cout << i;
-    // }
-    pair<int, int> pr;
-    pr = {1, 2};
-    cout << pr.first;
+
+    solve();
+
     return 0;
 }
