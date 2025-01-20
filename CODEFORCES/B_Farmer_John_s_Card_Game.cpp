@@ -57,6 +57,8 @@ using namespace std;
 #define rrep4(i, b, a, c) for (int i = (b)-1; i >= (a); i -= (c))
 #define overload_rrep(a, b, c, d, e, ...) e
 #define rrep(...) overload_rrep(__VA_ARGS__, rrep4, rrep3, rrep2, rrep1)(__VA_ARGS__)
+#define ff first
+#define ss second
 
 typedef long long       ll;
 typedef pair<int, int>  pii;
@@ -65,6 +67,7 @@ typedef vector<int>     vi;
 typedef vector<ll>      vll;
 typedef vector<pii>     vpii;
 typedef vector<pll>     vpll;
+typedef vector<vector<int>> vvi;
 typedef map<int, int>   mii;
 typedef map<ll, ll>     mll;
 typedef set<int>        si;
@@ -79,6 +82,7 @@ template<typename T> void print(unordered_set<T> x){for(auto i: x) cout << i << 
 template<typename T> void print(T && x) {cout << x << "\n";}
 template<typename T, typename... S> void print(T && x, S&&... y) {cout << x << ' ';print(y...);}
 void print(){cout << "\n";}
+bool comp(int a, int b) { return a > b;}
 
 #ifdef LOCAL
 #include "debug.h"
@@ -87,21 +91,32 @@ void print(){cout << "\n";}
 #endif
 
 void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+    int n, m;
+    scan(n, m);
+    bug(n, m);
+
+    vvi mtx(n, vi(m, 0));
+    vpii sq;
+    rep(i, n) {
+        rep(j, m) { scan(mtx[i][j]); }
+        sort(all(mtx[i]));
+        sq.push_back({mtx[i][0], i + 1});
     }
-       print(s);
+
+    sort(all(sq));
+    rep(row, n) {
+        int temp = mtx[row][0];
+        rep(col, m) {
+            if (abs(mtx[row][0] - mtx[row][col]) % n != 0) {
+                print(-1);
+                return;
+            }
+        }
+    }
+
+    for (auto pr : sq)
+        cout << pr.ss << " ";
+    print();
 }
 
 void solve() {

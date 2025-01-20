@@ -57,6 +57,8 @@ using namespace std;
 #define rrep4(i, b, a, c) for (int i = (b)-1; i >= (a); i -= (c))
 #define overload_rrep(a, b, c, d, e, ...) e
 #define rrep(...) overload_rrep(__VA_ARGS__, rrep4, rrep3, rrep2, rrep1)(__VA_ARGS__)
+#define ff first
+#define ss second
 
 typedef long long       ll;
 typedef pair<int, int>  pii;
@@ -65,6 +67,7 @@ typedef vector<int>     vi;
 typedef vector<ll>      vll;
 typedef vector<pii>     vpii;
 typedef vector<pll>     vpll;
+typedef vector<vector<int>> vvi;
 typedef map<int, int>   mii;
 typedef map<ll, ll>     mll;
 typedef set<int>        si;
@@ -79,6 +82,7 @@ template<typename T> void print(unordered_set<T> x){for(auto i: x) cout << i << 
 template<typename T> void print(T && x) {cout << x << "\n";}
 template<typename T, typename... S> void print(T && x, S&&... y) {cout << x << ' ';print(y...);}
 void print(){cout << "\n";}
+bool comp(int a, int b) { return a > b;}
 
 #ifdef LOCAL
 #include "debug.h"
@@ -87,22 +91,55 @@ void print(){cout << "\n";}
 #endif
 
 void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+    int n; scan(n);
+    vi a(n), b(n);
+    scan(a); scan(b);
+
+    int sumA = 0, sumB = 0;
+    int pos = 0, neg = 0;
+    rep(i, n) {
+        if (a[i] == b[i]) {
+            if (a[i] == 1) pos++;
+            if (a[i] == -1) neg++;
+        } else {
+            if (a[i] > b[i]) { sumA += a[i]; }
+            else { sumB += b[i]; }
+        }
     }
-       print(s);
+    int mx = max(sumA, sumB), mn = min(sumA, sumB);
+    int gap = mx - mn;
+    if (neg >= gap) {
+        mx = mn;
+        neg -= gap;
+        gap = 0;
+        if (neg <= pos) {
+            pos -= neg;
+            neg = 0;
+        } else {
+            neg -= pos;
+            pos = 0;
+            mx -= floor(neg / 2.0);
+            mn = mx;
+            if ((neg & 1)) {
+                mn--;
+            }
+        }
+    } else {
+        mx -= neg;
+        gap -= neg;
+        gap = max(0LL, gap);
+        neg = 0;
+    }
+    if (pos > 0) {
+        mn += pos;
+        if (mn > mx) {
+            mn = floor((mx + mn) / 2.0);
+        }
+    }
+
+    print(mn);
 }
+
 
 void solve() {
     int t;

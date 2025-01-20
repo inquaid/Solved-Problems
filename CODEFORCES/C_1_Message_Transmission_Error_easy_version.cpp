@@ -39,16 +39,16 @@ using namespace std;
 
 #define sp " "
 #define newline cout << "\n"
-#define yes cout << "YES"
-#define no cout << "NO"
+#define yes cout << "YES\n"
+#define no cout << "NO\n"
 #define int long long
 #define yesif(flag) cout << ((flag) ? "YES" : "NO")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
-#define rep1(a)           for(int i = 0; i < a; i++)
-#define rep2(i, a)        for(int i = 0; i < a; i++)
-#define rep3(i, a, b)     for(int i = a; i < b; i++)
-#define rep4(i, a, b, c)  for(int i = a; i < b; i += c)
+#define rep1(a)          for(int i = 0; i < a; i++)
+#define rep2(i, a)       for(int i = 0; i < a; i++)
+#define rep3(i, a, b)    for(int i = a; i < b; i++)
+#define rep4(i, a, b, c) for(int i = a; i < b; i += c)
 #define overload_rep(a, b, c, d, e, ...) e
 #define rep(...) overload_rep(__VA_ARGS__, rep4, rep3, rep2, rep1)(__VA_ARGS__)
 #define rrep1(a)          for (int i = (a)-1; i >= 0; --i)
@@ -86,30 +86,37 @@ void print(){cout << "\n";}
 #define bug(...) 
 #endif
 
-void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+bool isPosibble(string &s1, int n) {
+    string temp = "";
+    rep(i, n) {
+        int tempSize = s1.size() - n + i;
+        bug(tempSize);
+        if (s1[i] != s1[tempSize]) {
+            return false;
+        }
+        temp += s1[i];
     }
-       print(s);
+    s1 = temp;
+    return true;
 }
 
 void solve() {
-    int t;
-    scan(t);
-    while (t--) {
-        tTestCase(t);
+    string s;
+    scan(s);
+    int n = s.size();
+    int k = ceil(n / 2.0);
+    if (!(n & 1))
+        k++;
+    bug(n, k);
+    rep(i, k, n) {
+        bug(i);
+        if (isPosibble(s, i)) {
+            yes;
+            print(s);
+            return;
+        }
     }
+    no;
 }
 
 int32_t main() {
@@ -120,6 +127,5 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     solve();
-
     return 0;
 }

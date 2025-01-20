@@ -57,6 +57,8 @@ using namespace std;
 #define rrep4(i, b, a, c) for (int i = (b)-1; i >= (a); i -= (c))
 #define overload_rrep(a, b, c, d, e, ...) e
 #define rrep(...) overload_rrep(__VA_ARGS__, rrep4, rrep3, rrep2, rrep1)(__VA_ARGS__)
+#define ff first
+#define ss second
 
 typedef long long       ll;
 typedef pair<int, int>  pii;
@@ -65,6 +67,7 @@ typedef vector<int>     vi;
 typedef vector<ll>      vll;
 typedef vector<pii>     vpii;
 typedef vector<pll>     vpll;
+typedef vector<vector<int>> vvi;
 typedef map<int, int>   mii;
 typedef map<ll, ll>     mll;
 typedef set<int>        si;
@@ -79,6 +82,8 @@ template<typename T> void print(unordered_set<T> x){for(auto i: x) cout << i << 
 template<typename T> void print(T && x) {cout << x << "\n";}
 template<typename T, typename... S> void print(T && x, S&&... y) {cout << x << ' ';print(y...);}
 void print(){cout << "\n";}
+bool comp(int a, int b) { return a > b;}
+
 
 #ifdef LOCAL
 #include "debug.h"
@@ -86,22 +91,28 @@ void print(){cout << "\n";}
 #define bug(...) 
 #endif
 
+int hasCommon(vector<pair<int, int>> &intervals) {
+    int mx = intervals[0].first, mn = intervals[0].second;
+    for (const auto &i : intervals) {
+        mx = max(mx, i.first), mn = min(mn, i.second);
+        if (mx > mn) return -1;
+    }
+    return mx;
+}
+
 void tTestCase(int t) {
     int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+    double k;
+    scan(n, k);
+    vi a(n); scan(a); sort(all(a), comp);
+    vpii vp; vp.push_back({a[0], a[0] + k - 1});
+    rep(i, n) {
+        int lb = floor((a[0] - a[i]) / k);
+        if ((lb & 1)) { lb += 1; }
+        lb = a[i] + (lb * k);
+        vp.push_back({lb, lb + k - 1});
     }
-       print(s);
+    print(hasCommon(vp));
 }
 
 void solve() {

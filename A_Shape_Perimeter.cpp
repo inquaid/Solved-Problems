@@ -41,7 +41,7 @@ using namespace std;
 #define newline cout << "\n"
 #define yes cout << "YES"
 #define no cout << "NO"
-#define int long long
+// #define int long long
 #define yesif(flag) cout << ((flag) ? "YES" : "NO")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
@@ -87,21 +87,34 @@ void print(){cout << "\n";}
 #endif
 
 void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+    int n, m;
+    scan(n, m);
+    vpii v;
+    rep(i, n) {
+        int a, b; scan(a, b);
+        v.push_back({a, b});
     }
-       print(s);
+    int res = m + m, a = v[0].first, b = v[0].second;
+    bug(res);
+    rep(i, 1, n) {
+        int nextA = v[i - 1].first + m, nextB = v[i-1].second + m;
+        // int nextA = a + m, nextB = b + m;
+        // bug(nextA, nextB);
+        int nextPointA = v[i - 1].first + v[i].first;
+        int nextPointB = v[i - 1].second + v[i].second;
+        
+        int temp = m - (nextA - nextPointA); 
+        int temp2 = m - (nextB - nextPointB);
+        // bug(temp);
+
+        res += temp + temp2;
+        v[i].first = nextPointA;
+        v[i].second = nextPointB;
+        
+    }
+    print(res * 2);
+
+    // newline;
 }
 
 void solve() {

@@ -87,21 +87,27 @@ void print(){cout << "\n";}
 #endif
 
 void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+    int n, m, k, w;
+    scan(n, m, k, w); 
+    vi gorilla(w); scan(gorilla);
+    sort(all(gorilla), greater<int>());
+    vi temp;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            int x1 , x2 , y1 , y2;
+
+            x1 = max(j - k + 1, 0LL), x2 = min(j , m - k), y1 = max(i - k + 1, 0LL), y2 = min(i , n - k);
+            int gap1 = abs(x2 - x1) + 1, gap2 = abs(y2 -  y1) + 1 ;
+            // bug(x1, x2, y1, y2);
+            temp.push_back(gap1 * gap2);
+        }
     }
-       print(s);
+    sort(all(temp), greater <int>());
+    int res = 0LL;
+    rep(i, w){
+        res += temp[i] * gorilla[i];
+    }print(res);
+    // bug(temp);
 }
 
 void solve() {

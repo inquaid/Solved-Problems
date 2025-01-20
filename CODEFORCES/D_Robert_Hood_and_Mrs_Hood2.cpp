@@ -45,10 +45,10 @@ using namespace std;
 #define yesif(flag) cout << ((flag) ? "YES" : "NO")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
-#define rep1(a)           for(int i = 0; i < a; i++)
-#define rep2(i, a)        for(int i = 0; i < a; i++)
-#define rep3(i, a, b)     for(int i = a; i < b; i++)
-#define rep4(i, a, b, c)  for(int i = a; i < b; i += c)
+#define rep1(a)          for(int i = 0; i < a; i++)
+#define rep2(i, a)       for(int i = 0; i < a; i++)
+#define rep3(i, a, b)    for(int i = a; i < b; i++)
+#define rep4(i, a, b, c) for(int i = a; i < b; i += c)
 #define overload_rep(a, b, c, d, e, ...) e
 #define rep(...) overload_rep(__VA_ARGS__, rep4, rep3, rep2, rep1)(__VA_ARGS__)
 #define rrep1(a)          for (int i = (a)-1; i >= 0; --i)
@@ -87,21 +87,37 @@ void print(){cout << "\n";}
 #endif
 
 void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+    int n, d, k;
+    scan(n, d, k);
+    vi l(n + 1, 0), r(n + 1, 0);
+    // bug(l);
+    rep(k) {
+        int a, b;
+        scan(a, b);
+        l[a]++;
+        r[b]++;
+        bug(a, b);
     }
-       print(s);
+    int c = 0;
+    rep(i, 1, d + 1) { c += l[i] - r[i]; }
+    int mx = 0, res1 = 1, mn = INT64_MAX, res2 = 1;
+    rep(i, d, n + 1) {
+        // bug(i);
+        c += l[i];
+
+        if (c > mx) {
+            mx = c;
+            res1 = i - d + 1;
+        }
+        if (c < mn) {
+            mn = c;
+            res2 = i - d + 1;
+        }
+
+        c -= r[i - d + 1];
+    }
+    print(res1, res2);
+    // newline;
 }
 
 void solve() {

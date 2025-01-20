@@ -87,21 +87,56 @@ void print(){cout << "\n";}
 #endif
 
 void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+    int n, k;
+    scan(n, k);
+    vi a(n);
+    pii mx;
+    mx = {0, 0};
+    mii mp;
+    int atmost = 0;
+    bool flag = false;
+    for (int i = 0; i < n; ++i) {
+        cin >> a[i];
+        if (a[i] == k)
+            atmost++;
+        mp[a[i]]++;
+        // mx = max(mx, mp[a[i]]);
+        if (mx.second == mp[a[i]] and a[i] == k) {
+            mx = {a[i], mp[a[i]]};
+        }
+        if (mx.second < mp[a[i]]) {
+            mx = {a[i], mp[a[i]]};
+        }
+        if (mx.first == k)
+            flag = true;
     }
-       print(s);
+    if (mx.first == k) {
+        print(0);
+        return;
+    }
+    if (flag) {
+        print(1);
+        return;
+    }
+    mp.clear();
+    mx = {0, 0};
+    for (int i = n - 1; i >= 0; i--) {
+        mp[a[i]]++;
+        if (mx.second == mp[a[i]] and a[i] == k) {
+            mx = {a[i], mp[a[i]]};
+        }
+        if (mx.second < mp[a[i]]) {
+            mx = {a[i], mp[a[i]]};
+        }
+        if (mx.first == k) {
+            flag = true;
+            break;
+        }
+    }
+    if (flag)
+        print(1);
+    else
+        print(2);
 }
 
 void solve() {

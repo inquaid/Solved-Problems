@@ -45,18 +45,6 @@ using namespace std;
 #define yesif(flag) cout << ((flag) ? "YES" : "NO")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
-#define rep1(a)           for(int i = 0; i < a; i++)
-#define rep2(i, a)        for(int i = 0; i < a; i++)
-#define rep3(i, a, b)     for(int i = a; i < b; i++)
-#define rep4(i, a, b, c)  for(int i = a; i < b; i += c)
-#define overload_rep(a, b, c, d, e, ...) e
-#define rep(...) overload_rep(__VA_ARGS__, rep4, rep3, rep2, rep1)(__VA_ARGS__)
-#define rrep1(a)          for (int i = (a)-1; i >= 0; --i)
-#define rrep2(i, a)       for (int i = (a)-1; i >= 0; --i)
-#define rrep3(i, b, a)    for (int i = (b)-1; i >= (a); --i)
-#define rrep4(i, b, a, c) for (int i = (b)-1; i >= (a); i -= (c))
-#define overload_rrep(a, b, c, d, e, ...) e
-#define rrep(...) overload_rrep(__VA_ARGS__, rrep4, rrep3, rrep2, rrep1)(__VA_ARGS__)
 
 typedef long long       ll;
 typedef pair<int, int>  pii;
@@ -71,14 +59,8 @@ typedef set<int>        si;
 typedef set<ll>         sl;
 
 template<typename T> void sort_unique(vector<T> &vec){sort(vec.begin(),vec.end()); vec.resize(unique(vec.begin(),vec.end())-vec.begin());}
-template<class... T> void scan(T&... a){(cin >> ... >> a);}
 template<typename T> void scan(vector<T> &v){for(auto &i :v) cin >> i;}
-template<typename T> void print(vector<T> x){for(auto i: x) cout << i << ' ';cout << "\n";}
-template<typename T> void print(set<T> x){for(auto i: x) cout << i << ' ';cout << "\n";}
-template<typename T> void print(unordered_set<T> x){for(auto i: x) cout << i << ' ';cout << "\n";}
-template<typename T> void print(T && x) {cout << x << "\n";}
-template<typename T, typename... S> void print(T && x, S&&... y) {cout << x << ' ';print(y...);}
-void print(){cout << "\n";}
+template<typename T> void print(vector<T> &v){for(auto &i :v) cout << i << " ";}
 
 #ifdef LOCAL
 #include "debug.h"
@@ -86,30 +68,64 @@ void print(){cout << "\n";}
 #define bug(...) 
 #endif
 
-void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+void tTestCase() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n, m;
+        cin >> n >> m;
+        string path;
+        cin >> path;
+        vector<vector<int>> mtx(n, vector<int>(m, 0));
+
+        int tempRowSum = 0;
+        vi row, col;
+        for (int i = 0; i < n; ++i) {
+            tempRowSum = 0;
+            for (int j = 0; j < m; ++j) {
+                cin >> mtx[i][j];
+                tempRowSum += mtx[i][j];
+            }
+            row.pb(tempRowSum);
+        }
+        for (int i = 0; i < m; ++i) {
+            tempRowSum = 0;
+            for (int j = 0; j < n; ++j) {
+                // cin >> mtx[i][j];
+                tempRowSum += mtx[j][i];
+            }
+            col.pb(tempRowSum);
+        }
+        int indx = 0, i = 0, j = 0;
+
+        while (indx < path.size()) {
+            if (path[indx] == 'D') {
+                mtx[i][j] = -row[i];
+                col[j] += -row[i];
+                row[i] = 0;
+                i++;
+            } else {
+                mtx[i][j] = -col[j];
+                row[i] += -col[j];
+                col[j] = 0;
+                j++;
+            }
+
+            indx++;
+        }
+        mtx[i][j] = -row[i];
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < m; ++j) {
+                cout << mtx[i][j] << " ";
+            }
+            newline;
+        }
+        newline;
     }
-       print(s);
 }
 
-void solve() {
-    int t;
-    scan(t);
-    while (t--) {
-        tTestCase(t);
-    }
+void solve() { 
+    tTestCase(); 
 }
 
 int32_t main() {

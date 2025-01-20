@@ -45,18 +45,6 @@ using namespace std;
 #define yesif(flag) cout << ((flag) ? "YES" : "NO")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
-#define rep1(a)           for(int i = 0; i < a; i++)
-#define rep2(i, a)        for(int i = 0; i < a; i++)
-#define rep3(i, a, b)     for(int i = a; i < b; i++)
-#define rep4(i, a, b, c)  for(int i = a; i < b; i += c)
-#define overload_rep(a, b, c, d, e, ...) e
-#define rep(...) overload_rep(__VA_ARGS__, rep4, rep3, rep2, rep1)(__VA_ARGS__)
-#define rrep1(a)          for (int i = (a)-1; i >= 0; --i)
-#define rrep2(i, a)       for (int i = (a)-1; i >= 0; --i)
-#define rrep3(i, b, a)    for (int i = (b)-1; i >= (a); --i)
-#define rrep4(i, b, a, c) for (int i = (b)-1; i >= (a); i -= (c))
-#define overload_rrep(a, b, c, d, e, ...) e
-#define rrep(...) overload_rrep(__VA_ARGS__, rrep4, rrep3, rrep2, rrep1)(__VA_ARGS__)
 
 typedef long long       ll;
 typedef pair<int, int>  pii;
@@ -71,14 +59,8 @@ typedef set<int>        si;
 typedef set<ll>         sl;
 
 template<typename T> void sort_unique(vector<T> &vec){sort(vec.begin(),vec.end()); vec.resize(unique(vec.begin(),vec.end())-vec.begin());}
-template<class... T> void scan(T&... a){(cin >> ... >> a);}
 template<typename T> void scan(vector<T> &v){for(auto &i :v) cin >> i;}
-template<typename T> void print(vector<T> x){for(auto i: x) cout << i << ' ';cout << "\n";}
-template<typename T> void print(set<T> x){for(auto i: x) cout << i << ' ';cout << "\n";}
-template<typename T> void print(unordered_set<T> x){for(auto i: x) cout << i << ' ';cout << "\n";}
-template<typename T> void print(T && x) {cout << x << "\n";}
-template<typename T, typename... S> void print(T && x, S&&... y) {cout << x << ' ';print(y...);}
-void print(){cout << "\n";}
+template<typename T> void print(vector<T> &v){for(auto &i :v) cout << i << " ";}
 
 #ifdef LOCAL
 #include "debug.h"
@@ -86,35 +68,63 @@ void print(){cout << "\n";}
 #define bug(...) 
 #endif
 
-void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+int f(string &s1, string &s2, int &i, int n, bool first) {
+    i++;
+    if ((s2.size() + s1.size()) > n or i >= (2 * n)) return 0;
+    cout << "? " << s1 + s2 << endl;
+    int check;  cin >> check;
+    if (first) {
+        if (check == 1) {
+            s2 = s1 + s2;
+            return 1;
+        } else if (s1 == "0") {
+            s1 = "1";
+            return f(s1, s2, i, n, first);
+        } else
+            return 0;
+    } else {
+        if (check == 1) {
+            s1 = s1 + s2;
+            return 1;
+        } else if (s2 == "0") {
+            s2 = "1";
+            return f(s1, s2, i, n, first);
+        } else
+            return 0;
     }
-       print(s);
 }
 
-void solve() {
+void tTestCase() {
     int t;
-    scan(t);
+    cin >> t;
     while (t--) {
-        tTestCase(t);
+        int n;
+        cin >> n;
+
+        int i = 0;
+        string s = "";
+        while (i < (2 * n)) {
+            string t = "0";
+            if (f(t, s, i, n, true) == 0)
+                break;
+        }
+        bug(i);
+        while (i < (2 * n)) {
+            string t = "0";
+            f(s, t, i, n, false);
+            bug(s);
+        }
+        if (s.size() != n)
+            s += "1";
+        cout << "! " << s << endl;
     }
 }
+
+void solve() { tTestCase(); }
 
 int32_t main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+    // ios_base::sync_with_stdio(false);
+    // cin.tie(NULL);
     // freopen("input.txt", "r" , stdin);
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);

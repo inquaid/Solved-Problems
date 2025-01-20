@@ -86,22 +86,38 @@ void print(){cout << "\n";}
 #define bug(...) 
 #endif
 
-void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+vector<int> makePreSum(vector<int> &a) {
+    int n = a.size();
+    vector<int> preSum(n + 1, 0);
+    for (int i = 1; i <= n; ++i) {
+        preSum[i] = preSum[i - 1] + a[i - 1];
     }
-       print(s);
+    return preSum;
+} // range(l-1, r) 1 base indexing
+
+void tTestCase(int t) {
+    int n; scan(n);
+    vi a(n); scan(a);
+    string s; scan(s);
+    a = makePreSum(a);
+    int l = 0, r = n - 1, res = 0;
+    bool f1 = false, f2 = false;
+
+    while (l <= r) {
+        if (f1 == false) {
+            (s[l] == 'L') ? f1 = true : l++;
+        }
+        if (f2 == false) {
+            (s[r] == 'R') ? f2 = true : r--;
+        }
+        // bug(f2);
+        if (f1 and f2) {
+            res += (a[r + 1] - a[l]);
+            r--, l++;
+            f1 = f2 = false;
+        }
+    }
+    print(res);
 }
 
 void solve() {

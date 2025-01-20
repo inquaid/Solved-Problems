@@ -41,7 +41,7 @@ using namespace std;
 #define newline cout << "\n"
 #define yes cout << "YES"
 #define no cout << "NO"
-#define int long long
+// #define int long long
 #define yesif(flag) cout << ((flag) ? "YES" : "NO")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
@@ -65,6 +65,7 @@ typedef vector<int>     vi;
 typedef vector<ll>      vll;
 typedef vector<pii>     vpii;
 typedef vector<pll>     vpll;
+typedef vector<vector<int>> vvi;
 typedef map<int, int>   mii;
 typedef map<ll, ll>     mll;
 typedef set<int>        si;
@@ -86,22 +87,77 @@ void print(){cout << "\n";}
 #define bug(...) 
 #endif
 
+class Node {
+  public:
+    int data;
+    Node *left, *right;
+    Node(int data) {
+        this->left = nullptr;
+        this->data = data;
+        this->right = nullptr;
+    }
+};
+
 void tTestCase(int t) {
     int n;
-    // scan(n);
+    scan(n);
+    bug(n);
+    vvi mtx(n, vi(n, 0));
     string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+    rep(i, n) {
+        scan(s);
+        rep(j, n) { mtx[i][j] = s[j] - '0'; }
     }
-       print(s);
+    deque<int> dq;
+    vi res;
+    res.pb(n - 1);
+    int cnt = 1;
+    Node *head = new Node(n - 1);
+    Node *end = head;
+
+    for (int i = n - 2; i >= 0; i--) {
+
+        Node *temp = new Node(i);
+        Node *traverse = end;
+        while (traverse != nullptr and mtx[i][traverse->data]) {
+            traverse = traverse->left;
+        }
+        if (traverse != nullptr) {
+            temp->right = traverse->right;
+            temp->left = traverse;
+            if (traverse->right != nullptr) {
+                traverse->right->left = temp;
+            }
+            traverse->right = temp;
+        } else {
+            temp->right = head;
+            head->left = temp;
+            head = temp;
+        }
+        if (temp->right == nullptr) {
+            end = temp;
+        }
+    }
+    Node *traverse = head;
+    while (traverse != nullptr) {
+        cout << traverse->data + 1 << " ";
+        traverse = traverse->right;
+    }
+
+    newline;
+}
+
+void tTestCase2(int t) {
+    int n;
+    cin >> n;
+    mtx.resize(n);
+    for(auto &i : mtx) {
+        cin >> i;
+    }
+    vector<int> res(n);
+    iota(res.begin(), res.end(), 0);
+    sort(all(res), comp);
+    for(auto i : res) cout << i + 1 << " "; cout << '\n';
 }
 
 void solve() {
@@ -109,6 +165,8 @@ void solve() {
     scan(t);
     while (t--) {
         tTestCase(t);
+        // tTestCase2(t);  
+        // both are answers, 
     }
 }
 
@@ -120,6 +178,6 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     solve();
-
+  
     return 0;
 }

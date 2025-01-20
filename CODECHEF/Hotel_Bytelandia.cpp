@@ -88,20 +88,22 @@ void print(){cout << "\n";}
 
 void tTestCase(int t) {
     int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+    scan(n);
+    vi a(n), b(n);
+    scan(a);
+    scan(b);
+    mii mp;
+    rep(n) {
+        mp[a[i]]++;
+        mp[b[i]]--;
     }
-       print(s);
+    int cnt = 0, res = 0;
+    for (auto i : mp) {
+        cnt += i.second;
+        res = max(res, cnt);
+    }
+    print(res);
+    // newline;
 }
 
 void solve() {

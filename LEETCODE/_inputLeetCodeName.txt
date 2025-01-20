@@ -1,1 +1,1 @@
-22. Generate Parentheses
+Q2. Minimum Cost to Make Arrays Identical

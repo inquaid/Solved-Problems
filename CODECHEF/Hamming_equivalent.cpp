@@ -88,20 +88,19 @@ void print(){cout << "\n";}
 
 void tTestCase(int t) {
     int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+    scan(n);
+    vi a(n);
+    scan(a);
+    // print(a);
+    for (int i = 1; i <= n; ++i) {
+        if (__builtin_popcount(i) != __builtin_popcount(a[i - 1])) {
+            no;
+            print();
+            return;
+        }
     }
-       print(s);
+    yes;
+    print();
 }
 
 void solve() {

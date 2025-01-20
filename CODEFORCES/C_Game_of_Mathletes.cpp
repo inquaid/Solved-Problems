@@ -57,6 +57,8 @@ using namespace std;
 #define rrep4(i, b, a, c) for (int i = (b)-1; i >= (a); i -= (c))
 #define overload_rrep(a, b, c, d, e, ...) e
 #define rrep(...) overload_rrep(__VA_ARGS__, rrep4, rrep3, rrep2, rrep1)(__VA_ARGS__)
+#define ff first
+#define ss second
 
 typedef long long       ll;
 typedef pair<int, int>  pii;
@@ -65,6 +67,7 @@ typedef vector<int>     vi;
 typedef vector<ll>      vll;
 typedef vector<pii>     vpii;
 typedef vector<pll>     vpll;
+typedef vector<vector<int>> vvi;
 typedef map<int, int>   mii;
 typedef map<ll, ll>     mll;
 typedef set<int>        si;
@@ -79,6 +82,7 @@ template<typename T> void print(unordered_set<T> x){for(auto i: x) cout << i << 
 template<typename T> void print(T && x) {cout << x << "\n";}
 template<typename T, typename... S> void print(T && x, S&&... y) {cout << x << ' ';print(y...);}
 void print(){cout << "\n";}
+bool comp(int a, int b) { return a > b;}
 
 #ifdef LOCAL
 #include "debug.h"
@@ -86,27 +90,26 @@ void print(){cout << "\n";}
 #define bug(...) 
 #endif
 
-void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+int twoSumCount(vector<int> &nums, int target) {
+    int l = 0, r = nums.size() - 1, cnt = 0;
+    while(l < r) {
+        int a = nums[l], b = nums[r];
+        bug(a, b);
+        if(a + b == target) cnt++, l++, r--;
+        else if(a + b > target) r--;
+        else l++;
     }
-       print(s);
+    return cnt;
+}
+
+void tTestCase(int t) {
+    int n, k; scan(n, k);
+    vi v(n); scan(v); sort(all(v));
+    print(twoSumCount(v, k));
 }
 
 void solve() {
-    int t;
-    scan(t);
+    int t; scan(t);
     while (t--) {
         tTestCase(t);
     }
@@ -120,6 +123,5 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     solve();
-
     return 0;
 }

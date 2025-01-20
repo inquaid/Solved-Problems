@@ -65,6 +65,7 @@ typedef vector<int>     vi;
 typedef vector<ll>      vll;
 typedef vector<pii>     vpii;
 typedef vector<pll>     vpll;
+typedef vector<vector<int>> vvi;
 typedef map<int, int>   mii;
 typedef map<ll, ll>     mll;
 typedef set<int>        si;
@@ -88,20 +89,11 @@ void print(){cout << "\n";}
 
 void tTestCase(int t) {
     int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
-    }
-       print(s);
+    scan(n);
+    cout << 1 << " ";
+    rep(i, n - 2) cout << i + 1 << " ";
+    cout << 1;
+    newline;
 }
 
 void solve() {
@@ -120,6 +112,5 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     solve();
-
     return 0;
 }

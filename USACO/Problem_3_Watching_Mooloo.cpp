@@ -57,6 +57,7 @@ using namespace std;
 #define rrep4(i, b, a, c) for (int i = (b)-1; i >= (a); i -= (c))
 #define overload_rrep(a, b, c, d, e, ...) e
 #define rrep(...) overload_rrep(__VA_ARGS__, rrep4, rrep3, rrep2, rrep1)(__VA_ARGS__)
+#define W while
 
 typedef long long       ll;
 typedef pair<int, int>  pii;
@@ -87,26 +88,33 @@ void print(){cout << "\n";}
 #endif
 
 void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+    int n, k;
+    scan(n, k);
+    vi a(n);
+    scan(a);
+
+    int res = 0, i = 0;
+
+    rep(i, n) {
+        if (i == n - 1) {
+            res += k + 1;
+            break;
+        }
+        int j = i;
+        W((a[i + 1] - a[i]) <= (k + 1) and i < n - 1) { i++; }
+        if (i == j) {
+            res += k + 1;
+        } else {
+            res += (a[i] - a[j] + 1 + k);
+        }
+        bug(i);
     }
-       print(s);
+    print(res);
 }
 
 void solve() {
-    int t;
-    scan(t);
+    int t = 1;
+    // scan(t);
     while (t--) {
         tTestCase(t);
     }

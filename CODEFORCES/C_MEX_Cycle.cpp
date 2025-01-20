@@ -86,22 +86,26 @@ void print(){cout << "\n";}
 #define bug(...) 
 #endif
 
+bool sameParity(int a, int b) {return (a&1) == (b&1);}
+
 void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+    int n, x, y;
+    scan(n, x, y);
+    vi a(n, 0);
+    for (int i = 1; i < n; i += 2) {
+        a[i] = 1;
     }
-       print(s);
+    if ((n & 1)) {
+        a[n - 1] = 2;
+    } else if (sameParity(x, y))
+        a[x - 1] = 2;
+    if (sameParity(x, y) and (x == 1 or y == 1) and (n & 1)) {
+        swap(a[0], a[n - 1]);
+    } else if (sameParity(x, y) and x != n and y != n and (n & 1)) {
+        a[x - 1] = 2;
+    }
+
+    print(a);
 }
 
 void solve() {

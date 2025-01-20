@@ -45,10 +45,10 @@ using namespace std;
 #define yesif(flag) cout << ((flag) ? "YES" : "NO")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
-#define rep1(a)           for(int i = 0; i < a; i++)
-#define rep2(i, a)        for(int i = 0; i < a; i++)
-#define rep3(i, a, b)     for(int i = a; i < b; i++)
-#define rep4(i, a, b, c)  for(int i = a; i < b; i += c)
+#define rep1(a)          for(int i = 0; i < a; i++)
+#define rep2(i, a)       for(int i = 0; i < a; i++)
+#define rep3(i, a, b)    for(int i = a; i < b; i++)
+#define rep4(i, a, b, c) for(int i = a; i < b; i += c)
 #define overload_rep(a, b, c, d, e, ...) e
 #define rep(...) overload_rep(__VA_ARGS__, rep4, rep3, rep2, rep1)(__VA_ARGS__)
 #define rrep1(a)          for (int i = (a)-1; i >= 0; --i)
@@ -86,22 +86,40 @@ void print(){cout << "\n";}
 #define bug(...) 
 #endif
 
+int sum(int n) { return (n * (n + 1)) / 2; }
+int sum(int l, int r) { return sum(r) - sum(l - 1); }
+bool check(int l, int r, int mid) {
+    int res;
+    int right = sum(mid + 1, r);
+    int left = sum(l, mid);
+    bug(l, r, mid, left, right);
+    return left <= right;
+}
+int sum(int l, int r, int mid) {
+    int res;
+    int right = sum(mid + 1, r);
+    int left = sum(l, mid);
+    bug(l, r, mid, left, right);
+    res = abs(left - right);
+    return res;
+}
 void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+    int n, k;
+    scan(n, k);
+    int l = k, r = n + k - 1;
+    int constL = l, constR = r;
+    while (l <= r) {
+        int mid = l + (r - l) / 2;
+        if (check(constL, constR, mid)) {
+            l = mid + 1;
+        } else
+            r = mid - 1;
     }
-       print(s);
+    int mid = l;
+    int posbbleRes1 = sum(constL, constR, mid);
+    int posbbleRes2 = sum(constL, constR, mid - 1);
+
+    print(min(posbbleRes1, posbbleRes2));
 }
 
 void solve() {
@@ -120,6 +138,7 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     solve();
-
+    // print(sum(4,5));
+    // print(sum(3,3));
     return 0;
 }

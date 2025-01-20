@@ -86,37 +86,29 @@ void print(){cout << "\n";}
 #define bug(...) 
 #endif
 
-void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
-    }
-       print(s);
-}
-
 void solve() {
-    int t;
-    scan(t);
-    while (t--) {
-        tTestCase(t);
+    int n;
+    scan(n);
+    string a, b;
+    scan(a, b);
+    int res = 0;
+    rep(i, n) {
+        bool flag = false;
+        while (a[i] != b[i] and i < n) {
+            flag = true;
+            i++;
+        }
+        if (flag)
+            res++;
     }
+    print(res);
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    // freopen("input.txt", "r" , stdin);
-    // freopen("output.txt", "w", stdout);
+    freopen("breedflip.in", "r" , stdin);
+    freopen("breedflip.out", "w", stdout);
     // cout << fixed << setprecision(20);
 
     solve();

@@ -96,13 +96,15 @@ void tTestCase(int t) {
     cin >> s;
     // cout << s;
     // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
+    for (int i = 0; i < n; ++i) {
+        if (s[i] == '1') {
+            s[i] = '0';
+        } else
+            s[i] = '1';
     }
-       print(s);
+    print(s);
 }
+
 
 void solve() {
     int t;

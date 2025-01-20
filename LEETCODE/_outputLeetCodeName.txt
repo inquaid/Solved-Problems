@@ -1,1 +1,1 @@
-22_GenerateParentheses
+Q2_MinimumCostToMakeArraysIdentical

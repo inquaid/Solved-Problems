@@ -86,29 +86,51 @@ void print(){cout << "\n";}
 #define bug(...) 
 #endif
 
-void tTestCase(int t) {
-    int n;
-    // scan(n);
-    string s;
-    // int s;
-    // scan(s);
-    cin >> n;
-    cin >> s;
-    // cout << s;
-    // print(s);
-    for (int i = 0; i < n; ++i)
-    {
-        if(s[i] == '1') {s[i] = '0';}
-        else s[i] = '1';
-    }
-       print(s);
-}
-
 void solve() {
-    int t;
-    scan(t);
-    while (t--) {
-        tTestCase(t);
+    int n, q; scan(n, q);
+    int type, indx = 0, x, unread = 0, t, cnt;
+    queue<pii> Q;
+    vector<queue<int>> vq(n + 1);
+    vi mark(q + 1, 0);
+
+    rep(q) {
+        scan(type);
+        if (type == 1) {
+            scan(x);
+            unread++;
+            Q.push({indx, x});
+            vq[x].push(indx);
+            indx++;
+            print(unread);
+        }
+        if (type == 2) {
+            scan(x);
+            cnt = 0;
+            while (!vq[x].empty()) {
+                if (mark[vq[x].front()] == 0)
+                    cnt++;
+                mark[vq[x].front()] = 1;
+                vq[x].pop();
+            }
+            unread -= cnt;
+            print(unread);
+        }
+        if (type == 3) {
+            scan(t);
+            cnt = 0;
+            while (Q.empty() == false and Q.front().first < t) {
+                int tempI = Q.front().first, tempX = Q.front().second;
+                if (mark[tempI] == 0) {
+                    cnt++;
+                }
+                if (!vq[tempX].empty() and vq[tempX].front() == tempI)
+                    vq[tempX].pop();
+                mark[tempI] = 1;
+                Q.pop();
+            }
+            unread -= cnt;
+            print(unread);
+        }
     }
 }
 
@@ -120,6 +142,5 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     solve();
-
     return 0;
 }
