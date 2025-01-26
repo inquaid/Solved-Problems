@@ -100,10 +100,16 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     // solve();
-    int n; cin >> n;
-    vi a(n); scan(a);
-    sort(all(a));
+    // int n; cin >> n;
+    // vi a(n); scan(a);
+    // sort(all(a));
     // bug(a);
-
+    // for (int i = 0; i < 1000; i++)
+    // {
+    //     /* code */
+    //     cout << "\a";
+    // }
+    char bell = 7;
+    cout << bell;
     return 0;
 }

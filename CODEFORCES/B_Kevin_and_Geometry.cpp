@@ -39,10 +39,10 @@ using namespace std;
 
 #define sp " "
 #define newline cout << "\n"
-#define yes cout << "YES"
-#define no cout << "NO"
+#define yes cout << "YES\n"
+#define no cout << "NO\n"
 #define int long long
-#define yesif(flag) cout << ((flag) ? "YES" : "NO")
+#define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
 #define rep1(a)           for(int i = 0; i < a; i++)
@@ -57,6 +57,7 @@ using namespace std;
 #define rrep4(i, b, a, c) for (int i = (b)-1; i >= (a); i -= (c))
 #define overload_rrep(a, b, c, d, e, ...) e
 #define rrep(...) overload_rrep(__VA_ARGS__, rrep4, rrep3, rrep2, rrep1)(__VA_ARGS__)
+#define trav(a, x) for(auto &a : x)
 #define ff first
 #define ss second
 
@@ -91,43 +92,51 @@ bool comp(int a, int b) { return a > b;}
 #endif
 
 void tTestCase(int t) {
-    int n; scan(n);
-    vi a(n), b(n);
-    scan(a); scan(b);
-    int sumA = 0, sumB = 0;
-    int pos = 0, neg = 0;
+    int n;
+    scan(n);
+    map<int, int> mp; 
     rep(i, n) {
-        if (a[i] == b[i]) {
-            if (a[i] == 1)
-                pos++;
-            if (a[i] == -1)
-                neg++;
-        } else {
-            if (a[i] > b[i]) {
-                sumA += a[i];
-            } else {
-                sumB += b[i];
-            }
+        int temp; scan(temp);
+        mp[temp]++;
+    }
+    vi v;
+    priority_queue<int> pq;
+    int mx = -1;
+    for(auto i : mp) {
+        int a = i.ff;
+        if(i.ss >= 4) {
+            print(a, a, a, a);
+            return;
         }
+        if(i.ss == 3) {
+            pq.push(i.ff);
+        }
+        if(i.ss >= 2) {
+            v.push_back(i.ff);
+            mx = max(mx, i.ff);
+        }
+        else 
+            pq.push(i.ff);
+    } 
+    if(v.size() >= 2) {
+        print(v[0], v[0], v[1], v[1]);
+        return;
     }
-    int mx = max(sumA, sumB), mn = min(sumA, sumB);
-    int gap = mx - mn;
-    while (pos) {
-        if (sumA > sumB) {
-            sumB++;
-        } else
-            sumA++;
-        pos--;
+    if(v.size() == 0){
+        print(-1);
+        return;
     }
-    while (neg) {
-        if (sumA > sumB) {
-            sumA--;
-        } else
-            sumB--;
-        neg--;
+    int doubleA = mx + mx ; 
+    int a = pq.top(); pq.pop();
+    while(pq.empty() == false) {
+        int b =  pq.top(); pq.pop();
+        if(doubleA + b > a) {
+            print(mx, mx, b, a);
+            return;
+        }
+        a = b;
     }
-
-    print(min(sumA, sumB));
+    print(-1);
 }
 
 void solve() {
@@ -146,6 +155,8 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     solve();
+    // vi a = {2, 4,5,6,7,9};
+    // print(lower_bound(all(a), 2) - a.begin());
 
     return 0;
 }

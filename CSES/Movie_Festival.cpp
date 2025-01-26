@@ -39,10 +39,10 @@ using namespace std;
 
 #define sp " "
 #define newline cout << "\n"
-#define yes cout << "YES"
-#define no cout << "NO"
+#define yes cout << "YES\n"
+#define no cout << "NO\n"
 #define int long long
-#define yesif(flag) cout << ((flag) ? "YES" : "NO")
+#define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
 #define rep1(a)           for(int i = 0; i < a; i++)
@@ -57,6 +57,7 @@ using namespace std;
 #define rrep4(i, b, a, c) for (int i = (b)-1; i >= (a); i -= (c))
 #define overload_rrep(a, b, c, d, e, ...) e
 #define rrep(...) overload_rrep(__VA_ARGS__, rrep4, rrep3, rrep2, rrep1)(__VA_ARGS__)
+#define trav(a, x) for(auto &a : x)
 #define ff first
 #define ss second
 
@@ -82,7 +83,12 @@ template<typename T> void print(unordered_set<T> x){for(auto i: x) cout << i << 
 template<typename T> void print(T && x) {cout << x << "\n";}
 template<typename T, typename... S> void print(T && x, S&&... y) {cout << x << ' ';print(y...);}
 void print(){cout << "\n";}
-bool comp(int a, int b) { return a > b;}
+
+bool comp(pii a, pii b) {
+    if (a.ss != b.ss)
+        return a.ss < b.ss;
+    return a.ff < b.ff;
+}
 
 #ifdef LOCAL
 #include "debug.h"
@@ -90,52 +96,25 @@ bool comp(int a, int b) { return a > b;}
 #define bug(...) 
 #endif
 
-void tTestCase(int t) {
+void solve() {
     int n; scan(n);
-    vi a(n), b(n);
-    scan(a); scan(b);
-    int sumA = 0, sumB = 0;
-    int pos = 0, neg = 0;
+    vpii vp;
     rep(i, n) {
-        if (a[i] == b[i]) {
-            if (a[i] == 1)
-                pos++;
-            if (a[i] == -1)
-                neg++;
-        } else {
-            if (a[i] > b[i]) {
-                sumA += a[i];
-            } else {
-                sumB += b[i];
-            }
+        int a, b;
+        scan(a, b);
+        vp.push_back({a, b});
+    }
+    sort(all(vp), comp);
+    int cnt = 1;
+    int lastVis = vp[0].ss;
+    trav(pr, vp) {
+        print(pr.ff, pr.ss);
+        if (lastVis <= pr.ff) {
+            lastVis = pr.ss;
+            cnt++;
         }
     }
-    int mx = max(sumA, sumB), mn = min(sumA, sumB);
-    int gap = mx - mn;
-    while (pos) {
-        if (sumA > sumB) {
-            sumB++;
-        } else
-            sumA++;
-        pos--;
-    }
-    while (neg) {
-        if (sumA > sumB) {
-            sumA--;
-        } else
-            sumB--;
-        neg--;
-    }
-
-    print(min(sumA, sumB));
-}
-
-void solve() {
-    int t;
-    scan(t);
-    while (t--) {
-        tTestCase(t);
-    }
+    print(cnt);
 }
 
 int32_t main() {

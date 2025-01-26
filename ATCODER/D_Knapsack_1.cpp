@@ -22,6 +22,9 @@
 #include <ios>
 #include <iomanip>
 #include <limits>
+#include <typeinfo>
+#include <cxxabi.h>
+#include <cstring>
 
 // #include <ext/pb_ds/assoc_container.hpp>
 // #include <ext/pb_ds/tree_policy.hpp>
@@ -39,10 +42,10 @@ using namespace std;
 
 #define sp " "
 #define newline cout << "\n"
-#define yes cout << "YES"
-#define no cout << "NO"
+#define yes cout << "YES\n"
+#define no cout << "NO\n"
 #define int long long
-#define yesif(flag) cout << ((flag) ? "YES" : "NO")
+#define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
 #define rep1(a)           for(int i = 0; i < a; i++)
@@ -57,8 +60,10 @@ using namespace std;
 #define rrep4(i, b, a, c) for (int i = (b)-1; i >= (a); i -= (c))
 #define overload_rrep(a, b, c, d, e, ...) e
 #define rrep(...) overload_rrep(__VA_ARGS__, rrep4, rrep3, rrep2, rrep1)(__VA_ARGS__)
+#define trav(a, x) for(auto &a : x)
 #define ff first
 #define ss second
+#define TYPE(x) { int status; char* demangled = abi::__cxa_demangle(typeid(x).name(), 0, 0, &status); std::cout << #x << " -> " << (status == 0 ? demangled : typeid(x).name()) << std::endl; free(demangled);}
 
 typedef long long       ll;
 typedef pair<int, int>  pii;
@@ -91,51 +96,57 @@ bool comp(int a, int b) { return a > b;}
 #endif
 
 void tTestCase(int t) {
-    int n; scan(n);
-    vi a(n), b(n);
-    scan(a); scan(b);
-    int sumA = 0, sumB = 0;
-    int pos = 0, neg = 0;
-    rep(i, n) {
-        if (a[i] == b[i]) {
-            if (a[i] == 1)
-                pos++;
-            if (a[i] == -1)
-                neg++;
-        } else {
-            if (a[i] > b[i]) {
-                sumA += a[i];
-            } else {
-                sumB += b[i];
+    int n;
+    scan(n);
+}
+
+
+const int N = 105, CAPACITY = (int)1e5 + 10;
+int dp[N][CAPACITY];
+int f(vi &wt, vi &val, int capacity, int n) {
+    if(n == 0 or capacity == 0) return 0;
+
+    if(dp[n][capacity] != -1) return dp[n][capacity];
+
+    if(wt[n - 1] <= capacity) {
+        dp[n][capacity] = max(val[n - 1] + f(wt, val, capacity - wt[n - 1], n - 1), f(wt, val, capacity, n - 1));
+    }else{
+        dp[n][capacity] = f(wt, val, capacity, n - 1);
+    }
+    return dp[n][capacity];
+}
+
+int f2(int n, int w, vi& wt, vi&v){
+    int dp[n + 1][w + 1];
+    memset(dp, 0, sizeof(dp));
+    for (int i = 0; i <= n; ++i) {
+        for (int j = 0; j <= w; ++j) {
+            if(i == 0 or j == 0) {dp[i][j] = 0;}
+            else if(wt[i - 1] <= j) {
+                dp[i][j] = max(v[i - 1] + dp[i - 1][j - wt[i - 1]], dp[i - 1][j]);
+            }else{
+                dp[i][j] = dp[i - 1][j];
             }
         }
     }
-    int mx = max(sumA, sumB), mn = min(sumA, sumB);
-    int gap = mx - mn;
-    while (pos) {
-        if (sumA > sumB) {
-            sumB++;
-        } else
-            sumA++;
-        pos--;
-    }
-    while (neg) {
-        if (sumA > sumB) {
-            sumA--;
-        } else
-            sumB--;
-        neg--;
-    }
 
-    print(min(sumA, sumB));
+    return dp[n][w];
 }
 
 void solve() {
-    int t;
-    scan(t);
-    while (t--) {
-        tTestCase(t);
+    memset(dp, -1, sizeof(dp));
+    
+    int n, w; scan(n, w);
+    vi wt, v;
+    rep(i, n) {
+        int a, b; scan(a, b);
+        wt.push_back(a); v.push_back(b);
     }
+    // print(f(wt, v, w, n));
+    print(f2(n, w, wt, v));
+
+    // print(cnt);
+
 }
 
 int32_t main() {

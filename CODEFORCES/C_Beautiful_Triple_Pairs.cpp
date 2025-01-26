@@ -22,6 +22,9 @@
 #include <ios>
 #include <iomanip>
 #include <limits>
+#include <typeinfo>
+#include <cxxabi.h>
+#include <cstring>
 
 // #include <ext/pb_ds/assoc_container.hpp>
 // #include <ext/pb_ds/tree_policy.hpp>
@@ -39,10 +42,10 @@ using namespace std;
 
 #define sp " "
 #define newline cout << "\n"
-#define yes cout << "YES"
-#define no cout << "NO"
+#define yes cout << "YES\n"
+#define no cout << "NO\n"
 #define int long long
-#define yesif(flag) cout << ((flag) ? "YES" : "NO")
+#define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
 #define rep1(a)           for(int i = 0; i < a; i++)
@@ -57,8 +60,10 @@ using namespace std;
 #define rrep4(i, b, a, c) for (int i = (b)-1; i >= (a); i -= (c))
 #define overload_rrep(a, b, c, d, e, ...) e
 #define rrep(...) overload_rrep(__VA_ARGS__, rrep4, rrep3, rrep2, rrep1)(__VA_ARGS__)
+#define trav(a, x) for(auto &a : x)
 #define ff first
 #define ss second
+#define TYPE(x) { int status; char* demangled = abi::__cxa_demangle(typeid(x).name(), 0, 0, &status); std::cout << #x << " -> " << (status == 0 ? demangled : typeid(x).name()) << std::endl; free(demangled);}
 
 typedef long long       ll;
 typedef pair<int, int>  pii;
@@ -82,7 +87,12 @@ template<typename T> void print(unordered_set<T> x){for(auto i: x) cout << i << 
 template<typename T> void print(T && x) {cout << x << "\n";}
 template<typename T, typename... S> void print(T && x, S&&... y) {cout << x << ' ';print(y...);}
 void print(){cout << "\n";}
-bool comp(int a, int b) { return a > b;}
+bool comp(tuple<int,int,int> a, tuple<int,int,int> b) { 
+    if(get<0>(a) == get<0>(b) and get<1>(a) != get<1>(b) and get<2>(a) == get<2>(b)) return false;
+    if(get<0>(a) != get<0>(b) and get<1>(a) == get<1>(b) and get<2>(a) == get<2>(b)) return false;
+    if(get<0>(a) == get<0>(b) and get<1>(a) == get<1>(b) and get<2>(a) != get<2>(b)) return false;
+    return true;
+}
 
 #ifdef LOCAL
 #include "debug.h"
@@ -92,42 +102,26 @@ bool comp(int a, int b) { return a > b;}
 
 void tTestCase(int t) {
     int n; scan(n);
-    vi a(n), b(n);
-    scan(a); scan(b);
-    int sumA = 0, sumB = 0;
-    int pos = 0, neg = 0;
-    rep(i, n) {
-        if (a[i] == b[i]) {
-            if (a[i] == 1)
-                pos++;
-            if (a[i] == -1)
-                neg++;
-        } else {
-            if (a[i] > b[i]) {
-                sumA += a[i];
-            } else {
-                sumB += b[i];
-            }
-        }
-    }
-    int mx = max(sumA, sumB), mn = min(sumA, sumB);
-    int gap = mx - mn;
-    while (pos) {
-        if (sumA > sumB) {
-            sumB++;
-        } else
-            sumA++;
-        pos--;
-    }
-    while (neg) {
-        if (sumA > sumB) {
-            sumA--;
-        } else
-            sumB--;
-        neg--;
-    }
-
-    print(min(sumA, sumB));
+    vi a(n); scan(a); 
+    map< tuple<int, int, int>, int> mp, mainMp;
+    vector<tuple<int, int, int>> vtp;
+    rep(i, n - 2) {
+        mainMp[{a[i], a[i + 1], a[i + 2]}]++;
+        mp[{a[i], a[i + 1], 0}]++;
+        mp[{a[i], 0, a[i + 2]}]++;
+        mp[{0, a[i + 1], a[i + 2]}]++;
+    } 
+    int res = 0;
+    for(auto i : mainMp) {
+        int a = get<0>(i.ff), b = get<1>(i.ff), c = get<2>(i.ff);
+        int cnt = 0;
+        if(mp.find({a, b, 0}) != mp.end()) cnt += mp[{a, b, 0}]- i.ss ;
+        if(mp.find({a, 0, c}) != mp.end()) cnt += mp[{a, 0, c}]- i.ss ;
+        if(mp.find({0, b, c}) != mp.end()) cnt += mp[{0, b, c}]- i.ss ;
+        bug(cnt);
+        res += (cnt ) * i.ss ;
+    } 
+    print(res / 2);
 }
 
 void solve() {

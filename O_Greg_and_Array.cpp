@@ -9,8 +9,7 @@ signed main()
     for (auto &i : a)
         cin >> i;
     vector<int> v[m];
-    for (int i = 0; i < m; i++)
-    {
+    for (int i = 0; i < m; i++) {
         int l, r, val;
         cin >> l >> r >> val;
         l--;

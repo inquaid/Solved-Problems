@@ -39,10 +39,10 @@ using namespace std;
 
 #define sp " "
 #define newline cout << "\n"
-#define yes cout << "YES"
-#define no cout << "NO"
+#define yes cout << "YES\n"
+#define no cout << "NO\n"
 #define int long long
-#define yesif(flag) cout << ((flag) ? "YES" : "NO")
+#define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
 #define rep1(a)           for(int i = 0; i < a; i++)
@@ -57,6 +57,7 @@ using namespace std;
 #define rrep4(i, b, a, c) for (int i = (b)-1; i >= (a); i -= (c))
 #define overload_rrep(a, b, c, d, e, ...) e
 #define rrep(...) overload_rrep(__VA_ARGS__, rrep4, rrep3, rrep2, rrep1)(__VA_ARGS__)
+#define trav(a, x) for(auto &a : x)
 #define ff first
 #define ss second
 
@@ -91,51 +92,26 @@ bool comp(int a, int b) { return a > b;}
 #endif
 
 void tTestCase(int t) {
-    int n; scan(n);
-    vi a(n), b(n);
-    scan(a); scan(b);
-    int sumA = 0, sumB = 0;
-    int pos = 0, neg = 0;
-    rep(i, n) {
-        if (a[i] == b[i]) {
-            if (a[i] == 1)
-                pos++;
-            if (a[i] == -1)
-                neg++;
-        } else {
-            if (a[i] > b[i]) {
-                sumA += a[i];
-            } else {
-                sumB += b[i];
-            }
-        }
-    }
-    int mx = max(sumA, sumB), mn = min(sumA, sumB);
-    int gap = mx - mn;
-    while (pos) {
-        if (sumA > sumB) {
-            sumB++;
-        } else
-            sumA++;
-        pos--;
-    }
-    while (neg) {
-        if (sumA > sumB) {
-            sumA--;
-        } else
-            sumB--;
-        neg--;
-    }
-
-    print(min(sumA, sumB));
+    int n;
+    scan(n);
 }
 
 void solve() {
-    int t;
-    scan(t);
-    while (t--) {
-        tTestCase(t);
+    int n; scan(n);
+    vi a(n); 
+    int mx = -1, sum = 0;
+    trav(i, a) {
+        scan(i);
+        mx = max(mx, i);
+        sum += i;
     }
+    sort(all(a));
+    int res = 0;
+    int mid = a[n / 2]; 
+    rep(i, n) {
+        // bug(res);
+        res += abs(mid - a[i]);
+    } print(res);
 }
 
 int32_t main() {

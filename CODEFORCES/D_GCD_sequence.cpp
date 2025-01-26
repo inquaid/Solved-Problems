@@ -22,6 +22,9 @@
 #include <ios>
 #include <iomanip>
 #include <limits>
+#include <typeinfo>
+#include <cxxabi.h>
+#include <cstring>
 
 // #include <ext/pb_ds/assoc_container.hpp>
 // #include <ext/pb_ds/tree_policy.hpp>
@@ -39,10 +42,10 @@ using namespace std;
 
 #define sp " "
 #define newline cout << "\n"
-#define yes cout << "YES"
-#define no cout << "NO"
+#define yes cout << "YES\n"
+#define no cout << "NO\n"
 #define int long long
-#define yesif(flag) cout << ((flag) ? "YES" : "NO")
+#define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
 #define rep1(a)           for(int i = 0; i < a; i++)
@@ -57,8 +60,10 @@ using namespace std;
 #define rrep4(i, b, a, c) for (int i = (b)-1; i >= (a); i -= (c))
 #define overload_rrep(a, b, c, d, e, ...) e
 #define rrep(...) overload_rrep(__VA_ARGS__, rrep4, rrep3, rrep2, rrep1)(__VA_ARGS__)
+#define trav(a, x) for(auto &a : x)
 #define ff first
 #define ss second
+#define TYPE(x) { int status; char* demangled = abi::__cxa_demangle(typeid(x).name(), 0, 0, &status); std::cout << #x << " -> " << (status == 0 ? demangled : typeid(x).name()) << std::endl; free(demangled);}
 
 typedef long long       ll;
 typedef pair<int, int>  pii;
@@ -90,44 +95,38 @@ bool comp(int a, int b) { return a > b;}
 #define bug(...) 
 #endif
 
+int chk(vi &a){
+    int n = a.size();
+    int prev = __gcd(a[0], a[1]);
+    int i = 2;
+    for( ; i < n; i++) {
+        int presentGCD = __gcd(a[i], a[i - 1]);
+        bug(prev);
+        if(prev <= presentGCD) {
+            prev = presentGCD;
+            continue;
+        }
+        return i - 1;
+    }   
+    return -1;
+}
+
 void tTestCase(int t) {
     int n; scan(n);
-    vi a(n), b(n);
-    scan(a); scan(b);
-    int sumA = 0, sumB = 0;
-    int pos = 0, neg = 0;
-    rep(i, n) {
-        if (a[i] == b[i]) {
-            if (a[i] == 1)
-                pos++;
-            if (a[i] == -1)
-                neg++;
-        } else {
-            if (a[i] > b[i]) {
-                sumA += a[i];
-            } else {
-                sumB += b[i];
-            }
-        }
-    }
-    int mx = max(sumA, sumB), mn = min(sumA, sumB);
-    int gap = mx - mn;
-    while (pos) {
-        if (sumA > sumB) {
-            sumB++;
-        } else
-            sumA++;
-        pos--;
-    }
-    while (neg) {
-        if (sumA > sumB) {
-            sumA--;
-        } else
-            sumB--;
-        neg--;
-    }
-
-    print(min(sumA, sumB));
+    vi a(n); scan(a);
+    
+    int i = chk(a);
+    bug(i);
+    if(i == -1) {yes; return;}
+    auto createCopy = [&](const vi &source) {return vi(all(source));};
+    vi temp1 = createCopy(a);
+    vi temp2 = createCopy(a);
+    vi temp3 = createCopy(a);
+    temp1.erase(begin(temp1) + i + 1);
+    temp2.erase(begin(temp2) + i);
+    temp3.erase(begin(temp3) + i - 1);
+    if(chk(temp1) == -1 or chk(temp2) == -1 or chk(temp3) == -1) yes;
+    else no;
 }
 
 void solve() {
@@ -146,6 +145,5 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     solve();
-
     return 0;
 }

@@ -22,6 +22,9 @@
 #include <ios>
 #include <iomanip>
 #include <limits>
+#include <typeinfo>
+#include <cxxabi.h>
+#include <cstring>
 
 // #include <ext/pb_ds/assoc_container.hpp>
 // #include <ext/pb_ds/tree_policy.hpp>
@@ -39,10 +42,10 @@ using namespace std;
 
 #define sp " "
 #define newline cout << "\n"
-#define yes cout << "YES"
-#define no cout << "NO"
+#define yes cout << "YES\n"
+#define no cout << "NO\n"
 #define int long long
-#define yesif(flag) cout << ((flag) ? "YES" : "NO")
+#define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
 #define rep1(a)           for(int i = 0; i < a; i++)
@@ -57,8 +60,10 @@ using namespace std;
 #define rrep4(i, b, a, c) for (int i = (b)-1; i >= (a); i -= (c))
 #define overload_rrep(a, b, c, d, e, ...) e
 #define rrep(...) overload_rrep(__VA_ARGS__, rrep4, rrep3, rrep2, rrep1)(__VA_ARGS__)
+#define trav(a, x) for(auto &a : x)
 #define ff first
 #define ss second
+#define TYPE(x) { int status; char* demangled = abi::__cxa_demangle(typeid(x).name(), 0, 0, &status); std::cout << #x << " -> " << (status == 0 ? demangled : typeid(x).name()) << std::endl; free(demangled);}
 
 typedef long long       ll;
 typedef pair<int, int>  pii;
@@ -91,43 +96,36 @@ bool comp(int a, int b) { return a > b;}
 #endif
 
 void tTestCase(int t) {
-    int n; scan(n);
-    vi a(n), b(n);
-    scan(a); scan(b);
-    int sumA = 0, sumB = 0;
-    int pos = 0, neg = 0;
-    rep(i, n) {
-        if (a[i] == b[i]) {
-            if (a[i] == 1)
-                pos++;
-            if (a[i] == -1)
-                neg++;
-        } else {
-            if (a[i] > b[i]) {
-                sumA += a[i];
-            } else {
-                sumB += b[i];
+    int sz; scan(sz);
+    string str; scan(str);
+    int n = count(all(str), 'N');
+    int s = count(all(str), 'S');
+    int e = count(all(str), 'E');
+    int w = count(all(str), 'W');
+    bug(n, s, e, w);
+    int cntN = 0, cntS = 0, cntE = 0, cntW = 0;
+    pii hel{0, 0}, rov{0, 0}; 
+    if( (n&1) == (s&1) and (e&1) == (w&1) and ( (n+e > 1) or (s + w > 1) or (n+s+e+w > 3) )) {
+        for(auto ch : str) {
+            if(ch == 'N'){
+                if(cntN == 0) {cout << 'H'; cntN = 1;}
+                else {cout << 'R'; cntN = 0;}
+            }
+            else if(ch == 'S'){
+                if(cntS == 0) {cout << 'H'; cntS = 1;}
+                else {cout << 'R'; cntS = 0;}
+            }
+            else if(ch == 'E'){
+                if(cntE == 1) {cout << 'H'; cntE = 0;}
+                else {cout << 'R'; cntE = 1;}
+            }
+            else if(ch == 'W'){
+                if(cntW == 1) {cout << 'H'; cntW = 0;}
+                else {cout << 'R'; cntW = 1;}
             }
         }
-    }
-    int mx = max(sumA, sumB), mn = min(sumA, sumB);
-    int gap = mx - mn;
-    while (pos) {
-        if (sumA > sumB) {
-            sumB++;
-        } else
-            sumA++;
-        pos--;
-    }
-    while (neg) {
-        if (sumA > sumB) {
-            sumA--;
-        } else
-            sumB--;
-        neg--;
-    }
-
-    print(min(sumA, sumB));
+            print();
+    } else no;
 }
 
 void solve() {
