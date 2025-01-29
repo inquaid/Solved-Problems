@@ -95,26 +95,24 @@ bool comp(int a, int b) { return a > b;}
 #define bug(...) 
 #endif
 
-void tTestCase(int t) {
-    int n;
-    scan(n);
-}
-
-int f(string &s, int strt, int currNum, int currSum) {
-    if(strt == s.size()) return (currNum + currSum);
-
-    int num = 0, res = 0;
-
-    for (int i = strt; i < s.size(); ++i) {
-        num = num * 10 + (s[i] - '0');
-        res += f(s, i + 1, num, currNum + currSum);
+int dp[51][2501][51];
+int f(vi &a, int n, int target, int sum, int len) {
+    if (n == 0) {
+        if (len > 0 and sum % len == 0 and target == sum / len)
+            return 1;
+        return 0;
     }
-    return res;
+    if (dp[n][sum][len] != -1)
+        return dp[n][sum][len];
+    return dp[n][sum][len] = f(a, n - 1, target, (sum + a[n - 1]), len + 1) +
+                             f(a, n - 1, target, sum, len);
 }
 
 void solve() {
-    string s; scan(s);
-    print(f(s, 0, 0, 0));
+    int n, target; scan(n, target);
+    vi a(n); scan(a);
+    memset(dp, -1, sizeof(dp));
+    print(f(a, n, target, 0, 0));
 }
 
 int32_t main() {

@@ -95,26 +95,71 @@ bool comp(int a, int b) { return a > b;}
 #define bug(...) 
 #endif
 
-void tTestCase(int t) {
-    int n;
-    scan(n);
+int hasNeg(vi a){
+    for(auto i : a){
+        if(i < 0) return 1;
+    }
+    return 0;
+}
+int needToRotate(vi a){
+    for (int i = 0; i < a.size(); i += 2) {
+        if(a[i] < 0) return 0;
+    }
+    return 1;
+}
+void remove(vi &a){
+    vi temp, temp2;
+    // temp.push_back(a[0]);
+    int sum1 = 0, sum2 = 0;
+    for (int i = 1; i < a.size()  ; ++i)
+    {
+        temp.push_back(a[i] - a[i - 1]);
+        sum1 += temp.back();
+    }
+    vi store = a;
+    reverse(all(store));
+
+    for (int i = 1; i < a.size()  ; ++i)
+    {
+        temp2.push_back(store[i] - store[i - 1]);
+        sum2 += temp2.back();
+    }
+    if(sum1 < sum2){
+    // bug(sum1, sum2);
+        a = temp2; return;
+    }
+    a = temp;
+    // a.erase(a.begin());
+}
+int sum(vi a){
+    int res = 0;
+    for (int i = 0; i < a.size(); ++i)
+    {
+        res += a[i];
+    }return res;
 }
 
-int f(string &s, int strt, int currNum, int currSum) {
-    if(strt == s.size()) return (currNum + currSum);
+void reverse_(vi &a){reverse(all(a));}
 
-    int num = 0, res = 0;
+void tTestCase(int t) {
+    int n; scan(n);
+    vi a(n); scan(a);
+    int res = sum(a); 
+    while(a.size() > 1){
+        
+        remove(a);
+        res = max(res, sum(a));
 
-    for (int i = strt; i < s.size(); ++i) {
-        num = num * 10 + (s[i] - '0');
-        res += f(s, i + 1, num, currNum + currSum);
     }
-    return res;
+    print(res);
 }
 
 void solve() {
-    string s; scan(s);
-    print(f(s, 0, 0, 0));
+    int t;
+    scan(t);
+    while (t--) {
+        tTestCase(t);
+    }
 }
 
 int32_t main() {
@@ -124,7 +169,12 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve();
+    solve(); return 0;
+
+    vi a = {-1, 2, -3, 4};
+
+    remove(a);
+    print(a);
 
     return 0;
 }

@@ -96,25 +96,24 @@ bool comp(int a, int b) { return a > b;}
 #endif
 
 void tTestCase(int t) {
-    int n;
-    scan(n);
-}
+    int n; scan(n);
+    vi a(n); scan(a);
 
-int f(string &s, int strt, int currNum, int currSum) {
-    if(strt == s.size()) return (currNum + currSum);
-
-    int num = 0, res = 0;
-
-    for (int i = strt; i < s.size(); ++i) {
-        num = num * 10 + (s[i] - '0');
-        res += f(s, i + 1, num, currNum + currSum);
+    for (int i = 0; i < n; ++i) {
+        int left = (i) * 2;
+        int right = (n - i - 1) * 2 ;
+        int minNeed = max(left, right);
+        if(a[i] <= minNeed){no; return;}
     }
-    return res;
+    yes;
 }
 
 void solve() {
-    string s; scan(s);
-    print(f(s, 0, 0, 0));
+    int t;
+    scan(t);
+    while (t--) {
+        tTestCase(t);
+    }
 }
 
 int32_t main() {

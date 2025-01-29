@@ -100,21 +100,27 @@ void tTestCase(int t) {
     scan(n);
 }
 
-int f(string &s, int strt, int currNum, int currSum) {
-    if(strt == s.size()) return (currNum + currSum);
-
-    int num = 0, res = 0;
-
-    for (int i = strt; i < s.size(); ++i) {
-        num = num * 10 + (s[i] - '0');
-        res += f(s, i + 1, num, currNum + currSum);
-    }
-    return res;
-}
-
 void solve() {
-    string s; scan(s);
-    print(f(s, 0, 0, 0));
+    vector<string> vs(3);
+    scan(vs[0], vs[1], vs[2]);
+    // print(vs[0], vs[1], vs[2]);
+    reverse(all(vs[0]));
+    reverse(all(vs[1]));
+    reverse(all(vs[2]));
+
+    int last = vs[0][0] - 'a';
+    vs[0].pop_back();
+    while(vs[0].size() and vs[1].size() and vs[2].size()){
+        last = vs[last].back() - 'a';
+        vs[last].pop_back();
+    }
+    if(vs[0].size() == 0){
+        print('A');
+    } else if(vs[1].size() == 0){
+        print('B');
+    } else if(vs[2].size() == 0){
+        print('C');
+    } 
 }
 
 int32_t main() {
