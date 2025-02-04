@@ -44,7 +44,7 @@ using namespace std;
 #define newline cout << "\n"
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
-#define int long long
+// #define int long long
 #define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
@@ -95,35 +95,40 @@ bool comp(int a, int b) { return a > b;}
 #define bug(...) 
 #endif
 
+void tTestCase(int t) {
+    int n;
+    scan(n);
+}
 
+bool isSame(vector<string> &a, vector<string> &b, int n, int m) {
+	for (int i = 0; i < b.size(); ++i) {
+		for (int j = 0; j < b.size(); ++j) {
+			if(b[i][j] != a[i + n][j + m]) return false;
+		}
+	}
+	return true;
+}
 
 void solve() {
-    int n = 99998953;
-     // scan(n);
-    const int N = 100000000;
-    vector<int> lp(N + 1);
-    vector<int> pr;
-
-    for (int i = 2; i <= N; ++i){
-        if (lp[i] == 0){
-            lp[i] = i;
-            pr.push_back(i);
-            if(pr.back() > n) {
-            // print(pr.back());
-                break;
-            }
-        }
-        
-        for (int j = 0; i * pr[j] <= N; ++j){
-            lp[i * pr[j]] = pr[j];
-            if (pr[j] == lp[i]){
-                break;
-            }
-        }
+    int n, m; scan(n, m);
+    vector<string> m1(n), m2(m);
+    for (int i = 0; i < n; ++i) {
+    	cin >> m1[i];
     }
-    for (int i = 0; i < pr.size(); i += 100) {
-        print(pr[i]);
+    for (int i = 0; i < m; ++i) {
+    	cin >> m2[i];
     }
+    for (int i = 0; i < n; ++i) {
+    	for (int j = 0; j < n; ++j) {
+    		if(i + m <= n and j + m <= n) {
+				// cout << m1[i][j];
+	    		if(isSame(m1, m2, i, j)) {
+    				print(i + 1, j + 1);
+				}
+			}
+    	} 
+    }
+     // print("NON");
 }
 
 int32_t main() {

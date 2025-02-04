@@ -95,35 +95,47 @@ bool comp(int a, int b) { return a > b;}
 #define bug(...) 
 #endif
 
+void tTestCase(int t) {
+    int n;
+    scan(n);
+}
+int N = 8;
+vector<vector<char>> v(N, vector<char> (N, '0'));
 
+bool pos(vector<int> &row, vector<int> &col, int i, int j) {
+    if(find(all(row), i) != row.end()) return false;
+    if(find(all(col), j) != col.end()) return false;
+
+    for (int r = 0; r < row.size(); ++r) {
+        if(abs(row[r] - i) == abs(col[r] - j)) return false;
+    }
+
+    return true;
+}
+
+int f(vector<vector<char>> &v, int n,vector<int> &row, vector<int> &col) {
+    if(n < 0) return 1;
+    int ans = 0;
+    for (int i = 0; i < N; ++i) {
+        if(v[n][i] != '*' and pos(row, col, n, i)) {
+            row.push_back(n);
+            col.push_back(i);
+            ans += f(v, n - 1, row, col);
+            col.pop_back();
+            row.pop_back();
+        }
+    }
+    return ans;
+}
 
 void solve() {
-    int n = 99998953;
-     // scan(n);
-    const int N = 100000000;
-    vector<int> lp(N + 1);
-    vector<int> pr;
-
-    for (int i = 2; i <= N; ++i){
-        if (lp[i] == 0){
-            lp[i] = i;
-            pr.push_back(i);
-            if(pr.back() > n) {
-            // print(pr.back());
-                break;
-            }
-        }
-        
-        for (int j = 0; i * pr[j] <= N; ++j){
-            lp[i * pr[j]] = pr[j];
-            if (pr[j] == lp[i]){
-                break;
-            }
-        }
+    for (int i = 0; i < N; ++i) {
+       for (int j = 0; j < N; ++j) {
+            cin >> v[i][j];                
+       }
     }
-    for (int i = 0; i < pr.size(); i += 100) {
-        print(pr[i]);
-    }
+    vector<int> row, col;
+    print(f(v, 7,row, col));
 }
 
 int32_t main() {

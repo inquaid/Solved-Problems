@@ -95,34 +95,59 @@ bool comp(int a, int b) { return a > b;}
 #define bug(...) 
 #endif
 
+void tTestCase(int t) {
+    int n;
+    scan(n);
+}
 
+int f(vi &a, vi &b, int n, int sumA, int total) {
+    if(n == 0) return total - sumA == sumA;
+    a.push_back(n);
+    int tmp = f(a, b, n - 1, sumA + n, total);
+    if(tmp) return 1;
+    a.pop_back();
+
+    b.push_back(n);
+    int temp2 = f(a, b, n - 1, sumA, total);
+    if(temp2) return 1;
+    b.pop_back();
+
+    return temp2 | tmp;
+}
 
 void solve() {
-    int n = 99998953;
-     // scan(n);
-    const int N = 100000000;
-    vector<int> lp(N + 1);
-    vector<int> pr;
+    int n; scan(n);
+    vi a, b;
+    vector<int> dp(n + 1, -1);
+    int total = n * (n + 1) / 2;
+    if(total % 2 == 0) {
+        yes;
+        vector<pair<int, int>> v;
+        for (int i = 1; i <= n; ++i) {
+            v.push_back({i, 0});
+        }
 
-    for (int i = 2; i <= N; ++i){
-        if (lp[i] == 0){
-            lp[i] = i;
-            pr.push_back(i);
-            if(pr.back() > n) {
-            // print(pr.back());
-                break;
+        int res = total / 2;
+        vi a1;
+        int i = v.size() - 1;
+        int temp = 0;
+        while(i >= 0) {
+            if(temp + v[i].first <= res){
+                temp += v[i].first;
+                v[i].second = 1;
+                a1.push_back(v[i].first);
             }
+            i--;
         }
-        
-        for (int j = 0; i * pr[j] <= N; ++j){
-            lp[i * pr[j]] = pr[j];
-            if (pr[j] == lp[i]){
-                break;
-            }
+        print(a1.size());
+        print(a1);
+        print(n - a1.size());
+        for (int i = 0; i < n; ++i) {
+            if(v[i].second == 0) cout << v[i].first << " ";
         }
-    }
-    for (int i = 0; i < pr.size(); i += 100) {
-        print(pr[i]);
+        print();
+    } else {
+        no;
     }
 }
 

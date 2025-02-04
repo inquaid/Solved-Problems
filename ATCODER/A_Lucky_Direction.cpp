@@ -95,35 +95,24 @@ bool comp(int a, int b) { return a > b;}
 #define bug(...) 
 #endif
 
-
+void tTestCase(int t) {
+    int n;
+    scan(n);
+}
 
 void solve() {
-    int n = 99998953;
-     // scan(n);
-    const int N = 100000000;
-    vector<int> lp(N + 1);
-    vector<int> pr;
-
-    for (int i = 2; i <= N; ++i){
-        if (lp[i] == 0){
-            lp[i] = i;
-            pr.push_back(i);
-            if(pr.back() > n) {
-            // print(pr.back());
-                break;
-            }
-        }
-        
-        for (int j = 0; i * pr[j] <= N; ++j){
-            lp[i * pr[j]] = pr[j];
-            if (pr[j] == lp[i]){
-                break;
-            }
-        }
-    }
-    for (int i = 0; i < pr.size(); i += 100) {
-        print(pr[i]);
-    }
+    string s; scan(s); 
+    if(s[0] == 'N') s[0] = 'S';
+	else if(s[0] == 'S') s[0] = 'N';
+	else if(s[0] == 'E') s[0] = 'W';
+	else if(s[0] == 'W') s[0] = 'E';
+	if(s.size() == 2) {
+    if(s[1] == 'N') s[1] = 'S';
+	else if(s[1] == 'S') s[1] = 'N';
+	else if(s[1] == 'E') s[1] = 'W';
+	else if(s[1] == 'W') s[1] = 'E';
+	}
+	print(s);
 }
 
 int32_t main() {

@@ -44,7 +44,7 @@ using namespace std;
 #define newline cout << "\n"
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
-#define int long long
+// #define int long long
 #define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
 #define all(a)  a.begin(), a.end()
 #define pb(a) push_back(a)
@@ -94,35 +94,55 @@ bool comp(int a, int b) { return a > b;}
 #else
 #define bug(...) 
 #endif
+int dp[500][500];
+int f(vector<vector<int>> &v, int i, int j) {
+    if(i == v.size() - 1) return v[i][j];
+    if(dp[i][j] != -1) return dp[i][j];
+    int l = max(0, j - 1);
+    int r = min((int)v[i + 1].size() - 1, j + 1);
+    int same = min((int)v[i + 1].size() - 1, j); 
 
+    if(v[i].size() < v[i + 1].size()) {
+        return dp[i][j] = v[i][j] + max(f(v, i + 1, same), f(v, i + 1, r));
+    } else {
+        return dp[i][j] = v[i][j] + max(f(v, i + 1, same), f(v, i + 1, l));
 
+    }
+}
+
+void tTestCase(int T) {
+    int n;
+    scan(n);
+    memset(dp, -1, sizeof(dp));
+    vector<vector<int>> v;
+    vector<int> v2;
+    for (int i = 0; i < n; ++i) {
+        v2.clear();
+        for (int j = 0; j <= i; ++j) {
+            int temp; scan(temp);
+            v2.push_back(temp);
+        }
+        v.push_back(v2);
+    }
+    for (int i = 1; i < n; ++i) {
+        v2.clear();
+        for (int j = i; j < n; ++j) {
+            int temp; scan(temp);
+            v2.push_back(temp);
+        }
+        v.push_back(v2);
+    }
+    
+    printf("Case %d: %d\n", T, f(v, 0, 0));
+
+}
 
 void solve() {
-    int n = 99998953;
-     // scan(n);
-    const int N = 100000000;
-    vector<int> lp(N + 1);
-    vector<int> pr;
+    int t;
+    scan(t);
+    for(int i = 1; i <= t; i++) {
 
-    for (int i = 2; i <= N; ++i){
-        if (lp[i] == 0){
-            lp[i] = i;
-            pr.push_back(i);
-            if(pr.back() > n) {
-            // print(pr.back());
-                break;
-            }
-        }
-        
-        for (int j = 0; i * pr[j] <= N; ++j){
-            lp[i * pr[j]] = pr[j];
-            if (pr[j] == lp[i]){
-                break;
-            }
-        }
-    }
-    for (int i = 0; i < pr.size(); i += 100) {
-        print(pr[i]);
+        tTestCase(i);
     }
 }
 

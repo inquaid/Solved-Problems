@@ -95,34 +95,36 @@ bool comp(int a, int b) { return a > b;}
 #define bug(...) 
 #endif
 
-
+void tTestCase(int t) {
+    int n;
+    scan(n);
+}
 
 void solve() {
-    int n = 99998953;
-     // scan(n);
-    const int N = 100000000;
-    vector<int> lp(N + 1);
-    vector<int> pr;
+    int n, q; scan(n, q);
+    map<int, int> mp;
 
-    for (int i = 2; i <= N; ++i){
-        if (lp[i] == 0){
-            lp[i] = i;
-            pr.push_back(i);
-            if(pr.back() > n) {
-            // print(pr.back());
-                break;
-            }
-        }
-        
-        for (int j = 0; i * pr[j] <= N; ++j){
-            lp[i * pr[j]] = pr[j];
-            if (pr[j] == lp[i]){
-                break;
-            }
-        }
+    vector<int> nest;
+    nest.push_back(0);
+    for (int i = 1; i <= n; ++i) {
+    	mp[i]++;
+    	nest.push_back(i);
     }
-    for (int i = 0; i < pr.size(); i += 100) {
-        print(pr[i]);
+    multiset<int> mst;
+    int cnt = 0;
+    while(q--) {
+    	int type; scan(type);
+    	if(type == 1){
+    		int p, h; scan(p, h);
+    		mp[nest[p]]--;
+    		if(mp[nest[p]] == 1) cnt--; 
+    		nest[p] = h;
+    		mp[nest[p]]++;
+    		if(mp[nest[p]] == 2) cnt++; 
+
+    	} else {
+    		print(cnt);
+    	}
     }
 }
 

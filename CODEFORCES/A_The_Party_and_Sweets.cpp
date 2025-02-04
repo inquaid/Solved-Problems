@@ -95,35 +95,40 @@ bool comp(int a, int b) { return a > b;}
 #define bug(...) 
 #endif
 
-
+void tTestCase(int t) {
+    int n;
+    scan(n);
+}
 
 void solve() {
-    int n = 99998953;
-     // scan(n);
-    const int N = 100000000;
-    vector<int> lp(N + 1);
-    vector<int> pr;
+    int n, m; scan(n, m);
+    vi b(n), g(m); 
+    int sum = 0;
+    for (int i = 0; i < n; ++i) {
+        cin >> b[i];
+        sum += (b[i] * m);
+    }
 
-    for (int i = 2; i <= N; ++i){
-        if (lp[i] == 0){
-            lp[i] = i;
-            pr.push_back(i);
-            if(pr.back() > n) {
-            // print(pr.back());
-                break;
-            }
+    scan(g);
+    // print(b); print(g);
+    sort(all(b), comp); sort(all(g), comp);
+
+    int i = 0, mn = INT_MAX;
+    for (i = 0; i < m - 1; ++i) {
+        if(b[0] > g[i]){
+            print(-1); return;
         }
-        
-        for (int j = 0; i * pr[j] <= N; ++j){
-            lp[i * pr[j]] = pr[j];
-            if (pr[j] == lp[i]){
-                break;
-            }
-        }
+        sum += (g[i] - b[0]);
+
     }
-    for (int i = 0; i < pr.size(); i += 100) {
-        print(pr[i]);
+    if(b[0] > g.back()){
+        print(-1); return;
     }
+    if(b[0] != g.back())
+        sum += (g.back() - b[1]);
+    
+    print(sum);
+    
 }
 
 int32_t main() {

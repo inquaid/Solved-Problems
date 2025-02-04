@@ -95,34 +95,26 @@ bool comp(int a, int b) { return a > b;}
 #define bug(...) 
 #endif
 
-
+void tTestCase(int t) {
+    int n;
+    scan(n);
+    set<int> s1, s2;
+    for (int i = 0; i < n; ++i) {
+    	int temp; scan(temp);
+    	s1.insert(temp);
+    }
+    for (int i = 0; i < n; ++i) {
+    	int temp; scan(temp);
+    	s2.insert(temp);
+    }
+    yesif( (s1.size() == 2 and s2.size() == 2) or s1.size() >= 3 or s2.size() >= 3);
+}
 
 void solve() {
-    int n = 99998953;
-     // scan(n);
-    const int N = 100000000;
-    vector<int> lp(N + 1);
-    vector<int> pr;
-
-    for (int i = 2; i <= N; ++i){
-        if (lp[i] == 0){
-            lp[i] = i;
-            pr.push_back(i);
-            if(pr.back() > n) {
-            // print(pr.back());
-                break;
-            }
-        }
-        
-        for (int j = 0; i * pr[j] <= N; ++j){
-            lp[i * pr[j]] = pr[j];
-            if (pr[j] == lp[i]){
-                break;
-            }
-        }
-    }
-    for (int i = 0; i < pr.size(); i += 100) {
-        print(pr[i]);
+    int t;
+    scan(t);
+    while (t--) {
+        tTestCase(t);
     }
 }
 
