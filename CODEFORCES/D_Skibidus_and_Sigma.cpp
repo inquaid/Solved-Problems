@@ -87,7 +87,7 @@ template<typename T> void print(unordered_set<T> x){for(auto i: x) cout << i << 
 template<typename T> void print(T && x) {cout << x << "\n";}
 template<typename T, typename... S> void print(T && x, S&&... y) {cout << x << ' ';print(y...);}
 void print(){cout << "\n";}
-bool comp(int a, int b) { return a > b;}
+bool comp(vi &a, vi &b) { return a.back() > b.back();}
 
 #ifdef LOCAL
 #include "debug.h"
@@ -96,24 +96,32 @@ bool comp(int a, int b) { return a > b;}
 #endif
 
 void tTestCase(int t) {
-    int n, q; scan(n, q);
-    vi c, ones(n + 1, 0); 
-    c.push_back(0);
+    int n, m;
+    scan(n, m);
+    vector<vector<int>> v (n, vector<int> (m + 1, 0));
+    vector<int> a;
     for (int i = 0; i < n; ++i) {
-        int temp; scan(temp);
-        c.push_back(c.back() + temp);
-        if(temp == 1){
-            ones[i + 1]++;
+        int tempSum = 0;
+        for (int j = 0; j < m; ++j) {
+            cin >> v[i][j];
+            tempSum += v[i][j];
         }
-        ones[i + 1] += ones[i];
+        v[i][m] = tempSum;
     }
-    while(q--) {
-        int l, r; scan(l, r);
-        int totalSum = c[r] - c[l - 1];
-        int one = ones[r] - ones[l - 1];
-        int minNeed = r - l + 1 + one;
-        yesif(minNeed <= totalSum and l != r);
+    sort(all(v), comp);
+
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            a.push_back(v[i][j]);
+        }
     }
+    int sum = 0;
+    n = a.size();
+    for (int i = 0; i < a.size(); ++i) {
+        sum += ( (n - i) * a[i]);
+    }
+    print(sum);
+
 }
 
 void solve() {

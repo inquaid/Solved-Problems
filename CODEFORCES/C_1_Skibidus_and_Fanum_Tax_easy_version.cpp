@@ -96,24 +96,33 @@ bool comp(int a, int b) { return a > b;}
 #endif
 
 void tTestCase(int t) {
-    int n, q; scan(n, q);
-    vi c, ones(n + 1, 0); 
-    c.push_back(0);
-    for (int i = 0; i < n; ++i) {
-        int temp; scan(temp);
-        c.push_back(c.back() + temp);
-        if(temp == 1){
-            ones[i + 1]++;
+    int n, m;
+    scan(n, m);
+    vi a(n), b(m); 
+    for (int i = 0; i < n; ++i) {   
+        cin >> a[i];
+    }
+    int temp = a[0];
+    for (int i = 0; i < m; ++i) {
+        cin >> b[i];
+        a[0] = min(a[0], b[i] - temp);
+    }
+    sort(all(b));
+    int mn;
+    
+    for (int i = 1; i < n; ++i) {
+        auto it = lower_bound(all(b), (a[i] + a[i - 1]));
+        if(it != b.end()) {mn = *it;}
+        else continue;
+
+        if(a[i - 1] <= a[i] and a[i - 1] <= mn - a[i]) {
+            a[i] = min(a[i], mn - a[i]);
         }
-        ones[i + 1] += ones[i];
+        else if(a[i - 1] <= mn - a[i]) {
+            a[i] = mn - a[i];
+        } 
     }
-    while(q--) {
-        int l, r; scan(l, r);
-        int totalSum = c[r] - c[l - 1];
-        int one = ones[r] - ones[l - 1];
-        int minNeed = r - l + 1 + one;
-        yesif(minNeed <= totalSum and l != r);
-    }
+    yesif(is_sorted(all(a)));
 }
 
 void solve() {

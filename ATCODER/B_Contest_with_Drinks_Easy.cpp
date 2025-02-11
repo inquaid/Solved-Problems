@@ -96,31 +96,25 @@ bool comp(int a, int b) { return a > b;}
 #endif
 
 void tTestCase(int t) {
-    int n, q; scan(n, q);
-    vi c, ones(n + 1, 0); 
-    c.push_back(0);
-    for (int i = 0; i < n; ++i) {
-        int temp; scan(temp);
-        c.push_back(c.back() + temp);
-        if(temp == 1){
-            ones[i + 1]++;
-        }
-        ones[i + 1] += ones[i];
-    }
-    while(q--) {
-        int l, r; scan(l, r);
-        int totalSum = c[r] - c[l - 1];
-        int one = ones[r] - ones[l - 1];
-        int minNeed = r - l + 1 + one;
-        yesif(minNeed <= totalSum and l != r);
-    }
+    int n;
+    scan(n);
 }
 
 void solve() {
-    int t;
-    scan(t);
-    while (t--) {
-        tTestCase(t);
+    int n; scan(n);
+    vi t(n);
+    int m; 
+    int sum = 0;
+    for (int i = 0; i < n; ++i) {
+        cin >> t[i];
+        sum += t[i];
+    }
+    cin >> m;
+    while(m--) {
+        int p, x; scan(p, x);
+        bug(p, x);
+        int temp = sum - t[p - 1] + x;
+        print(temp);
     }
 }
 

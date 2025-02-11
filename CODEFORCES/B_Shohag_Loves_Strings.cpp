@@ -96,24 +96,30 @@ bool comp(int a, int b) { return a > b;}
 #endif
 
 void tTestCase(int t) {
-    int n, q; scan(n, q);
-    vi c, ones(n + 1, 0); 
-    c.push_back(0);
-    for (int i = 0; i < n; ++i) {
-        int temp; scan(temp);
-        c.push_back(c.back() + temp);
-        if(temp == 1){
-            ones[i + 1]++;
+    string s;
+    scan(s);
+    if(s.size() == 1) {print(-1); return;}
+    if(s[1] == s[0]) {
+        // print(s[0],s[1]);
+        cout << s[0] << s[1];
+        print();
+        return;
+    }
+    for (int i = 2; i < s.size(); ++i) {
+        if(s[i] == s[i - 1]) {
+            // print(s[i - 1],s[i]);
+            cout << s[i - 1] << s[i];
+            print();
+            return;
         }
-        ones[i + 1] += ones[i];
-    }
-    while(q--) {
-        int l, r; scan(l, r);
-        int totalSum = c[r] - c[l - 1];
-        int one = ones[r] - ones[l - 1];
-        int minNeed = r - l + 1 + one;
-        yesif(minNeed <= totalSum and l != r);
-    }
+        if(s[i] != s[i - 1] and s[i - 1] != s[i - 2] and s[i] != s[i - 2]) {
+            // print(s[i - 2],s[i - 1], s[i]);
+            cout << s[i - 2] << s[i - 1] << s[i];
+            print();
+            return;
+        }
+    } 
+    print(-1);
 }
 
 void solve() {
@@ -131,7 +137,21 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve();
-
+    solve(); return 0;
+    // set<string> st;
+    // st.insert("abc");
+    // st.insert("abddc");
+    // st.insert("abcd");
+    
+    // auto it = st.end();
+    // it--;
+    // // it--;
+    // // it--;
+    // print((*it).size());
+    string s = "ABC";
+    do {
+        print(s);
+    } while(next_permutation(all(s)));
+    // for(auto i : st) print(i);
     return 0;
 }

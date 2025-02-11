@@ -95,25 +95,37 @@ bool comp(int a, int b) { return a > b;}
 #define bug(...) 
 #endif
 
+int f(vi a) {
+    int res = 0;
+    // print(a);
+    for (int i = 0; i < a.size() - 1; ++i) {
+        if(a[i] < a[i + 1]) res++;
+    }
+    return res;
+}
+
 void tTestCase(int t) {
-    int n, q; scan(n, q);
-    vi c, ones(n + 1, 0); 
-    c.push_back(0);
-    for (int i = 0; i < n; ++i) {
-        int temp; scan(temp);
-        c.push_back(c.back() + temp);
-        if(temp == 1){
-            ones[i + 1]++;
-        }
-        ones[i + 1] += ones[i];
+    int n;
+    scan(n);
+    vi a(n); scan(a);
+    vi b, c;
+    int res = 0, prev = a[0];
+    b.push_back(INT_MAX);
+    c.push_back(INT_MAX);
+    for (int i = 0; i < a.size(); ++i) {
+        if(b.back() < a[i] and c.back() < a[i]) {
+            if(b.back() < c.back()) b.push_back(a[i]);
+            else c.push_back(a[i]);
+        } else if(b.back() >= a[i] and c.back() >= a[i]) {
+            if(b.back() < c.back()) b.push_back(a[i]);
+            else c.push_back(a[i]);
+        } else if(b.back() >= a[i]) b.push_back(a[i]);
+        else c.push_back(a[i]);     
     }
-    while(q--) {
-        int l, r; scan(l, r);
-        int totalSum = c[r] - c[l - 1];
-        int one = ones[r] - ones[l - 1];
-        int minNeed = r - l + 1 + one;
-        yesif(minNeed <= totalSum and l != r);
-    }
+
+    res = 0;
+    res = f(c) + f(b);
+    print(res);
 }
 
 void solve() {
@@ -131,7 +143,11 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve();
-
+    solve(); return 0;
+    vi v = {1, 2, 3, 4 , 5};
+    // auto it = v.begin();
+    // it += 2;
+    v.erase(v.begin() + 1);
+    print(v);
     return 0;
 }

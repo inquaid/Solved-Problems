@@ -95,25 +95,29 @@ bool comp(int a, int b) { return a > b;}
 #define bug(...) 
 #endif
 
+bool pos(vi &a, int k, int h) {
+    int res = 0;
+    for (int i = 0; i < a.size(); ++i) {
+        // bug(ceil(a[i] / (k * 1.0)));
+        res += ceil (a[i] / (k * 1.0));
+    }
+    return res <= h;
+}
+
 void tTestCase(int t) {
-    int n, q; scan(n, q);
-    vi c, ones(n + 1, 0); 
-    c.push_back(0);
-    for (int i = 0; i < n; ++i) {
-        int temp; scan(temp);
-        c.push_back(c.back() + temp);
-        if(temp == 1){
-            ones[i + 1]++;
-        }
-        ones[i + 1] += ones[i];
+    int n, h;
+    scan(n, h);
+    vi a(n); scan(a);
+    int l = 1, r = 1e9;
+    while(l <= r) {
+        int mid = l + (r - l) / 2;
+        if(pos(a, mid, h)) {
+            r = mid - 1;
+        } else l = mid + 1;
     }
-    while(q--) {
-        int l, r; scan(l, r);
-        int totalSum = c[r] - c[l - 1];
-        int one = ones[r] - ones[l - 1];
-        int minNeed = r - l + 1 + one;
-        yesif(minNeed <= totalSum and l != r);
-    }
+
+    print(r + 1);
+
 }
 
 void solve() {

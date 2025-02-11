@@ -95,33 +95,36 @@ bool comp(int a, int b) { return a > b;}
 #define bug(...) 
 #endif
 
-void tTestCase(int t) {
-    int n, q; scan(n, q);
-    vi c, ones(n + 1, 0); 
-    c.push_back(0);
-    for (int i = 0; i < n; ++i) {
-        int temp; scan(temp);
-        c.push_back(c.back() + temp);
-        if(temp == 1){
-            ones[i + 1]++;
+const int N = 1e5 + 9;
+vector<int> g[N];
+bool vis[N];
+int cost[110][110];
+
+int dfs(int par, int child, int strt) {    
+
+    for(auto v : g[child]) {
+        if(v == strt and v != par) return cost[child][v];
+        if(v != par) {
+            return cost[child][v] + dfs(child, v, strt);
         }
-        ones[i + 1] += ones[i];
     }
-    while(q--) {
-        int l, r; scan(l, r);
-        int totalSum = c[r] - c[l - 1];
-        int one = ones[r] - ones[l - 1];
-        int minNeed = r - l + 1 + one;
-        yesif(minNeed <= totalSum and l != r);
-    }
+    return 0;
 }
 
 void solve() {
-    int t;
-    scan(t);
-    while (t--) {
-        tTestCase(t);
+    int n; scan(n);
+    int a, b, c, sum = 0;
+    for (int i = 0; i < n; ++i) {
+        scan(a, b, c);
+        g[a].push_back(b);
+        g[b].push_back(a);
+        cost[b][a] = c;
+        cost[a][b] = 0;
+        sum += c;
     }
+    int temp2 = dfs(-1, a, a);
+    print(min(temp2, sum - temp2));
+    
 }
 
 int32_t main() {

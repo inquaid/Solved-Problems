@@ -95,25 +95,89 @@ bool comp(int a, int b) { return a > b;}
 #define bug(...) 
 #endif
 
-void tTestCase(int t) {
-    int n, q; scan(n, q);
-    vi c, ones(n + 1, 0); 
-    c.push_back(0);
-    for (int i = 0; i < n; ++i) {
-        int temp; scan(temp);
-        c.push_back(c.back() + temp);
-        if(temp == 1){
-            ones[i + 1]++;
+int mx(string s) {
+    int r1 = 0, r2 = 0, mx1 = 0, mx2 = 0;
+    for (int i = 0; i < s.size(); ++i) {
+        if(s[i] == '0') {
+            r1++, r2--;
+        } else {
+            r1--, r2++;
         }
-        ones[i + 1] += ones[i];
+        mx1 = max(mx1, r1);
+        mx2 = max(mx2, r2);
+        r1 = max(r1, 0ll);
+        r2 = max(r2, 0ll);
     }
-    while(q--) {
-        int l, r; scan(l, r);
-        int totalSum = c[r] - c[l - 1];
-        int one = ones[r] - ones[l - 1];
-        int minNeed = r - l + 1 + one;
-        yesif(minNeed <= totalSum and l != r);
+    // print(mx1, mx2);
+    return max(mx1, mx2);
+}
+
+void tTestCase(int t) {
+    int n, m, k;
+    scan(n, m, k);
+    if (abs(n - m) > k) {
+        print(-1);
+        return;
     }
+    if (max(n, m) < k) {
+        print(-1);
+        return;
+    }
+    int i = 0, j = 0;
+    string res = "";
+    int mxZero = n, mxOne = m;
+    while (i < n and j < m) {
+        if (n > m) {
+
+            for (int temp = 0; temp < k; ++temp) {
+                if (mxZero > 0) {
+                    res += "0";
+                    i++;
+                }
+                mxZero--;
+            }
+            for (int temp = 0; temp < k; ++temp) {
+                if (mxOne > 0) {
+                    res += "1";
+                    j++;
+                }
+                mxOne--;
+            }
+        } else {
+            for (int temp = 0; temp < k; ++temp) {
+                if (mxOne > 0) {
+                    res += "1";
+                    j++;
+                }
+                mxOne--;
+            }
+            for (int temp = 0; temp < k; ++temp) {
+                if (mxZero > 0) {
+                    res += "0";
+                    i++;
+                }
+                mxZero--;
+            }
+        }
+    }
+    string temp = "";
+    while (i < n) {
+        temp += "0";
+        i++;
+    }
+    while (j < m) {
+        temp += "1";
+        j++;
+    }
+
+    string str = temp + res;
+    if (mx(str) == k) {
+        print(str);
+    } else {
+        str = res + temp;
+        print(str);
+    }
+    // print(res, temp);
 }
 
 void solve() {
@@ -131,7 +195,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve();
+    solve(); 
 
     return 0;
 }
