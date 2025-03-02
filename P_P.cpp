@@ -84,6 +84,7 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     solve();
-    
+    vi a = {1, 2, 3};
+    accumulate(a.begin(), a.end(), 0);
     return 0;
 }
