@@ -5,6 +5,10 @@
 #include <algorithm>
 #include <map>
 #include <unordered_map>
+#include <cstdint>
+
+#define int long long
+#define all(x) (x).begin(), (x).end()
 
 using namespace std;
 
@@ -88,8 +92,9 @@ void print_container(const Container &container) {
     cout << container << "\n";
 }
 
-#define all(x) (x).begin(), (x).end()
-
+#define yesif(flag) cout << ((flag) ? "GREATER\n" : "LESS\n")
+#define yes cout << "YES\n"
+#define no cout << "NO\n"
 bool comp(int a, int b) { return a > b;}
 
 #ifdef LOCAL
@@ -104,14 +109,51 @@ void tTestCase(int t) {
 }
 
 void solve() {
-    string a, b, c;
-    cin >> a >> b >> c;
-    cout << toupper(a[0]) << toupper(b[0]) << toupper(c[0]);
-    print()l
+    int n; cin >> n;
+    vector<int> v(n); cin >> v;
+    int sum = 0, ans1 = 0, ans2 = 0;
+    bool flag = (v[0] < 0);
+    // bug(sum);
+    for (int i = 0; i < n ; ++i) {
+        sum += v[i];
+        if(i % 2 == 0) {
+            if(sum >= 0) {
+                int temp = sum + 1;
+                ans1 += temp;
+                sum = -1;
+            }
+        } else {
+            if(sum <= 0) {
+                int temp = abs(sum) + 1;
+                ans1 += temp;
+                sum = 1;
+            }
+        }
+    }
+    sum = 0;
+    for (int i = 0; i < n ; ++i) {
+        sum += v[i];
+        if(i % 2 != 0) {
+            if(sum >= 0) {
+                int temp = abs(sum + 1);
+                ans2 += temp;
+                sum = -1;
+            }
+        } else {
+            if(sum <= 0) {
+                int temp = abs(sum) + 1;
+                ans2 += temp;
+                sum = 1;
+            }
+        }
+    }
+    // if(ans) ans++;
+    // print(ans);
+    print(min(ans1, ans2));
 }
 
 
-int main() {
+int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     // freopen("input.txt", "r" , stdin);

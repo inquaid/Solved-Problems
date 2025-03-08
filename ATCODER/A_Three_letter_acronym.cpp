@@ -106,8 +106,8 @@ void tTestCase(int t) {
 void solve() {
     string a, b, c;
     cin >> a >> b >> c;
-    cout << toupper(a[0]) << toupper(b[0]) << toupper(c[0]);
-    print()l
+    cout << (char)toupper(a[0]) << (char)toupper(b[0]) << (char)toupper(c[0]);
+    // print();
 }
 
 
