@@ -9,14 +9,12 @@
 #include <queue>
 #include <math.h>
 #include <climits>
-#include <bitset>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
 
 using namespace std;
 using vi = vector<int>;
-using pii = pair<int, int>;
 
 template <typename T, typename Y>
 istream &operator>>(istream &is, pair<T, Y> &p) {
@@ -91,8 +89,6 @@ template <typename Container> void print_container(const Container &container) {
 #define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
-#define ff first
-#define ss second
 bool comp(int a, int b) { return a > b; }
 
 #ifdef LOCAL
@@ -107,20 +103,22 @@ void tTestCase(int t) {
 }
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
-        }
+    int n; cin >> n;
+    map<int, int> mp;
+    for (int i = 1; i <= n; ++i) {
+        int temp; cin >> temp;
+        mp[i] = temp;
     }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
-
+    int top, cnt = 1, lst = 1, iter = n;
+    while(iter--) {
+        if(mp[lst] == 2) {
+            print(cnt); return;
+        }
+        cnt++;
+        lst = mp[lst];
+    }
+    
+    print(-1);
 }
 
 int32_t main() {
@@ -130,8 +128,12 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();    return 0;
+    // vector<int> v = {1,2,3,4,5};
+    map<int, int> v;
+    v[1] = 12;
+    v[2] = 12;
+    auto it = v.begin();
+    v.erase(it);
+    for(auto i : v) cout << i << endl;
 }

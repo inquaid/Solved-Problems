@@ -107,20 +107,32 @@ void tTestCase(int t) {
 }
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
+    int n = 6;
+    int mtx[n][n];
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            cin >> mtx[i][j];
         }
     }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
-
+    int ans = INT_MIN;
+    for (int i = 0; i < n - 2; ++i) {
+        for (int j = 0; j < n - 2; ++j) {
+            int sum = mtx[i + 1][j + 1];
+            // cout << mtx[i + 1][j + 1] << " ";
+            for (int k = j; k < j + 3; ++k) {
+                // cout << mtx[i][k] << " "; 
+                sum += mtx[i][k] + mtx[i + 2][k];
+            }
+            // for (int k = j; k < j + 3; ++k) {
+                // cout << mtx[i][k] << " "; 
+                // cout << mtx[i + 2][k] << " ";
+                // sum += mtx[i][k] + mtx[i + 2][k];
+            // }
+            // cout << endl;
+            ans = max(ans, sum);
+        } // cout << endl;
+    }
+    print(ans);
 }
 
 int32_t main() {
@@ -130,8 +142,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();
+
+    return 0;
 }

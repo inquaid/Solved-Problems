@@ -9,14 +9,12 @@
 #include <queue>
 #include <math.h>
 #include <climits>
-#include <bitset>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
 
 using namespace std;
 using vi = vector<int>;
-using pii = pair<int, int>;
 
 template <typename T, typename Y>
 istream &operator>>(istream &is, pair<T, Y> &p) {
@@ -91,8 +89,6 @@ template <typename Container> void print_container(const Container &container) {
 #define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
-#define ff first
-#define ss second
 bool comp(int a, int b) { return a > b; }
 
 #ifdef LOCAL
@@ -101,26 +97,31 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
+int f(int ri, int x, int xi) {
+    return floor(sqrt(ri * ri - ((x - xi) * (x - xi))));
+}
+
 void tTestCase(int t) {
-    int n;
-    scan(n);
+    int n, m;   cin >> n >> m;
+    vi x(n), r(n);  cin >> x >> r;
+    
+    map<int, int> ans;
+
+    for (int i = 0; i < n; ++i) {
+        for (int p = x[i] - r[i]; p <= x[i] + r[i]; p++) {
+            ans[p] = max(ans[p], (2 * f(r[i], x[i], p)) + 1);
+        }
+    }
+    int res = 0;
+    for(auto i : ans) res += i.second;
+    print(res);
 }
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
-        }
+    int t; cin >> t;
+    while(t--) {
+        tTestCase(t);
     }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
-
 }
 
 int32_t main() {
@@ -130,8 +131,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();
+
+    return 0;
 }

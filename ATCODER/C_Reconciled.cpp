@@ -9,14 +9,12 @@
 #include <queue>
 #include <math.h>
 #include <climits>
-#include <bitset>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
 
 using namespace std;
 using vi = vector<int>;
-using pii = pair<int, int>;
 
 template <typename T, typename Y>
 istream &operator>>(istream &is, pair<T, Y> &p) {
@@ -91,8 +89,6 @@ template <typename Container> void print_container(const Container &container) {
 #define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
-#define ff first
-#define ss second
 bool comp(int a, int b) { return a > b; }
 
 #ifdef LOCAL
@@ -105,22 +101,26 @@ void tTestCase(int t) {
     int n;
     scan(n);
 }
+const int M = 1e9 + 7;
+int binexp(int n) {
+    int ans = 1;
+    for (int i = 1; i <= n; ++i) {
+        ans = ((ans % M) * (i % M)) % M;
+    }
+    return ans;
+}
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
-        }
+    int n, m; cin >> n >> m;
+    if(n == m) {
+        int ans = 2 * binexp(n) * binexp(m);
+        print(ans % M);
+    } else if(abs(n - m) == 1) {
+        int ans = binexp(n) * binexp(m);
+        print(ans % M);
+    } else {
+        print(0);
     }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
-
 }
 
 int32_t main() {
@@ -130,8 +130,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();
+
+    return 0;
 }

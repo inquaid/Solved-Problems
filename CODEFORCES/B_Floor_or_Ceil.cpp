@@ -9,14 +9,12 @@
 #include <queue>
 #include <math.h>
 #include <climits>
-#include <bitset>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
 
 using namespace std;
 using vi = vector<int>;
-using pii = pair<int, int>;
 
 template <typename T, typename Y>
 istream &operator>>(istream &is, pair<T, Y> &p) {
@@ -102,25 +100,52 @@ bool comp(int a, int b) { return a > b; }
 #endif
 
 void tTestCase(int t) {
-    int n;
-    scan(n);
+    int x, n, m; cin >> x >> n >> m;
+    int mn = 0;
+    int temp = x;
+    for (int i = 0; i < n; ++i) {
+        // bug(x);
+        if(x <= 1) {
+            x = floor(x / 2.0);
+            break;
+        }
+        x = floor(x / 2.0);
+    }
+    // bug(x);
+    for (int i = 0; i < m; ++i) {
+        // bug(x);
+        if(x <= 1) {
+            x = ceil(x / 2.0);
+            break;
+        }
+        x = ceil(x / 2.0);
+    }
+    mn = x;
+    x = temp;
+    for (int i = 0; i < m; ++i) {
+        // bug(x);
+        if(x <= 1) {
+            x = ceil(x / 2.0);
+            break;
+        }
+        x = ceil(x / 2.0);
+    }
+    for (int i = 0; i < n; ++i) {
+        // bug(x);
+        if(x <= 1) {
+            x = floor(x / 2.0);
+            break;
+        }
+        x = floor(x / 2.0);
+    }
+    print(min(mn, x), max(mn, x)); 
 }
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
-        }
+    int t; cin >> t;
+    while(t--) {
+        tTestCase(t);
     }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
-
 }
 
 int32_t main() {
@@ -130,8 +155,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();
+
+    return 0;
 }

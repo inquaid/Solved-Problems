@@ -9,7 +9,6 @@
 #include <queue>
 #include <math.h>
 #include <climits>
-#include <bitset>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -107,20 +106,20 @@ void tTestCase(int t) {
 }
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
-        }
+    int n, temp; cin >> n;
+    deque<int> dq;
+    for (int i = 0; i < n; ++i) {
+        cin >> temp;
+        if(i % 2 == 0) {
+            dq.push_back(temp);
+        } else dq.push_front(temp);
     }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
-
+    if((n&1)) {
+        reverse(all(dq));
+    }
+    for(auto i : dq) {
+        cout << i << " ";
+    }
 }
 
 int32_t main() {
@@ -130,8 +129,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();
+
+    return 0;
 }

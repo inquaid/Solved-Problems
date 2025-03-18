@@ -104,23 +104,26 @@ bool comp(int a, int b) { return a > b; }
 void tTestCase(int t) {
     int n;
     scan(n);
+    vi a(n); cin >> a;
+
+    for (int i = 0; i < n; ++i) {
+        for (int j = i; j < n; ++j) {
+            int mx = INT_MIN;
+            for (int k = i; k <= j; ++k) {
+                mx = max(mx, a[k]);
+                // cout << a[k] << " ";
+            }
+            cout << mx << " ";
+        }
+    }
+    cout << endl;
 }
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
-        }
+    int t; cin >> t;
+    for(int i = 1; i <= t; i++) {
+        tTestCase(i);
     }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
-
 }
 
 int32_t main() {
@@ -130,8 +133,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();
+
+    return 0;
 }

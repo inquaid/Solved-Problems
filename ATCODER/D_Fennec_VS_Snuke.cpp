@@ -88,7 +88,7 @@ template <typename Container> void print_container(const Container &container) {
     cout << container << "\n";
 }
 
-#define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
+#define yesif(flag) cout << ((flag) ? "Fennec\n" : "Snuke\n")
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define ff first
@@ -101,26 +101,51 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
+const int N = 1e5 + 50;
+vector<int> g[N];
+
+vector<int> bfs(int s, int n) {
+    queue<int> q;
+    vector<bool> used(n);
+    vector<int> d(n + 1), p(n + 1);
+    q.push(s);
+    used[s] = 1;
+    while(q.size()) {
+        int v = q.front(); q.pop();
+        for(auto u : g[v]) {
+            if(!used[u]) {
+                used[u] = 1;
+                q.push(u);
+                d[u] = d[v] + 1;
+                p[u] = v;
+            }
+        }
+    }
+    return d;
+}
+
+
 void tTestCase(int t) {
     int n;
     scan(n);
 }
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
-        }
+    int n; cin >> n;
+    for (int i = 1; i < n; ++i) {
+        int a, b; cin >> a >> b;
+        g[a].push_back(b); g[b].push_back(a);
     }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
-
+    vi dist1 = bfs(1, n);
+    // print(dist);
+    vi dist2 = bfs(n, n);
+    // print(dist2);
+    int f = 0, s = 0;
+    for (int i = 1; i <= n; ++i) {
+        if(dist1[i] <= dist2[i]) f++;
+        else s++;
+    }
+    yesif(f > s);
 }
 
 int32_t main() {
@@ -130,8 +155,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();
+
+    return 0;
 }

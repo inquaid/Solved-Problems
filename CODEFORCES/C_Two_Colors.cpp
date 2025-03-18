@@ -101,26 +101,59 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
+vector<int> makePreSum(vector<int> &a) {
+    int n = a.size();
+    vector<int> preSum(n + 1, 0);
+    for (int i = 1; i <= n; ++i) {
+        preSum[i] = preSum[i - 1] + a[i - 1];
+    }
+    return preSum;
+} // range(l - 1, r) 1 base indexing
+
+int pos(vi &v, int n) {
+    return lower_bound(all(v), n) - v.begin();
+}
+
 void tTestCase(int t) {
-    int n;
-    scan(n);
+    int n, m; cin >> n >> m;
+    vi a(m); cin >> a;
+    sort(all(a));
+    for (auto &i : a) {
+        i = min(i , n - 1); bug(i);
+    }
+    vi preSum = makePreSum(a);
+
+    // print(preSum[m] - preSum[1]);
+    int ans = 0;
+    for (int i = 0; i < m - 1; ++i) {
+        if(a[i] == 0) continue;
+        int lb = max(i + 1, pos(a, n - a[i]));
+        // bug(lb);
+        if(lb < m) {
+            int cnt = ( m - lb);
+            int sum = (preSum.back() - preSum[lb]) - (n - a[i]) * cnt + cnt;
+            // if(sum != 1) sum *= 2;
+                ans += sum;
+        bug((preSum.back() - preSum[lb]) -( n - a[i]));
+        }
+        // bug((n - a[i]) * (m - lb) );
+        // bug(m - lb);
+        // if(lb <= a[i]) {
+
+        // }
+        // print(sum);
+        
+    }
+    // print("\n");
+    print(ans * 2);
+
 }
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
-        }
+    int t; cin >> t;
+    for(int i = 1; i <= t; i++) {
+        tTestCase(i);
     }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
-
 }
 
 int32_t main() {
@@ -130,8 +163,8 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();    return 0;
+    vi v = {10,20,30,40,60,70,80};
+    // print(lower_bound(all(v), 30) - v.begin());
+    print(pos(v, 40));
 }

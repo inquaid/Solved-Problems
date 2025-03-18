@@ -107,20 +107,19 @@ void tTestCase(int t) {
 }
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
-        }
+    int n; cin >> n;
+    vi a(n);
+    int sum = 0;
+    for (int i = 0; i < n; ++i) {
+        cin >> a[i]; sum += a[i];
     }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
-
+    int x = 0, y = 0, ans = INT_MAX;
+    for (int i = 0; i < n - 1; ++i) {
+        x += a[i]; sum -= a[i]; y = sum;
+        // bug(x, y);
+        ans = min(ans, abs(x - y));
+    }
+    print(ans);
 }
 
 int32_t main() {
@@ -130,8 +129,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();
+
+    return 0;
 }

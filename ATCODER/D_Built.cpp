@@ -9,14 +9,12 @@
 #include <queue>
 #include <math.h>
 #include <climits>
-#include <bitset>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
 
 using namespace std;
 using vi = vector<int>;
-using pii = pair<int, int>;
 
 template <typename T, typename Y>
 istream &operator>>(istream &is, pair<T, Y> &p) {
@@ -93,34 +91,72 @@ template <typename Container> void print_container(const Container &container) {
 #define no cout << "NO\n"
 #define ff first
 #define ss second
-bool comp(int a, int b) { return a > b; }
-
+bool comp(vector<int> a, vector<int> b) { 
+    return a[0] < b[0];    
+}
+bool comp2(vector<int> a, vector<int> b) { 
+    return a[1] < b[1];    
+}
+bool mst(vector<int> a, vector<int> b) { 
+    return a[2] < b[2];    
+}
 #ifdef LOCAL
 #include "debug.h"
 #else
 #define bug(...)
 #endif
 
-void tTestCase(int t) {
-    int n;
-    scan(n);
+map<int, int> p, sz;
+
+void make_set(int v) {
+    p[v] = v;
+    sz[v] = 1;
+}
+
+int find_set(int v) {
+    if(v == p[v]) return v;
+    return p[v] = find_set(p[v]);
+}
+
+void union_sets(int a, int b) {
+    a = find_set(a), b = find_set(b);
+    if(a != b) {
+        if(sz[a] < sz[b]) {
+            swap(a, b);
+        }
+        p[b] = a;
+        sz[a] += sz[b];
+    }
 }
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
+    int n; cin >> n;
+    vector<vector<int>> v;
+    vector<vector<int>> v2;
+    for (int i = 0; i < n; ++i) {
+        int x, y; cin >> x >> y;
+        v.push_back({x, y, i});
+        v2.push_back({x, y, i});
+    }
+    sort(all(v), comp);
+    sort(all(v2), comp2);
+    vector<vector<int>> adj, adj2;
+    for (int i = 0; i < n - 1; ++i) {
+        adj.push_back({v[i][2], v[i + 1][2], min(abs(v[i][0] - v[i + 1][0]),abs(v[i][1] - v[i + 1][1]))});
+        adj.push_back({v2[i][2], v2[i + 1][2], min(abs(v2[i][0] - v2[i + 1][0]),abs(v2[i][1] - v2[i + 1][1]))});
+        make_set(i);
+        make_set(i + 1);
+    }
+    sort(all(adj), mst);
+    int ans = 0, ans1 = 0;
+    for (int i = 0; i < adj.size(); ++i) {
+        int a = adj[i][0], b = adj[i][1], cost = adj[i][2];
+        if(find_set(a) != find_set(b)) {
+            union_sets(a, b);
+            ans += cost;
         }
     }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
-
+    print(ans);
 }
 
 int32_t main() {
@@ -130,8 +166,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();
+
+    return 0;
 }

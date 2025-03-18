@@ -9,7 +9,6 @@
 #include <queue>
 #include <math.h>
 #include <climits>
-#include <bitset>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -101,26 +100,57 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
+const int N = 1000000;
+vector<int> lp(N+1);
+vector<int> pr;
+void seive() {   
+    for (int i=2; i <= N; ++i) {
+        if (lp[i] == 0) {
+            lp[i] = i;
+            pr.push_back(i);
+        }
+        for (int j = 0; i * pr[j] <= N; ++j) {
+            lp[i * pr[j]] = pr[j];
+            if (pr[j] == lp[i]) {
+                break;
+            }
+        }
+    }
+}
+
 void tTestCase(int t) {
-    int n;
-    scan(n);
+    int n, k;
+    bug(pr.back());
+    scan(n, k);
+    if(k == 1) {
+        print(n); return;
+    }
+    int ans = n;
+    vi res;
+    k--;
+    int chk = 1;
+    for(auto i : pr) {
+        while(n % i == 0) {
+            n /= i;
+            res.push_back(i);
+            // chk *= i;
+            if(res.size() == k) break;
+        }
+        if(res.size() == k) break;
+    }
+    // bug(res, n, k);
+
+    if(n == 1 or res.size() != k) print(-1);
+    else print(res, n);
 }
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
-        }
+    seive();
+    int t = 1; 
+    // cin >> t;
+    while(t--) {
+        tTestCase(t);
     }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
-
 }
 
 int32_t main() {
@@ -130,8 +160,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();
+
+    return 0;
 }

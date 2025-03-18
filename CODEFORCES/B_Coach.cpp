@@ -9,7 +9,6 @@
 #include <queue>
 #include <math.h>
 #include <climits>
-#include <bitset>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -101,26 +100,81 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
+map<int, int> p, sz;
+
+void make_set(int v) {
+    p[v] = v; sz[v] = 1;
+}
+
+int find_set(int v) {
+    if(v == p[v]) {return v;}
+    return p[v] = find_set(p[v]);
+}
+
+void union_sets(int a, int b) {
+    a = find_set(a), b = find_set(b);
+    if(a != b) {
+        if(sz[a] < sz[b]) swap(a, b);
+        p[b] = a;
+        sz[a] += sz[b];
+    }
+}
+
 void tTestCase(int t) {
     int n;
     scan(n);
 }
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
-        }
-    }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
+    int n, m; cin >> n >> m;
 
+    for (int i = 0; i <= n; ++i) {
+        make_set(i);
+    }
+
+    for (int i = 0; i < m; ++i) {
+        int a, b; cin >> a >> b;
+        union_sets(a, b);
+    }
+
+    unordered_map<int, vector<int>> groups;
+    for (int i = 1; i <= n; ++i) {
+        int parent = find_set(i);
+        groups[parent].push_back(i);
+    }
+    // int one = 0, two = 0, three = 0, more = 0;
+    vector<vector<int>> one, two, three;
+    for(auto member : groups) {
+        int sz = member.ss.size();
+        if(sz > 3) {
+            print(-1); return;
+        } else if(sz == 3) {
+            three.push_back(member.ss);
+        } else if(sz == 2) {
+            two.push_back(member.ss);
+        } else 
+            one.push_back(member.ss);
+    }
+    if(two.size() > one.size() or ((one.size() - two.size()) % 3 != 0)) {
+        print(-1); return;
+    }
+    for(auto evry : three) {
+        print(evry);
+    }
+    int i = 0;
+    while(i < two.size()) {
+        print(two[i][0], two[i][1], one[i][0]);
+        i++;
+    }
+    while(i < one.size()) {
+        // print(one[i][0], one[i][1], one[i][2]);
+        cout << one[i][0] << " ";
+        i++;
+        cout << one[i][0] << " ";
+        i++;
+        cout << one[i][0] << "\n";
+        i++;
+    }
 }
 
 int32_t main() {
@@ -130,8 +184,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();
+
+    return 0;
 }

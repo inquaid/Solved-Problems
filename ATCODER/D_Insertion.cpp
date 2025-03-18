@@ -9,14 +9,13 @@
 #include <queue>
 #include <math.h>
 #include <climits>
-#include <bitset>
+#include <stack>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
 
 using namespace std;
 using vi = vector<int>;
-using pii = pair<int, int>;
 
 template <typename T, typename Y>
 istream &operator>>(istream &is, pair<T, Y> &p) {
@@ -91,8 +90,6 @@ template <typename Container> void print_container(const Container &container) {
 #define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
-#define ff first
-#define ss second
 bool comp(int a, int b) { return a > b; }
 
 #ifdef LOCAL
@@ -107,20 +104,28 @@ void tTestCase(int t) {
 }
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
-        }
-    }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
+    int n;  cin >> n;
+    string s;   cin >> s;
 
+    stack<char> st;
+    string res;
+    for(auto ch : s) {
+        if(ch == '(') st.push('(');
+        else if(st.size()) st.pop();
+        else res += ch;
+    }
+    // print(res.size());
+    string ans = "";
+    for (int i = 0; i < res.size(); ++i) {
+        ans += '(';
+    }
+    s = ans + s;
+    ans = "";
+    while(st.size()) {
+        ans += ')'; st.pop();
+    }
+    s = s + ans;
+    print(s);
 }
 
 int32_t main() {
@@ -130,8 +135,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();
+
+    return 0;
 }

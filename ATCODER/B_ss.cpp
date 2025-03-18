@@ -9,7 +9,6 @@
 #include <queue>
 #include <math.h>
 #include <climits>
-#include <bitset>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -101,26 +100,22 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
-void tTestCase(int t) {
-    int n;
-    scan(n);
+int f(string s) {
+    if((s.size() & 1)) return 0;
+    string s1 = "", s2 = "";
+    for (int i = 0; i < s.size() / 2; ++i) {
+        s1 += s[i];
+        s2 += s[i + s.size()/2];
+    }
+    // print(s1, s2);
+    return s1 == s2;
 }
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
-        }
-    }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
-
+    string s; cin >> s;
+    s.pop_back();
+    while(!f(s)) s.pop_back();
+    print(s.size());
 }
 
 int32_t main() {
@@ -130,8 +125,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();
+
+    return 0;
 }

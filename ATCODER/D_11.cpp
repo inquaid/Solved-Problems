@@ -9,7 +9,6 @@
 #include <queue>
 #include <math.h>
 #include <climits>
-#include <bitset>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -101,25 +100,64 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
-void tTestCase(int t) {
-    int n;
-    scan(n);
+
+int n, d;
+const int M = 1e9 + 7;
+int inv(int a) {
+  return a <= 1 ? a : M - (long long)(M/a) * inv(M % a) % M;
+}
+vector<int> fact(1e5+10);
+void preCompute() {
+    int n = 1e5 + 2;
+    int ans = 1;
+    fact[0] = 1;
+    for (int i = 1; i <= n; ++i) {
+        ans = ((ans % M) * (i % M)) % M;
+        fact[i] = ans;
+    }
+    // return ans;
+}
+int ncr(int n, int r) {
+    // bug(n, r, fact[n], fact[r], fact[n - r]);
+    // return fact(n) / (fact(r) * fact(n - r));
+    return fact[n] * inv(fact[r]) % M * inv(fact[n - r]) % M;
+}
+
+int f(int i) {
+    if(d >= i - 1) {
+        // if(i == 4)
+        //     bug(ncr(n + 1, i), ncr(d, i - 1), d, i - 1);
+        return (ncr(n + 1, i) - ncr(d, i - 1) + M) % M;
+    } 
+    return ncr(n + 1, i);
 }
 
 void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
+    preCompute();
+    cin >> n;
+    vi a(n + 1);
+    map<int, int> mp;
+    int mx = 0;
+    for (int i = 0; i <= n; ++i) {
+        cin >> a[i]; mp[a[i]]++;
+        if(mp[a[i]] > 1) mx = a[i];
+    }
+    int p1 = 0, p2 = 0;
+    for (int i = 0; i <= n; ++i) {
+        if(a[i] == mx) {
+            if(!p1) {
+                p1 = i + 1;
+            } else p2 = i + 1;
         }
     }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
+    d = p1 - 1 + n + 1 - p2;
+    // bug(d);
+    // sort(all(a));
+    // print(a);
+    // print(ncr(15, 4));
+    for (int i = 1; i <= n + 1; ++i) {
+        print(f(i));
+    }
 
 }
 
@@ -130,8 +168,9 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+    solve();    return 0;
+
+    preCompute();
+    // print(fact[5]);
+    print(ncr(3,3));
 }

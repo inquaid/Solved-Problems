@@ -9,7 +9,6 @@
 #include <queue>
 #include <math.h>
 #include <climits>
-#include <bitset>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -106,21 +105,49 @@ void tTestCase(int t) {
     scan(n);
 }
 
-void solve() {
-    string a; cin >> a;
-    bool flag = false;
-    for (int i = 0; i < a.size(); ++i) {
-        if(a[i] == '0') {
-            a.erase(a.begin() + i);
-            flag = true;
-            break;
-        }
+int a, b, n; 
+const int M = 1000000007; 
+int f(int x) {
+    while(x) {
+        int temp = x % 10;
+        if(temp != a and temp != b) return 0;
+        x /= 10;
     }
-    if(!flag) a.pop_back();
-    // bitset<62> b(a);
-    // print(b);
-    print(a);
+    return 1;
+}
+vi fact;
+int inv(int a) {
+  return a <= 1 ? a : M - (long long)(M/a) * inv(M % a) % M;
+}
+int ncr(int n, int m) {
+    return fact[n + m] * inv(fact[n]) % M * inv(fact[m]) % M;
+}
 
+void solve() {
+    cin >> a >> b >> n;
+    if(a == b) {
+        int sum = n * a;
+        if(f(sum)) print(1);
+        else print(0);
+        return;
+    }
+    int fct = 1;
+    fact.push_back(1);
+    for (int i = 1; i <= n; ++i) {
+        fct = ((fct % M) * (i % M)) % M;
+        fact.push_back(fct);
+    }
+    // print(fact);
+    if(a > b) swap(a, b);
+    int mn = b - a;
+    int sum = a * n, cnt = 0;
+    for (int i = 0; i <= n; ++i) {
+        if(f(sum)) {
+            cnt = (cnt + ncr(n - i, i)) % M;
+        }
+        sum += mn;
+    }
+    print(cnt);
 }
 
 int32_t main() {
@@ -130,8 +157,8 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    solve(); return 0;
-    string a = "1234";
-    a.erase(a.begin() + 1);
-    print(a);
+
+    solve();
+
+    return 0;
 }
