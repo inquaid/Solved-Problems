@@ -10,7 +10,6 @@
 #include <math.h>
 #include <climits>
 #include <bitset>
-#include <numeric>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -107,22 +106,29 @@ void tTestCase(int t) {
   scan(n);
 }
 
+int n, m; 
+vector<vector<int>> mtx, vis;
+int f(int i, int j) {
+  if(i >= n or j >= m) return INT_MIN;
+  if(i == n - 1 and j == m - 1) return mtx[i][j];
+
+  return mtx[i][j] + max(f(i + 1, j), f(i, j + 1));
+
+  
+}
+
 void solve() {
-  int n, q;
-  cin >> n >> q;
-  set<int> st;
-  for (int i = 1; i < 50; ++i) {
-    st.insert(i);
-  }
+  cin >> n >> m;
+  mtx.resize(n, vi(m, 0));
+  vis.resize(n, vi(m, 0));
+
   for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    st.erase(temp);
+    for (int j = 0; j < m; ++j) {
+      cin >> mtx[i][j];
+    } 
   }
-  // bug(st);
-  for (int i = 0; i < q; ++i) {
-    int temp; cin >> temp;
-    print(lower_bound(all(st), temp));
-  }
+  print(f(0, 0));
+
 }
 
 int32_t main() {
@@ -132,8 +138,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();  return 0;
-  vi temp = {1,2,3,4};
-  temp.erase(temp.begin() + 1);
-  print(temp);
+  solve();
+
+  return 0;
 }

@@ -10,7 +10,6 @@
 #include <math.h>
 #include <climits>
 #include <bitset>
-#include <numeric>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -102,27 +101,23 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
-void tTestCase(int t) {
-  int n;
-  scan(n);
+vi wt, val;
+  
+int f(int n, int w, int res) {
+  if(n <= 0) return res;
+  if(w >= wt[n - 1])  
+    return max(f(n - 1, w - wt[n - 1], res + val[n - 1]), f(n - 1, w, res));
+  else return f(n - 1, w, res);
 }
 
 void solve() {
-  int n, q;
-  cin >> n >> q;
-  set<int> st;
-  for (int i = 1; i < 50; ++i) {
-    st.insert(i);
-  }
+  int n, w; 
+  cin >> n >> w;
   for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    st.erase(temp);
-  }
-  // bug(st);
-  for (int i = 0; i < q; ++i) {
-    int temp; cin >> temp;
-    print(lower_bound(all(st), temp));
-  }
+     int wi, vi; cin >> wi >> vi;
+     wt.push_back(wi); val.push_back(vi);
+  } 
+  print(f(n, w, 0));
 }
 
 int32_t main() {
@@ -132,8 +127,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();  return 0;
-  vi temp = {1,2,3,4};
-  temp.erase(temp.begin() + 1);
-  print(temp);
+  solve();
+
+  return 0;
 }

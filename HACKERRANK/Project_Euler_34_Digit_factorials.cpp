@@ -10,7 +10,6 @@
 #include <math.h>
 #include <climits>
 #include <bitset>
-#include <numeric>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -102,27 +101,25 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
-void tTestCase(int t) {
-  int n;
-  scan(n);
+vi fact;
+
+int sum_of_dgt(int n) {
+  int sum = 0;
+  while(n) {
+    sum += fact[(n % 10)];
+    n /= 10;
+  }
+  return sum;
 }
 
 void solve() {
-  int n, q;
-  cin >> n >> q;
-  set<int> st;
-  for (int i = 1; i < 50; ++i) {
-    st.insert(i);
+  // print(sum_of_dgt(19569999));
+  int n; cin >> n; int ans = 0;
+  for (int i = 10; i <= n; ++i) {
+    if(sum_of_dgt(i) % i == 0) ans += i;
+    // bug(i);
   }
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    st.erase(temp);
-  }
-  // bug(st);
-  for (int i = 0; i < q; ++i) {
-    int temp; cin >> temp;
-    print(lower_bound(all(st), temp));
-  }
+  print(ans);
 }
 
 int32_t main() {
@@ -132,8 +129,14 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();  return 0;
-  vi temp = {1,2,3,4};
-  temp.erase(temp.begin() + 1);
-  print(temp);
+  int prev = 1;
+  fact.push_back(1);
+  for (int i = 1; i <= 9; ++i) {
+    prev *= i;
+    fact.push_back(prev);
+  }
+
+  solve();
+
+  return 0;
 }

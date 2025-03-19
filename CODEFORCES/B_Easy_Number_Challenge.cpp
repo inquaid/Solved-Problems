@@ -10,7 +10,6 @@
 #include <math.h>
 #include <climits>
 #include <bitset>
-#include <numeric>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -21,53 +20,53 @@ using pii = pair<int, int>;
 
 template <typename T, typename Y>
 istream &operator>>(istream &is, pair<T, Y> &p) {
-  return is >> p.first >> p.second;
+    return is >> p.first >> p.second;
 }
 
 template <typename T> istream &operator>>(istream &is, vector<T> &v) {
-  for (auto &elem : v)
-    is >> elem;
-  return is;
+    for (auto &elem : v)
+        is >> elem;
+    return is;
 }
 
 template <typename T, typename Y>
 ostream &operator<<(ostream &os, const pair<T, Y> &p) {
-  os << p.first << " " << p.second;
-  return os;
+    os << p.first << " " << p.second;
+    return os;
 }
 
 template <typename T> ostream &operator<<(ostream &os, const vector<T> &v) {
-  for (size_t i = 0; i < v.size(); ++i) {
-    os << v[i] << (i + 1 == v.size() ? "" : " ");
-  }
-  return os;
+    for (size_t i = 0; i < v.size(); ++i) {
+        os << v[i] << (i + 1 == v.size() ? "" : " ");
+    }
+    return os;
 }
 
 template <typename T> ostream &operator<<(ostream &os, const set<T> &s) {
-  auto it = s.begin();
-  while (it != s.end()) {
-    os << *it;
-    if (++it != s.end())
-      os << " ";
-  }
-  return os;
+    auto it = s.begin();
+    while (it != s.end()) {
+        os << *it;
+        if (++it != s.end())
+            os << " ";
+    }
+    return os;
 }
 
 template <typename T>
 ostream &operator<<(ostream &os, const unordered_set<T> &s) {
-  bool first = true;
-  for (const auto &elem : s) {
-    if (!first)
-      os << " ";
-    os << elem;
-    first = false;
-  }
-  return os;
+    bool first = true;
+    for (const auto &elem : s) {
+        if (!first)
+            os << " ";
+        os << elem;
+        first = false;
+    }
+    return os;
 }
 
 template <typename T> void sort_unique(vector<T> &vec) {
-  sort(vec.begin(), vec.end());
-  vec.erase(unique(vec.begin(), vec.end()), vec.end());
+    sort(vec.begin(), vec.end());
+    vec.erase(unique(vec.begin(), vec.end()), vec.end());
 }
 
 template <class... T> void scan(T &...args) { (cin >> ... >> args); }
@@ -76,17 +75,17 @@ template <typename T> void print(const T &value) { cout << value << "\n"; }
 
 template <typename T, typename... Args>
 void print(const T &first, const Args &...rest) {
-  cout << first;
-  if constexpr (sizeof...(rest) > 0) {
-    cout << " ";
-    print(rest...);
-  } else {
-    cout << "\n";
-  }
+    cout << first;
+    if constexpr (sizeof...(rest) > 0) {
+        cout << " ";
+        print(rest...);
+    } else {
+        cout << "\n";
+    }
 }
 
 template <typename Container> void print_container(const Container &container) {
-  cout << container << "\n";
+    cout << container << "\n";
 }
 
 #define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
@@ -102,38 +101,38 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
-void tTestCase(int t) {
-  int n;
-  scan(n);
-}
-
+const int N = 1e6 + 6, M = (1<<30);
+vector<int> d(N, 0);
 void solve() {
-  int n, q;
-  cin >> n >> q;
-  set<int> st;
-  for (int i = 1; i < 50; ++i) {
-    st.insert(i);
-  }
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    st.erase(temp);
-  }
-  // bug(st);
-  for (int i = 0; i < q; ++i) {
-    int temp; cin >> temp;
-    print(lower_bound(all(st), temp));
-  }
+    int a, b, c; cin >> a >> b >> c;
+    int cnt = 0;
+    for (int i = 1; i <= a; ++i) {
+        for (int j = 1; j <= b; ++j) {
+            for (int k = 0; k <= c; ++k) {
+                cnt = ((cnt % M) + (d[i*j*k] % M)) % M;
+            }
+        }
+   }   
+   print(cnt);
 }
 
 int32_t main() {
-  ios_base::sync_with_stdio(false);
-  cin.tie(NULL);
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     // freopen("input.txt", "r" , stdin);
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();  return 0;
-  vi temp = {1,2,3,4};
-  temp.erase(temp.begin() + 1);
-  print(temp);
+    for (int i = 1; i < N; ++i) {
+        for (int j = i; j < N; j += i) {
+            d[j]++;
+        }
+    }
+    // for (int i = 1; i <= 10; ++i) {
+    //     print(d[i]);
+    // }
+    solve();
+    // print(1<<30);
+
+    return 0;
 }

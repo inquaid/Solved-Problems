@@ -10,7 +10,6 @@
 #include <math.h>
 #include <climits>
 #include <bitset>
-#include <numeric>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -108,21 +107,21 @@ void tTestCase(int t) {
 }
 
 void solve() {
-  int n, q;
-  cin >> n >> q;
-  set<int> st;
-  for (int i = 1; i < 50; ++i) {
-    st.insert(i);
+  int n, m; cin >> n >> m;
+  // vi g[n + 1];
+  map<int, vi> g;
+  for (int i = 0; i < m; ++i) {
+    int a, b; cin >> a >> b;
+    g[a].push_back(b);
+    g[b].push_back(a);
   }
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    st.erase(temp);
+  for(auto v : g[1]) {
+    for(auto vv : g[v])
+      if(vv == n) {
+        print("POSSIBLE"); return;
+    }
   }
-  // bug(st);
-  for (int i = 0; i < q; ++i) {
-    int temp; cin >> temp;
-    print(lower_bound(all(st), temp));
-  }
+  print("IMPOSSIBLE");
 }
 
 int32_t main() {
@@ -132,8 +131,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();  return 0;
-  vi temp = {1,2,3,4};
-  temp.erase(temp.begin() + 1);
-  print(temp);
+  solve();
+
+  return 0;
 }
