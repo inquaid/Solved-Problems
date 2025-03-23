@@ -104,25 +104,48 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
-void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
+const int INF = LONG_LONG_MAX, N = 1e6;
+// vector<vector<pair<int, int>>> adj;
+vector<pair<int, int>> adj[N];
+
+void dijkstra(int s, vector<int> &d, vector<int> &p, int n) {
+  d.assign(n + 1, INF);
+  p.assign(n + 1, -1);
+  
+  d[s] = 0;
+  set<pair<int, int>> q;
+  q.insert({0, s});
+  while(q.size()) {
+    int v = q.begin()->second;
+    q.erase(q.begin());
+
+    for(auto edge : adj[v]) {
+      int to = edge.first;
+      int len = edge.second;
+
+      if(d[v] + len < d[to]) {
+        q.erase({d[to], to});
+        d[to] = d[v] + len;
+        p[to] = v;
+        q.insert({d[to], to});
+      }
+    }
   }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
 }
 
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
+  int n; cin >> n;
+  for (int i = 1; i < n; ++i) {
+    int a, b, c; cin >> a >> b >> c;
+    adj[a].push_back({b, c});
+    adj[b].push_back({a, c});
+  }
+  int q, k; cin >> q >> k;
+  vector<int> d, p;
+  dijkstra(k, d, p, n);
+  for (int i = 0; i < q; ++i) {
+    int x, y; cin >> x >> y;
+    print(d[x] + d[y]);
   }
 }
 
@@ -134,6 +157,7 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
   solve();
+  // print(LONG_LONG_MAX);
 
   return 0;
 }

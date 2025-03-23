@@ -104,19 +104,24 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
+int n, k; 
+
+int pos(int x) {
+  return (x -  floor(x / (n * 1.0))) >= k;
+}
+
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
+  cin >> n >> k;
+
+  int l = 0, r = 1;
+  while(!pos(r)) r *= 2;
+  while(l <= r) {
+    int mid = l + (r - l) / 2;
+    if(pos(mid)) {
+      r = mid - 1;
+    } else l = mid + 1;
   }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+  print(r + 1);
 }
 
 void solve() {

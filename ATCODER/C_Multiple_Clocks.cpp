@@ -105,25 +105,18 @@ bool comp(int a, int b) { return a > b; }
 #endif
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
-  }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+  int n;
+  scan(n);
 }
 
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
+  int n; cin >> n;
+  int ans = 1ll;
+  for (int i = 0; i < n; ++i) {
+    int temp; cin >> temp;
+    ans = lcm(ans, temp);
   }
+  print(ans);
 }
 
 int32_t main() {

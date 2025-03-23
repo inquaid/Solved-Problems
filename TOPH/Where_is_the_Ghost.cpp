@@ -104,26 +104,19 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
-void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
-  }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+const int M = 1e9 + 7;
+
+int f(vi &a, int n, int total, vector<vector<int>> &dp) {
+  if(n == 0) return (total % 2520 == 0) ? 1 : 0;
+  if(dp[n][total] != -1) return dp[n][total];
+  return dp[n][total] = (f(a, n - 1, total, dp) % M + f(a, n - 1, (total % 2520 * a[n - 1] % 2520) % 2520, dp) % M) % M;
 }
 
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
-  }
+  int n; cin >> n;
+  vi a(n); cin >> a;
+  vector<vector<int>> dp(n + 1, vector<int> (2520, -1));
+  print(f(a, n, 1, dp));
 }
 
 int32_t main() {

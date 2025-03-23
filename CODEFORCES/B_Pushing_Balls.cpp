@@ -105,18 +105,29 @@ bool comp(int a, int b) { return a > b; }
 #endif
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
+  int n, m; cin >> n >> m;
+  int ttl_one = 0;
+  vector<string> vs;
+  string temp;
+  for (int i = 0; i < n; ++i) {
+    cin >> temp; vs.push_back(temp);
+    ttl_one += count(all(temp), '1');
   }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+  int adj_one = 0;
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < m; ++j) {
+      if(vs[i][j] != '1') break;
+      adj_one++;
+      vs[i][j] = '.';
+    }
+  }
+  for (int col = 0; col < m; ++col) {
+    for (int row = 0; row < n; ++row) {
+      if(vs[row][col] == '0') break;
+      if(vs[row][col] == '1') adj_one++;
+    }
+  }
+  yesif(adj_one == ttl_one);
 }
 
 void solve() {

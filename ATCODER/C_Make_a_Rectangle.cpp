@@ -105,25 +105,33 @@ bool comp(int a, int b) { return a > b; }
 #endif
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
-  }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+  int n;
+  scan(n);
 }
 
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
+  int n; cin >> n;
+  map<int, int, greater<int>> mp;
+  for (int i = 0; i < n; ++i) {
+    int temp; cin >> temp; mp[temp]++;
   }
+  int a = -1, b = -1;
+  for(auto i : mp) { 
+    if(i.ss > 3) {
+      if(a == -1) {
+        a = i.ff;
+      } 
+      if(b == -1) {
+        b = i.ff;
+      }
+    }
+    else if(i.ss > 1) {
+      if(a == -1) a = i.ff;
+      else if(b == -1) b = i.ff;
+    }
+  }
+  if(a == -1 or b == -1) print(0);
+  else print(a * b);
 }
 
 int32_t main() {

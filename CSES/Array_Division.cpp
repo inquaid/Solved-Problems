@@ -104,26 +104,35 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
-void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
+int n, k;
+vi x;
+
+int pos(int mid) {
+  int cnt = 1, sum = 0;
+  for(auto i : x) {
+    if(i > mid) return 0;
+    sum += i; 
+    if(sum > mid) {
+      sum = i; cnt++;
+    }
   }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+  return cnt <= k;
 }
 
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
+  cin >> n >> k; 
+  x.resize(n); 
+  cin >> x; 
+  int l = 0, r = 1e18;
+  // while(!pos(r)) r *= 2; bug(r);
+  while(l <= r) {
+    int mid = l + (r - l) / 2;
+    if(pos(mid)) {
+      r = mid - 1;
+    } else 
+      l = mid + 1;
   }
+  print(r + 1);
 }
 
 int32_t main() {

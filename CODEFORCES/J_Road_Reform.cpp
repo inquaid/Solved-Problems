@@ -96,7 +96,7 @@ template <typename Container> void print_container(const Container &container) {
 #define no cout << "NO\n"
 #define ff first
 #define ss second
-bool comp(int a, int b) { return a > b; }
+bool comp(vi &a, vi &b) { return a.back() < b.back(); }
 
 #ifdef LOCAL
 #include "debug.h"
@@ -104,19 +104,60 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
-void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
+map<int, int> p, sz;
+
+void make_set(int v) {
+  p[v] = v; sz[v] = 1;
+}
+
+int find_set(int v) {
+  if(v == p[v]) return v;
+  return p[v] = find_set(p[v]);
+}
+
+void union_sets(int a, int b) {
+  a = find_set(a), b = find_set(b);
+  if(a != b) {
+    if(sz[a] < sz[b]) swap(a, b);
+    p[b] = a;
+    sz[a] += sz[b];
   }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+}
+
+void tTestCase(int t) {
+  p.clear(); sz.clear();
+  int n, m, k; cin >> n >> m >> k;
+  vector<vector<int>> v;
+  for (int i = 0; i < m; ++i) {
+    int x, y, s; cin >> x >> y >> s; 
+    // int cnt =  (s - k);
+    // if(s > k) cnt = s - k;
+    v.push_back({x, y, s});
+  }
+  sort(all(v), comp);
+
+  for (int i = 1; i < n; ++i) {
+    make_set(i);
+  }
+
+  int res = 0;
+  // int res2 = 0;
+  vi temp;
+  for (int i = 0; i < m; ++i) {
+    int x = v[i][0], y = v[i][1], s = abs(v[i][2]);
+    // print(x, y, s);
+    if(find_set(x) != find_set(y)) {
+      union_sets(x, y);
+      if(s > k) res += s - k;
+    }
+  }
+  if(res == 0) {
+    res = INT_MAX;
+    for (int i = 0; i < m; ++i) {
+      res = min(res, abs(v[i].back() - k));
+    }
+  }
+  print(res);
 }
 
 void solve() {

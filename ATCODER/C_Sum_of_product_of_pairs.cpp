@@ -11,7 +11,6 @@
 #include <climits>
 #include <bitset>
 #include <iomanip>
-#include <numeric>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -104,26 +103,74 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
-void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
+
+template <int MOD=998'244'353>
+struct Modular {
+  int value;
+  static const int MOD_value = MOD;
+
+  Modular(long long v = 0) { value = v % MOD; if (value < 0) value += MOD;}
+  Modular(long long a, long long b) : value(0){ *this += a; *this /= b;}
+
+  Modular& operator+=(Modular const& b) {value += b.value; if (value >= MOD) value -= MOD; return *this;}
+  Modular& operator-=(Modular const& b) {value -= b.value; if (value < 0) value += MOD;return *this;}
+  Modular& operator*=(Modular const& b) {value = (long long)value * b.value % MOD;return *this;}
+
+  friend Modular exp(Modular a, long long e) {
+    Modular res = 1; while (e) { if (e&1) res *= a; a *= a; e >>= 1; }
+    return res;
   }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+  friend Modular Finv(Modular a) { return exp(a, MOD - 2); }
+  friend Modular Einv(Modular a) { 
+    return (a.value == 1 ) ? Modular(1) : Modular(MOD - (MOD / a.value) * Einv(Modular(MOD % a.value)).value % MOD);
+  }
+
+  Modular& operator/=(Modular const& b) { return *this *= Einv(b); }
+  friend Modular operator+(Modular a, Modular const b) { return a += b; }
+  friend Modular operator-(Modular a, Modular const b) { return a -= b; }
+  friend Modular operator-(Modular const a) { return 0 - a; }
+  friend Modular operator*(Modular a, Modular const b) { return a *= b; }
+  friend Modular operator/(Modular a, Modular const b) { return a /= b; }
+  friend std::ostream& operator<<(std::ostream& os, Modular const& a) {return os << a.value;}
+  friend bool operator==(Modular const& a, Modular const& b) {return a.value == b.value;}
+  friend bool operator!=(Modular const& a, Modular const& b) {return a.value != b.value;}
+};
+
+const int M = 1e9 + 7;
+
+void tTestCase(int t) {
+  int n;
+  scan(n);
 }
 
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
+  int n; cin >> n;
+  vi a(n); 
+  // int sum = 0;
+  Modular<M> sum, adj;
+
+  for (int i = 0; i < n; ++i) {
+    int temp; cin >> a[i];
+    sum += a[i];
+    adj += (a[i] * a[i]);
   }
+  // bug(sum);
+  Modular<M> res;
+  res = 0;
+  for (int i = 0; i < n; ++i) {
+    res += sum * a[i];
+    bug(res, sum, a[i]);
+  }
+  print((res - adj) / 2);
+  // int res = 0;
+  // for (int i = 0; i < n; ++i)
+  // {
+  //   for (int j = 0; j < n; ++j)
+  //   {
+
+  //     res += a[i] * a[j];
+  //   }
+  // }print(res);
 }
 
 int32_t main() {

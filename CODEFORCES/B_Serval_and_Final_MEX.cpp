@@ -105,18 +105,52 @@ bool comp(int a, int b) { return a > b; }
 #endif
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
+  int n;
+  scan(n);
+  vi a(n); 
+  int zero = 0, non_zero = -1, o_strt = 0, o_end = 0, z_strt = 0, z_end = 0;
+  for (int i = 0; i < n; ++i) {
+    cin >> a[i];
+    if(a[i] == 0) zero++;
+    else non_zero = i ;
+
+    if(o_strt == 0 and a[i] != 0) o_strt = i;
+    else if(a[i] != 0) o_end = i;
+
+    if(z_strt == 0 and a[i] == 0) z_strt = i;
+    else if(a[i] == 0) z_end = i;
   }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+  if(zero == 0) {
+    print(1);
+    print(1, n);
+  } else if(non_zero == -1) {
+    print(3);
+    print(1, 2);
+    print(2, n - 1);
+    print(1, 2);
+  } else {
+    if(a[0] != 0) {
+      print(2);
+      print(2, n);
+      print(1, 2);
+    } else if(a.back() != 0) {
+      print(2);
+      print(1, n - 1);
+      print(1, 2);
+    } else {
+      print(3);
+      if(2 == n - o_strt) {
+        print(1, o_strt);
+        print(2 , n - o_strt + 1);
+      } else {
+        print(1, o_strt + 1);
+        print(2, n - o_strt);
+      }
+      // print(2, n - o_strt + 1);
+      print(1, 2);
+
+    }
+  }
 }
 
 void solve() {

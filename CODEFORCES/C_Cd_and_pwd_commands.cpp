@@ -11,7 +11,6 @@
 #include <climits>
 #include <bitset>
 #include <iomanip>
-#include <numeric>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -104,26 +103,38 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
-void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
-  }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
-}
 
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
+  int n; cin >> n;
+  deque<string> dq;
+  for (int i = 0; i < n; ++i) {
+    string temp; cin >> temp;
+    if(temp == "pwd") {
+      for(auto i : dq) {
+        cout << "/" << i;
+      } print("/");
+    } else {
+      string s; cin >> s;
+      if(s[0] == '/') dq.clear();
+      for(auto& ch : s) {
+        if(ch == '/') ch = ' ';
+      }
+      // print(s);
+      stringstream ss(s);
+      // cout << ss.str() << endl;
+      string word;
+      while(ss >> word) {
+        // print(word);
+        if(word == "..") dq.pop_back();
+        else dq.push_back(word);
+      }
+      // bug(dq.size());
+      // for(auto i : dq) {
+      //   cout << i << " ";
+      // }
+    }
   }
+  
 }
 
 int32_t main() {

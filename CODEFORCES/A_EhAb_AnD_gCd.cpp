@@ -11,11 +11,9 @@
 #include <climits>
 #include <bitset>
 #include <iomanip>
-#include <numeric>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
-#define newl "\n"
 
 using namespace std;
 using vi = vector<int>;
@@ -105,18 +103,9 @@ bool comp(int a, int b) { return a > b; }
 #endif
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
-  }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+  int n;
+  scan(n);
+  print(1, (n-1));
 }
 
 void solve() {

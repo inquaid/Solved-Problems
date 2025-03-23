@@ -11,11 +11,11 @@
 #include <climits>
 #include <bitset>
 #include <iomanip>
+#include <cmath>
 #include <numeric>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
-#define newl "\n"
 
 using namespace std;
 using vi = vector<int>;
@@ -106,18 +106,16 @@ bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
   int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
+  for (int a = 1; a <= min(100ll, n); ++a) {
+    for (int b = n; b > max(n - 100ll, 0ll); --b) {
+      if(a <= n and b <= n and abs(a-b)>=k and abs(__gcd(a, b)- lcm(a,b)) >= (2*k)) {
+        print(a, b); return;
+      }
+    }
   }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+  print(-1, -1);
 }
+
 
 void solve() {
   int t; cin >> t;

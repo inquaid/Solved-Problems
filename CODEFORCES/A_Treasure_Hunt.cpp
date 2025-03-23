@@ -105,18 +105,20 @@ bool comp(int a, int b) { return a > b; }
 #endif
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
+  int x, y, a; cin >> x >> y >> a;
+  // works equally
+  int min_days = floor(a / ((x + y) * 1.0)) ; 
+  int ttl = x * min_days + y * min_days ; 
+  bug(min_days, ttl);
+  if(ttl > a) {
+    yes;
+  } else if(ttl == a) {
+    no;
+  } else {
+    if(ttl + x > a) no;
+    else yes;
   }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+
 }
 
 void solve() {

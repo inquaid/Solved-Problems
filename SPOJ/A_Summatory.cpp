@@ -11,7 +11,6 @@
 #include <climits>
 #include <bitset>
 #include <iomanip>
-#include <numeric>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -104,19 +103,55 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
-void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
+const int M = 1000000003;
+int inv(int a) {
+  return a <= 1 ? a : M - (long long)(M/a) * inv(M % a) % M;
+}
+long long binpow(long long a, long long b) {
+  int m = M;
+  a %= m;
+  long long res = 1;
+  while (b > 0) {
+    if (b & 1)
+      res = res * a % m;
+    a = a * a % m;
+    b >>= 1;
   }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+  return res;
+}
+
+int sum_3(int n) {
+  int nm = n % M;
+  int n1 = (n + 1) % M;
+  int half = inv(2);
+  int tmp = ((nm * n1) % M * half) % M;
+  return binpow(tmp, 2);
+}
+
+int sum_4(int n) {
+  int nm = n % M;
+  int n1 = (n + 1) % M;
+  int two_n_plus_1 = (2 * nm + 1) % M;
+  int term1 = (nm * n1) % M;
+  int term2 = (term1 * two_n_plus_1) % M;
+  
+  int n2 = binpow(n, 2);
+  int term3 = ((3 * n2) % M + (3 * nm) % M - 1) % M;
+  if (term3 < 0)
+    term3 += M;
+    
+  int prod = (term2 * term3) % M;
+  return (prod * inv(30)) % M;
+}
+
+void tTestCase(int t) {
+  int n;
+  scan(n);
+  int temp = ((sum_3(n) * (n + 1) % M) % M - sum_4(n)) % M;
+  if(temp < 0) temp += M;
+  print(temp);
+  // print(M);
+  // print(binpow(2,4));
 }
 
 void solve() {

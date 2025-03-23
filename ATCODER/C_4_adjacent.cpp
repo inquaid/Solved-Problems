@@ -11,11 +11,9 @@
 #include <climits>
 #include <bitset>
 #include <iomanip>
-#include <numeric>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
-#define newl "\n"
 
 using namespace std;
 using vi = vector<int>;
@@ -91,9 +89,9 @@ template <typename Container> void print_container(const Container &container) {
   cout << container << "\n";
 }
 
-#define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
-#define yes cout << "YES\n"
-#define no cout << "NO\n"
+#define yesif(flag) cout << ((flag) ? "Yes\n" : "No\n")
+#define yes cout << "Yes\n"
+#define no cout << "No\n"
 #define ff first
 #define ss second
 bool comp(int a, int b) { return a > b; }
@@ -105,25 +103,23 @@ bool comp(int a, int b) { return a > b; }
 #endif
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
-  }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+  int n;
+  scan(n);
 }
 
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
+  int n; cin >> n;
+  int cnt = 0, cnt_4 = 0;
+  int not_4 = 0;
+  for (int i = 0; i < n; ++i) {
+    int temp; cin >> temp;
+    if(temp % 4 == 0) cnt_4++;
+    else if(temp % 2 == 0) cnt++;
+    else not_4++;
   }
+  if(cnt) not_4++;
+  bug(cnt_4, not_4);
+  yesif((cnt_4 - not_4) >= -1);
 }
 
 int32_t main() {

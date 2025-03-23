@@ -15,7 +15,6 @@
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
-#define newl "\n"
 
 using namespace std;
 using vi = vector<int>;
@@ -104,19 +103,42 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
+int f(vi &a, int k) {
+    for (int i = 1; i <= a.size(); ++i) {
+        if(a[i - 1] == i) return 0;
+        if(a[i - 1] % k != i % k) return 0;
+    } return 1;
+}
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
+  int n, k; 
+  // for (int n = 1; n <= 100; ++n) {
+  //   for (int k = 1; k <= n; ++k)
+  //   {
+        // bug(n, k);
+    
+  cin >> n >> k;
+  if(n < 2 * k) {
+    print(-1); return;
+    // bug(n, k);
+    // continue;
   }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+  vi ans(n);
+  iota(all(ans), 1);
+  while(!f(ans, k)){
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if(ans[i] % k == ans[j] % k) {
+              swap(ans[i], ans[j]);
+              break;
+            }
+        }
+        // if(ans[i] == i + 1 or ans[i] % k != (i + 1) % k) {
+        //     print(-1); return;
+        // }
+    }
+}
+  print(ans);
+  // cout << "\n";
 }
 
 void solve() {

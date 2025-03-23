@@ -104,19 +104,23 @@ bool comp(int a, int b) { return a > b; }
 #define bug(...)
 #endif
 
+int f(int x, int y, int k) {
+  // bug((x + k) + (y + k) == (x + k) ^ (y + k));
+  return ((x + k) + (y + k)) == ((x + k) ^ (y + k));
+}
+
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
+  int x, y; cin >> x >> y;
+  if(x == y) print(-1);
+  else {
+    // x = max(x,y);
+    if(x < y) swap(x, y);
+    int temp = (1<<(int)(ceil(log2(x)) ));
+    print(temp - x);
+    // int k = temp - x;
+    // print(x + k, y + k);
+    // if(!f(x, y, temp - x)) {print(t); no;}
   }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
 }
 
 void solve() {
@@ -133,7 +137,13 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();
-
-  return 0;
+  solve();  return 0;
+  // yesif(f(1198372, 599188, 973676));
+  bitset<25> b(20);
+  bitset<25> b1(10);
+  bitset<25> b2(599188);
+  print(b);
+  // print((b1 ^ b2) >> 2);
+  // print((b1 ));
+  // print(b2);
 }

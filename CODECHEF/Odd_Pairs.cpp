@@ -11,7 +11,6 @@
 #include <climits>
 #include <bitset>
 #include <iomanip>
-#include <numeric>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -105,18 +104,11 @@ bool comp(int a, int b) { return a > b; }
 #endif
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  string s; cin >> s;
-  string rev = s;
-  reverse(all(rev));
-  if (s < rev) {
-      yes;
-      return;
-  }
-  set<char> st;
-  for(auto ch : s) st.insert(ch);
-  if(st.size() == 1) {no; return;}
-  yesif(k >= 1);
+  int a, b; cin >> a;
+  int odd1 = ceil(a / 2.0), even1 = floor(a / 2.0);
+  // int odd2 = ceil(b / 2.0), even2 = floor(b / 2.0);
+  // bug(odd1, odd2, even1, even2);
+  print(odd1 * even1 * 2);
 }
 
 void solve() {
