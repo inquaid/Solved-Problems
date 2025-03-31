@@ -105,40 +105,27 @@ template <typename Container> void print_container(const Container &container) {
 
 bool comp(int a, int b) { return a > b; }
 
-int get(int a) {
-  return floor(log10(a)) + 1;
-}
+int n, k; 
+vi a; 
 
-int f(int a, int b) {
+int pos(int x) {
   int cnt = 0;
-  while(a != b) {
-    if(a > b) swap(a, b);
-    // bug(a, b);
-    b = floor(log10(b)) + 1;
-    cnt++;
-  }
-  return cnt;
+  for(auto i : a) {
+    cnt += floor(i / (x * 1.0));
+  } return cnt >= k;
 }
-
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vector<pii> a(n), b(n); 
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    a[i] = {temp, get(temp)};
+  cin >> n >> k; a.resize(n);
+  cin >> a;
+  int l = 1, r = 1e18;
+  while(l <= r) {
+    int mid = l + (r - l) / 2;
+    if(pos(mid)) {
+      l = mid + 1;
+    } else r = mid - 1;
   }
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    b[i] = {temp, get(temp)};
-  }
-
-  sort(all(a)); sort(all(b));
-  
-
- 
+  print(l - 1);
 }
 
 void solve() {
@@ -155,6 +142,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();  return 0;
-  print(f(37376159, 709259));
+  solve();
+
+  return 0;
 }

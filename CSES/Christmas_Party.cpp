@@ -105,47 +105,36 @@ template <typename Container> void print_container(const Container &container) {
 
 bool comp(int a, int b) { return a > b; }
 
-int get(int a) {
-  return floor(log10(a)) + 1;
+const int M = 1e9 + 7, N = 1e7;
+
+int fact[N];
+
+int inv(int a) {
+  return a <= 1 ? a : M - (long long)(M/a) * inv(M % a) % M;
 }
 
-int f(int a, int b) {
-  int cnt = 0;
-  while(a != b) {
-    if(a > b) swap(a, b);
-    // bug(a, b);
-    b = floor(log10(b)) + 1;
-    cnt++;
-  }
-  return cnt;
+int npr(int n, int r) {
+  return fact[n] * inv(fact[n - r]) % M;
 }
 
+int ncr(int n, int r) {
+  return fact[n] * inv(fact[n - r]) % M * inv(fact[r]) % M;
+}
 
-void tTestCase(int t) {
-  int n; cin >> n;
-  vector<pii> a(n), b(n); 
+vi dp;
 
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    a[i] = {temp, get(temp)};
-  }
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    b[i] = {temp, get(temp)};
-  }
-
-  sort(all(a)); sort(all(b));
-  
-
- 
+int d(int n) {
+  // if(n <= 2) return 1;
+  if(n == 0) return 1;
+  if(n == 1) return 0;
+  if(dp[n] != -1) return dp[n];
+  return dp[n] = (n - 1) % M * (d(n - 2) % M + d(n - 1) % M) % M;
 }
 
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
-  }
+  dp.resize(N, -1);
+  int n, m; cin >> n;
+  print(d(n));
 }
 
 int32_t main() {
@@ -155,6 +144,15 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();  return 0;
-  print(f(37376159, 709259));
+  fact[0] = fact[1] = 1;
+  for (int i = 2; i < N; ++i) {
+    fact[i] = (fact[i - 1] % M * i % M) % M;
+  }
+  // for (int i = 1; i < 15; ++i) {
+  //   print(i, fact[i]);
+  // }
+
+  solve();
+
+  return 0;
 }

@@ -105,40 +105,30 @@ template <typename Container> void print_container(const Container &container) {
 
 bool comp(int a, int b) { return a > b; }
 
-int get(int a) {
-  return floor(log10(a)) + 1;
-}
-
-int f(int a, int b) {
-  int cnt = 0;
-  while(a != b) {
-    if(a > b) swap(a, b);
-    // bug(a, b);
-    b = floor(log10(b)) + 1;
-    cnt++;
-  }
-  return cnt;
-}
-
-
+vi c;
 void tTestCase(int t) {
-  int n; cin >> n;
-  vector<pii> a(n), b(n); 
-
+  int n, q; cin >> n;
+  int sum = 0;
+  c.resize(n); 
   for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    a[i] = {temp, get(temp)};
+    cin >> c[i]; sum += c[i];
   }
+  sort(all(c));
+  cin >> q;
+  for (int i = 0; i < q; ++i) {
+    int x, y; cin >> x >> y;
+    int ans = INT_MAX;
 
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    b[i] = {temp, get(temp)};
+    auto lb = lower_bound(all(c), x);
+    if(lb != c.end()) {
+      ans = min(ans, max(0ll, y - (sum - *lb)));
+    }
+    if(lb != c.begin()) {
+      lb--;
+      ans = min(ans, (x - *lb) + max(0ll, y - (sum - *lb)));
+    }
+    print(ans);
   }
-
-  sort(all(a)); sort(all(b));
-  
-
- 
 }
 
 void solve() {
@@ -155,6 +145,11 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();  return 0;
-  print(f(37376159, 709259));
+  solve(); return 0;
+  vi v = {2,3,4,5};
+  auto it = lower_bound(all(v), 1);
+  if(it == v.begin())
+    it++;
+  print(*it);
+  return 0;
 }

@@ -105,47 +105,29 @@ template <typename Container> void print_container(const Container &container) {
 
 bool comp(int a, int b) { return a > b; }
 
-int get(int a) {
-  return floor(log10(a)) + 1;
+const int M = 1e9 + 7, N = 1e7;
+
+int fact[N];
+
+int inv(int a) {
+  return a <= 1 ? a : M - (long long)(M/a) * inv(M % a) % M;
 }
 
-int f(int a, int b) {
-  int cnt = 0;
-  while(a != b) {
-    if(a > b) swap(a, b);
-    // bug(a, b);
-    b = floor(log10(b)) + 1;
-    cnt++;
-  }
-  return cnt;
-}
+int npr(int n, int r) {
+  return fact[n] * inv(fact[n - r]) % M;
 
-
-void tTestCase(int t) {
-  int n; cin >> n;
-  vector<pii> a(n), b(n); 
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    a[i] = {temp, get(temp)};
-  }
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    b[i] = {temp, get(temp)};
-  }
-
-  sort(all(a)); sort(all(b));
-  
-
- 
 }
 
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
-  }
+  string s; cin >> s;
+  int n = s.size();
+  map<int, int> mp;
+  int ans = 1;
+  for(auto &ch : s) mp[ch]++;
+  for(auto i : mp) {ans = (ans % M * fact[i.ss] % M) % M;}
+  // bug(npr(n, mp.size()));  
+  print(fact[n] % M * inv(ans) % M);
+  // print("dome");
 }
 
 int32_t main() {
@@ -155,6 +137,15 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();  return 0;
-  print(f(37376159, 709259));
+  fact[0] = fact[1] = 1;
+  for (int i = 2; i < N; ++i) {
+    fact[i] = (fact[i - 1] % M * i % M) % M;
+  }
+  // for (int i = 1; i < 15; ++i) {
+  //   print(i, fact[i]);
+  // }
+
+  solve();
+
+  return 0;
 }

@@ -105,46 +105,42 @@ template <typename Container> void print_container(const Container &container) {
 
 bool comp(int a, int b) { return a > b; }
 
-int get(int a) {
-  return floor(log10(a)) + 1;
-}
-
-int f(int a, int b) {
-  int cnt = 0;
-  while(a != b) {
-    if(a > b) swap(a, b);
-    // bug(a, b);
-    b = floor(log10(b)) + 1;
-    cnt++;
-  }
-  return cnt;
-}
-
-
 void tTestCase(int t) {
-  int n; cin >> n;
-  vector<pii> a(n), b(n); 
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    a[i] = {temp, get(temp)};
-  }
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    b[i] = {temp, get(temp)};
-  }
-
-  sort(all(a)); sort(all(b));
-  
-
- 
+  int n;
+  scan(n);
 }
 
+int f(int n) {
+  int res = 1;
+  while(n) {
+    int temp = n % 10;
+    if(temp != 0) res *= temp;
+    n /= 10;
+  }
+  return res;
+}
+int g(int n) {
+  if(n < 10) return n;
+  return g(f(n));
+}
+const int N = 1e6 + 6;
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
+  vector<vector<int>> dp (10, vi(N + 1, 0));
+  for (int i = 1; i < N; ++i) {
+    dp[g(i)][i]++;
+  }
+  for (int i = 0; i < 10; ++i) {
+    for (int j = 1; j < N; ++j) {
+      dp[i][j] += dp[i][j - 1];
+    }
+  }
+  // bug(dp[1] );
+  // return;
+
+  int q; cin >> q;
+  for (int i = 0; i < q; ++i) {
+    int l, r, k, cnt = 0; cin >> l >> r >> k;
+    print(dp[k][r] - dp[k][l - 1]);
   }
 }
 
@@ -156,5 +152,8 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
   solve();  return 0;
-  print(f(37376159, 709259));
+  print(g(33));
+  print(g(9));
+  print(g(9));
+
 }

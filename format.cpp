@@ -1,24 +1,193 @@
-bool comp(tuple<string, int, vector<int>> a,
-          tuple<string, int, vector<int>> b) {
-    if (get<1>(a) != get<1>(b)) {
-        return get<1>(a) > get<1>(b);
-    }
-    for (int i = 0; i < 60; ++i) {
-        if (get<2>(a)[i] != get<2>(b)[i]) {
-            return get<2>(a)[i] >= get<2>(b)[i];
-        }
-    }
-    return get<0>(a) < get<0>(b);
+#include <algorithm>
+#include <cstdint>
+#include <iostream>
+#include <map>
+#include <set>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
+#include <queue>
+#include <math.h>
+#include <climits>
+#include <bitset>
+#include <iomanip>
+#include <numeric>
+
+#define int long long
+#define all(x) (x).begin(), (x).end()
+#define newl "\n"
+
+using namespace std;
+using vi = vector<int>;
+using pii = pair<int, int>;
+
+template <typename T, typename Y>
+istream &operator>>(istream &is, pair<T, Y> &p) {
+  return is >> p.first >> p.second;
 }
-bool comp2(tuple<string, int, vector<int>> a,
-           tuple<string, int, vector<int>> b) {
-    for (int i = 0; i < 60; ++i) {
-        if (get<2>(a)[i] != get<2>(b)[i]) {
-            return get<2>(a)[i] >= get<2>(b)[i];
-        }
-        if (get<1>(a) != get<1>(b)) {
-            return get<1>(a) > get<1>(b);
+
+template <typename T> istream &operator>>(istream &is, vector<T> &v) {
+  for (auto &elem : v)
+    is >> elem;
+  return is;
+}
+
+template <typename T, typename Y>
+ostream &operator<<(ostream &os, const pair<T, Y> &p) {
+  os << p.first << " " << p.second;
+  return os;
+}
+
+template <typename T> ostream &operator<<(ostream &os, const vector<T> &v) {
+  for (size_t i = 0; i < v.size(); ++i) {
+    os << v[i] << (i + 1 == v.size() ? "" : " ");
+  }
+  return os;
+}
+
+template <typename T> ostream &operator<<(ostream &os, const set<T> &s) {
+  auto it = s.begin();
+  while (it != s.end()) {
+    os << *it;
+    if (++it != s.end())
+      os << " ";
+  }
+  return os;
+}
+
+template <typename T>
+ostream &operator<<(ostream &os, const unordered_set<T> &s) {
+  bool first = true;
+  for (const auto &elem : s) {
+    if (!first)
+      os << " ";
+    os << elem;
+    first = false;
+  }
+  return os;
+}
+
+template <typename T> void sort_unique(vector<T> &vec) {
+  sort(vec.begin(), vec.end());
+  vec.erase(unique(vec.begin(), vec.end()), vec.end());
+}
+
+template <class... T> void scan(T &...args) { (cin >> ... >> args); }
+
+template <typename T> void print(const T &value) { cout << value << "\n"; }
+
+template <typename T, typename... Args>
+void print(const T &first, const Args &...rest) {
+  cout << first;
+  if constexpr (sizeof...(rest) > 0) {
+    cout << " ";
+    print(rest...);
+  } else {
+    cout << "\n";
+  }
+}
+
+template <typename Container> void print_container(const Container &container) {
+  cout << container << "\n";
+}
+
+#define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
+#define yes cout << "YES\n"
+#define no cout << "NO\n"
+#define ff first
+#define ss second
+
+#ifdef LOCAL
+#include "debug.h"
+#else
+#define bug(...)
+#endif
+
+bool comp(int a, int b) { return a > b; }
+
+int get(int a) {
+  return floor(log10(a)) + 1;
+}
+
+int f(int a, int b) {
+  int cnt = 0;
+  while(a != b) {
+    if(a > b) swap(a, b);
+    // bug(a, b);
+    b = floor(log10(b)) + 1;
+    cnt++;
+  }
+  return cnt;
+}
+
+
+void tTestCase(int t) {
+  int n; cin >> n;
+  vector<pii> a(n), b(n); 
+
+  for (int i = 0; i < n; ++i) {
+    int temp; cin >> temp;
+    a[i] = {temp, get(temp)};
+  }
+
+  for (int i = 0; i < n; ++i) {
+    int temp; cin >> temp;
+    b[i] = {temp, get(temp)};
+  }
+
+  sort(all(a)); sort(all(b));
+  
+set<pii> to_remove;
+
+// Remove pairs that are the same in both a and b
+for (int i = 0; i < n; ++i) {
+    if (a[i] == b[i]) {
+        to_remove.insert(a[i]);
+    }
+}
+
+// Remove pairs where the first of one matches the second of another
+for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < n; ++j) {
+        if (a[i].ff == b[j].ss || a[i].ss == b[j].ff) {
+            to_remove.insert(a[i]);
+            to_remove.insert(b[j]);
         }
     }
-    return get<0>(a) < get<0>(b);
+}
+
+// Filter out the pairs to be removed
+vector<pii> new_a, new_b;
+for (const auto &p : a) {
+    if (to_remove.find(p) == to_remove.end()) {
+        new_a.push_back(p);
+    }
+}
+for (const auto &p : b) {
+    if (to_remove.find(p) == to_remove.end()) {
+        new_b.push_back(p);
+    }
+}
+
+a = move(new_a);
+b = move(new_b);
+ 
+}
+
+void solve() {
+  int t; cin >> t;
+  for(int i = 1; i <= t; i++) {
+    tTestCase(i);
+  }
+}
+
+int32_t main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+    // freopen("input.txt", "r" , stdin);
+    // freopen("output.txt", "w", stdout);
+    // cout << fixed << setprecision(20);
+
+  solve();  return 0;
+  print(f(37376159, 709259));
 }

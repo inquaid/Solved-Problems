@@ -91,9 +91,9 @@ template <typename Container> void print_container(const Container &container) {
   cout << container << "\n";
 }
 
-#define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
-#define yes cout << "YES\n"
-#define no cout << "NO\n"
+#define yesif(flag) cout << ((flag) ? "Yes\n" : "No\n")
+#define yes cout << "Yes\n"
+#define no cout << "No\n"
 #define ff first
 #define ss second
 
@@ -103,42 +103,46 @@ template <typename Container> void print_container(const Container &container) {
 #define bug(...)
 #endif
 
-bool comp(int a, int b) { return a > b; }
+bool comp(pii &a, pii &b) { return a.ff > b.ff; }
 
-int get(int a) {
-  return floor(log10(a)) + 1;
+int f(vector<pii> &v, int n, int k, vector<vector<int>> &dp) {
+  if(k < 0) return 0;
+  if(n == 0) return (k == 0);
+  if(dp[n][k] != -1) return dp[n][k];
+
+  int take_ff = f(v, n - 1, k - v[n - 1].ff, dp); 
+  int take_ss = f(v, n - 1, k - v[n - 1].ss, dp);
+  return dp[n][k] = take_ff + take_ss; 
 }
 
-int f(int a, int b) {
-  int cnt = 0;
-  while(a != b) {
-    if(a > b) swap(a, b);
-    // bug(a, b);
-    b = floor(log10(b)) + 1;
-    cnt++;
-  }
-  return cnt;
+int f2(int a, int b) {
+  return a % 2 != b % 2 ;
 }
-
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vector<pii> a(n), b(n); 
-
+  int n, k; cin >> n >> k;
+  vi a(n), b(n); cin >> a >> b;
+  int mn = 0, mx = 0;
+  int sum = 0, ans = 9; 
+  vector<pii> v;
+  vi min_r;
   for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    a[i] = {temp, get(temp)};
+    mn = min(abs(a[i] - b[i]), 9 - abs(a[i] - b[i]));
+    mx = max(abs(a[i] - b[i]), 9 - abs(a[i] - b[i]));
+    v.push_back({mn, mx});
+    sum += mn;
+    min_r.push_back(mx - mn);
+    ans = min(ans, mx - mn); 
+  }
+  if(sum > k) {
+    no; return;
   }
 
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    b[i] = {temp, get(temp)};
+  int need_extras = (k - sum) ;
+  if(need_extras % 2 == 0 or need_extras >= ans ) {
+    yes; return;
   }
-
-  sort(all(a)); sort(all(b));
-  
-
- 
+  no;
 }
 
 void solve() {
@@ -155,6 +159,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();  return 0;
-  print(f(37376159, 709259));
+  solve();
+
+  return 0;
 }

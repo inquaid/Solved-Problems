@@ -104,48 +104,19 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 bool comp(int a, int b) { return a > b; }
-
-int get(int a) {
-  return floor(log10(a)) + 1;
-}
-
-int f(int a, int b) {
-  int cnt = 0;
-  while(a != b) {
-    if(a > b) swap(a, b);
-    // bug(a, b);
-    b = floor(log10(b)) + 1;
-    cnt++;
-  }
-  return cnt;
-}
-
+int temp, cnt, ans, res;
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vector<pii> a(n), b(n); 
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    a[i] = {temp, get(temp)};
-  }
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    b[i] = {temp, get(temp)};
-  }
-
-  sort(all(a)); sort(all(b));
-  
-
- 
+  int n;
+  scan(n);
 }
 
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
-  }
+  int h, m; cin >> h >> m;
+  double hour_angle = h * 30 + m * 0.5;
+  double minute_angle = m * 6;
+  double angle = fabs(hour_angle - minute_angle);
+  print(min(angle, 360 - angle));
 }
 
 int32_t main() {
@@ -153,8 +124,9 @@ int32_t main() {
   cin.tie(NULL);
     // freopen("input.txt", "r" , stdin);
     // freopen("output.txt", "w", stdout);
-    // cout << fixed << setprecision(20);
+    cout << fixed << setprecision(5);
 
-  solve();  return 0;
-  print(f(37376159, 709259));
-}
+  solve();
+
+  return 0;
+} 

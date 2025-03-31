@@ -105,43 +105,56 @@ template <typename Container> void print_container(const Container &container) {
 
 bool comp(int a, int b) { return a > b; }
 
-int get(int a) {
-  return floor(log10(a)) + 1;
+bool isPrime(int x) {
+    for (int d = 2; d * d <= x; d++) {
+        if (x % d == 0)
+            return false;
+    }
+    return x >= 2;
 }
 
-int f(int a, int b) {
-  int cnt = 0;
-  while(a != b) {
-    if(a > b) swap(a, b);
-    // bug(a, b);
-    b = floor(log10(b)) + 1;
-    cnt++;
-  }
-  return cnt;
+int isInt(double x, double y) {
+    x = x / y;
+    return floor(x) == x;
 }
 
+const int N = 10000000;
+vector<int> lp(N+1);
+vector<int> pr;
+// map<int, int> mpr;
+void seive() {
+    int indx = 0;
+    for (int i = 2; i <= N; ++i) {
+        if (lp[i] == 0) {
+            lp[i] = i;
+            pr.push_back(i);
+            // mpr[i] = indx++;
+        }
+        for (int j = 0; i * pr[j] <= N; ++j) {
+            lp[i * pr[j]] = pr[j];
+            if (pr[j] == lp[i]) {
+                break;
+            }
+        }
+    }
+}
 
 void tTestCase(int t) {
   int n; cin >> n;
-  vector<pii> a(n), b(n); 
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    a[i] = {temp, get(temp)};
+  int cnt = 0;
+  int i = 1;
+  for (int i = 1; ; i++) {
+    int temp = n / i;
+    if(temp < 2) break;
+    int cnt_temp = upper_bound(all(pr), temp) - pr.begin();
+    // bug(cnt_temp);
+    cnt += cnt_temp;
   }
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    b[i] = {temp, get(temp)};
-  }
-
-  sort(all(a)); sort(all(b));
-  
-
- 
+  print(cnt);
 }
 
 void solve() {
+  seive();  
   int t; cin >> t;
   for(int i = 1; i <= t; i++) {
     tTestCase(i);
@@ -156,5 +169,5 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
   solve();  return 0;
-  print(f(37376159, 709259));
+  yesif(isInt(4, 2));
 }

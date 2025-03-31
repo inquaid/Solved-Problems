@@ -103,49 +103,49 @@ template <typename Container> void print_container(const Container &container) {
 #define bug(...)
 #endif
 
-bool comp(int a, int b) { return a > b; }
-
-int get(int a) {
-  return floor(log10(a)) + 1;
-}
-
-int f(int a, int b) {
-  int cnt = 0;
-  while(a != b) {
-    if(a > b) swap(a, b);
-    // bug(a, b);
-    b = floor(log10(b)) + 1;
-    cnt++;
-  }
-  return cnt;
-}
-
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vector<pii> a(n), b(n); 
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    a[i] = {temp, get(temp)};
-  }
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    b[i] = {temp, get(temp)};
-  }
-
-  sort(all(a)); sort(all(b));
-  
-
- 
+  int n;
+  scan(n);
 }
 
+struct schedule {
+  int arrive, depart, indx;
+};
+
+bool comp(schedule a, schedule b) { return a.arrive < b.arrive; }
+
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
+  int n; cin >> n;
+  vector<schedule> vt;
+  for (int i = 0; i < n; ++i) {
+    schedule temp; cin >> temp.arrive >> temp.depart;
+    temp.indx = i;
+    vt.push_back(temp);
   }
+  sort(all(vt), comp);
+  // for(auto i : vt) {
+  //     print(i.arrive, i.depart);
+  // }
+  set<pii> st;
+  set<int> ans;
+  map<int, int> mp;
+  int cnt = 1;
+  vi res(n, 0);
+  for (int i = 0; i < n; ++i) {
+    if(st.empty() or (*st.begin()).ff >= vt[i].arrive) {
+      st.insert({vt[i].depart, cnt});
+      res[vt[i].indx] = cnt; ans.insert(cnt);
+      cnt++;
+    } else {
+      int temp = (*st.begin()).ss;
+      st.erase(st.begin());
+      st.insert({vt[i].depart, temp});
+      res[vt[i].indx] = temp; ans.insert(temp);
+    }
+  }
+  print(ans.size());
+  print(res);
 }
 
 int32_t main() {
@@ -156,5 +156,35 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
   solve();  return 0;
-  print(f(37376159, 709259));
+
+  // map<int, int> mp; mp[1] = 2; mp[2] = 3;
+  // int cnt  = 5;
+  // while(mp.size() and (*mp.begin()).ff < 4) {
+  //   auto it = *mp.begin();
+  //   // it.ss--;
+  //   mp[it.ff]--;
+  //   print(it);
+    
+  //   cnt--;
+  //   if(cnt < 0)
+  //   break;
+  // }
+
+  // print(*mp.begin());
+  // auto it = *mp.begin();
+  // it.ss--;
+  // mp.erase(it.ff);
+  // print(it);
+  multiset<int> mst;
+  mst.insert(1);
+  mst.insert(1);
+  mst.insert(1);
+  mst.insert(1);
+  mst.insert(1);
+  auto it = mst.find(1);
+if(it != mst.end()){
+    mst.erase(it);  // Removes only the element pointed to by 'it'
+}
+
+  for(auto i : mst) print(i);
 }
