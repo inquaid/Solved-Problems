@@ -18,8 +18,11 @@
 #define newl "\n"
 
 using namespace std;
+
 using vi = vector<int>;
+using vvi = vector<vector<int>>;
 using pii = pair<int, int>;
+using vii = vector<pii>;
 
 template <typename T, typename Y>
 istream &operator>>(istream &is, pair<T, Y> &p) {
@@ -27,9 +30,9 @@ istream &operator>>(istream &is, pair<T, Y> &p) {
 }
 
 template <typename T> istream &operator>>(istream &is, vector<T> &v) {
-  for (auto &elem : v)
-    is >> elem;
-  return is;
+for (auto &elem : v)
+  is >> elem;
+return is;
 }
 
 template <typename T, typename Y>
@@ -39,20 +42,20 @@ ostream &operator<<(ostream &os, const pair<T, Y> &p) {
 }
 
 template <typename T> ostream &operator<<(ostream &os, const vector<T> &v) {
-  for (size_t i = 0; i < v.size(); ++i) {
-    os << v[i] << (i + 1 == v.size() ? "" : " ");
-  }
-  return os;
+for (size_t i = 0; i < v.size(); ++i) {
+  os << v[i] << (i + 1 == v.size() ? "" : " ");
+}
+return os;
 }
 
 template <typename T> ostream &operator<<(ostream &os, const set<T> &s) {
-  auto it = s.begin();
-  while (it != s.end()) {
-    os << *it;
-    if (++it != s.end())
-      os << " ";
-  }
-  return os;
+auto it = s.begin();
+while (it != s.end()) {
+  os << *it;
+  if (++it != s.end())
+    os << " ";
+}
+return os;
 }
 
 template <typename T>
@@ -68,8 +71,8 @@ ostream &operator<<(ostream &os, const unordered_set<T> &s) {
 }
 
 template <typename T> void sort_unique(vector<T> &vec) {
-  sort(vec.begin(), vec.end());
-  vec.erase(unique(vec.begin(), vec.end()), vec.end());
+sort(vec.begin(), vec.end());
+vec.erase(unique(vec.begin(), vec.end()), vec.end());
 }
 
 template <class... T> void scan(T &...args) { (cin >> ... >> args); }
@@ -88,7 +91,7 @@ void print(const T &first, const Args &...rest) {
 }
 
 template <typename Container> void print_container(const Container &container) {
-  cout << container << "\n";
+cout << container << "\n";
 }
 
 #define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
@@ -104,41 +107,32 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 bool comp(int a, int b) { return a > b; }
-
-int get(int a) {
-  return floor(log10(a)) + 1;
+int sum(int n) {
+  return n * (n + 1) / 2;
 }
-
-int f(int a, int b) {
-  int cnt = 0;
-  while(a != b) {
-    if(a > b) swap(a, b);
-    // bug(a, b);
-    b = floor(log10(b)) + 1;
-    cnt++;
-  }
-  return cnt;
-}
-
-
 void tTestCase(int t) {
-  int n; cin >> n;
-  vector<pii> a(n), b(n); 
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    a[i] = {temp, get(temp)};
+  int n, q; cin >> n >> q;
+  vi diff(n + 2, 0);
+  map<int, int> mp;
+  for (int i = 0; i < q; ++i) {
+    int l, r; cin >> l >> r;
+    // bug(l, r);
+    diff[l]++; diff[r + 1]--;
+    mp[r + 1] -= (r - l + 1);
+    // bug(sum(r - l + 1));
   }
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    b[i] = {temp, get(temp)};
+  for (int i = 1; i < n + 1; ++i) {
+    diff[i] += diff[i - 1];
   }
-
-  sort(all(a)); sort(all(b));
-  
-
- 
+  for (int i = 1; i < n + 1; ++i) {
+    diff[i] += diff[i - 1];
+    diff[i] += mp[i];
+  }
+  // bug(diff);
+  for (int i = 1; i < n + 1; ++i) {
+    cout << diff[i] << " ";
+  }
+  cout << newl;
 }
 
 void solve() {
@@ -154,18 +148,8 @@ int32_t main() {
     // freopen("input.txt", "r" , stdin);
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
-  
-  // solve();  return 0;
-  // print(f(37376159, 709259));
-  vi v = {1, 2, 3, 4, 5};
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
 
+  solve();
+
+  return 0;
 }

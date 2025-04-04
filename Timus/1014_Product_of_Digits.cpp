@@ -105,46 +105,32 @@ template <typename Container> void print_container(const Container &container) {
 
 bool comp(int a, int b) { return a > b; }
 
-int get(int a) {
-  return floor(log10(a)) + 1;
-}
-
-int f(int a, int b) {
-  int cnt = 0;
-  while(a != b) {
-    if(a > b) swap(a, b);
-    // bug(a, b);
-    b = floor(log10(b)) + 1;
-    cnt++;
-  }
-  return cnt;
-}
-
-
 void tTestCase(int t) {
-  int n; cin >> n;
-  vector<pii> a(n), b(n); 
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    a[i] = {temp, get(temp)};
-  }
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    b[i] = {temp, get(temp)};
-  }
-
-  sort(all(a)); sort(all(b));
-  
-
- 
+  int n;
+  scan(n);
 }
 
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
+  int n; cin >> n;
+  if(n == 0) {
+    print(10); return;
+  }
+  if(n < 10) {
+    print(n); return;
+  }
+  multiset<int> res;
+  for (int i = 9; i > 1; --i) {
+    while(n % i == 0) {
+      res.insert(i);
+      n /= i;
+    }
+  }
+  // bug(n);
+  if(n > 1) {
+    print(-1); return;
+  }
+  for(auto i : res) {
+    cout << i;
   }
 }
 
@@ -154,18 +140,8 @@ int32_t main() {
     // freopen("input.txt", "r" , stdin);
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
-  
-  // solve();  return 0;
-  // print(f(37376159, 709259));
-  vi v = {1, 2, 3, 4, 5};
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
 
+  solve();
+
+  return 0;
 }

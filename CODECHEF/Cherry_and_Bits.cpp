@@ -105,46 +105,52 @@ template <typename Container> void print_container(const Container &container) {
 
 bool comp(int a, int b) { return a > b; }
 
-int get(int a) {
-  return floor(log10(a)) + 1;
-}
-
-int f(int a, int b) {
-  int cnt = 0;
-  while(a != b) {
-    if(a > b) swap(a, b);
-    // bug(a, b);
-    b = floor(log10(b)) + 1;
-    cnt++;
-  }
-  return cnt;
-}
-
-
 void tTestCase(int t) {
-  int n; cin >> n;
-  vector<pii> a(n), b(n); 
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    a[i] = {temp, get(temp)};
-  }
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    b[i] = {temp, get(temp)};
-  }
-
-  sort(all(a)); sort(all(b));
-  
-
- 
+  int n;
+  scan(n);
 }
 
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
+  int n, m; cin >> n >> m;
+  vector<string> vs;
+  for (int i = 0; i < n; ++i) {
+    string temp; cin >> temp;
+    vs.push_back(temp);
+  }
+  vector<vector<int>> v(n + 2, vi (m + 2, 0));
+  int q; cin >> q;
+  for (int i = 0; i < q; ++i) {
+    int x1, y1, x2, y2;
+    cin >> x1 >> y1 >> x2 >> y2;
+    v[x1][y1]++; 
+    v[x2 + 1][y1]--; 
+    v[x1][y2 + 1]--; 
+    v[x2 + 1][y2 + 1]++; 
+  }
+  for (int i = 1; i <= n + 1; ++i) {
+    for (int j = 1; j <= m + 1; ++j) {
+      v[i][j] += v[i][j - 1];
+    }
+  }
+
+  for (int j = 1; j <= m + 1; ++j) {
+    for (int i = 1; i <= n + 1; ++i) {
+      v[i][j] += v[i - 1][j];
+    }
+  }
+
+  for (int i = 1; i < n + 1; ++i) {
+    for (int j = 1; j < m + 1; ++j) {
+      if(v[i][j] % 2 != 0) {
+        if(vs[i - 1][j - 1] == '0')
+          vs[i - 1][j - 1] = '1';
+        else   
+          vs[i - 1][j - 1] = '0';
+      }
+    }
+  }
+  for(auto i : vs) {
+    print(i);
   }
 }
 
@@ -154,18 +160,8 @@ int32_t main() {
     // freopen("input.txt", "r" , stdin);
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
-  
-  // solve();  return 0;
-  // print(f(37376159, 709259));
-  vi v = {1, 2, 3, 4, 5};
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
 
+  solve();
+
+  return 0;
 }

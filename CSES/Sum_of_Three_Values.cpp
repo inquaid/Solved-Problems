@@ -105,47 +105,33 @@ template <typename Container> void print_container(const Container &container) {
 
 bool comp(int a, int b) { return a > b; }
 
-int get(int a) {
-  return floor(log10(a)) + 1;
-}
+pii two_sum(vector<pii> &a, int i, int j, int target) {
 
-int f(int a, int b) {
-  int cnt = 0;
-  while(a != b) {
-    if(a > b) swap(a, b);
-    // bug(a, b);
-    b = floor(log10(b)) + 1;
-    cnt++;
-  }
-  return cnt;
-}
-
-
-void tTestCase(int t) {
-  int n; cin >> n;
-  vector<pii> a(n), b(n); 
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    a[i] = {temp, get(temp)};
+  while(i < j) {
+    int sum = a[i].ff + a[j].ff;
+    if(sum == target) return {a[i].ss, a[j].ss};
+    else if(sum < target) {
+      i++;
+    } else j--;
   }
 
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    b[i] = {temp, get(temp)};
-  }
-
-  sort(all(a)); sort(all(b));
-  
-
- 
+  return {-1, -1};
 }
 
 void solve() {
-  int t; cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
+  int n, x; cin >> n >> x;
+  vector<pii> a;
+  for (int i = 0; i < n; ++i) {
+    int temp; cin >> temp; a.push_back({temp, i});
   }
+  sort(all(a));
+  // print(two_sum(a, 12, 6));
+  for (int i = 0; i < n - 2; ++i) {
+    if(pii temp = two_sum(a, i + 1, n - 1, x - a[i].ff); temp != pii{-1, -1}) {
+      print(a[i].ss + 1, temp.ff + 1, temp.ss + 1); return;
+    }
+  }
+  print("IMPOSSIBLE");
 }
 
 int32_t main() {
@@ -154,18 +140,8 @@ int32_t main() {
     // freopen("input.txt", "r" , stdin);
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
-  
-  // solve();  return 0;
-  // print(f(37376159, 709259));
-  vi v = {1, 2, 3, 4, 5};
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
 
+  solve();
+
+  return 0;
 }

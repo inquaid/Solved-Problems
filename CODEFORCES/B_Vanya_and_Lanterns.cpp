@@ -18,8 +18,11 @@
 #define newl "\n"
 
 using namespace std;
+
 using vi = vector<int>;
+using vvi = vector<vector<int>>;
 using pii = pair<int, int>;
+using vii = vector<pii>;
 
 template <typename T, typename Y>
 istream &operator>>(istream &is, pair<T, Y> &p) {
@@ -103,46 +106,24 @@ template <typename Container> void print_container(const Container &container) {
 #define bug(...)
 #endif
 
+int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int get(int a) {
-  return floor(log10(a)) + 1;
-}
-
-int f(int a, int b) {
-  int cnt = 0;
-  while(a != b) {
-    if(a > b) swap(a, b);
-    // bug(a, b);
-    b = floor(log10(b)) + 1;
-    cnt++;
-  }
-  return cnt;
-}
-
-
 void tTestCase(int t) {
-  int n; cin >> n;
-  vector<pii> a(n), b(n); 
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    a[i] = {temp, get(temp)};
-  }
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    b[i] = {temp, get(temp)};
-  }
-
-  sort(all(a)); sort(all(b));
-  
-
+  int n, l; cin >> n >> l;
+  vi a(n); cin >> a;
+  sort(all(a));
  
+  double res = max(a[0], l - a.back());
+  for (int i = 0; i < n - 1; ++i) {
+    res = max(res, (a[i + 1] - a[i]) / 2.0);
+  }
+  print(res);
 }
 
 void solve() {
-  int t; cin >> t;
+  int t = 1; 
+  // cin >> t;
   for(int i = 1; i <= t; i++) {
     tTestCase(i);
   }
@@ -153,19 +134,9 @@ int32_t main() {
   cin.tie(NULL);
     // freopen("input.txt", "r" , stdin);
     // freopen("output.txt", "w", stdout);
-    // cout << fixed << setprecision(20);
-  
-  // solve();  return 0;
-  // print(f(37376159, 709259));
-  vi v = {1, 2, 3, 4, 5};
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
+    cout << fixed << setprecision(9);
 
+  solve();
+
+  return 0;
 }

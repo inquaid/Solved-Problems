@@ -105,40 +105,33 @@ template <typename Container> void print_container(const Container &container) {
 
 bool comp(int a, int b) { return a > b; }
 
-int get(int a) {
-  return floor(log10(a)) + 1;
-}
-
-int f(int a, int b) {
-  int cnt = 0;
-  while(a != b) {
-    if(a > b) swap(a, b);
-    // bug(a, b);
-    b = floor(log10(b)) + 1;
-    cnt++;
-  }
-  return cnt;
-}
-
-
 void tTestCase(int t) {
-  int n; cin >> n;
-  vector<pii> a(n), b(n); 
-
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    a[i] = {temp, get(temp)};
+  int n, k; cin >> n >> k;
+  if(k < (n / 2)) {
+    print(-1); return;
   }
 
+  string s1 = "", s2 = "";
   for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    b[i] = {temp, get(temp)};
+    if(i % 2 == 0) {
+      s1 += 'A'; s2 += 'C';
+    } else {
+      s1 += 'B'; s2 += 'B';
+
+    }
+  }
+  int i = 0;
+  k = k - (n / 2);
+  while(i < n and k) {
+    if(s2[i] == 'C') {
+      s2[i] = 'A'; k--;
+    }
+    i++;
   }
 
-  sort(all(a)); sort(all(b));
-  
-
- 
+  print(s1);
+  print(s2);
+   // print(-1);
 }
 
 void solve() {
@@ -154,18 +147,8 @@ int32_t main() {
     // freopen("input.txt", "r" , stdin);
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
-  
-  // solve();  return 0;
-  // print(f(37376159, 709259));
-  vi v = {1, 2, 3, 4, 5};
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
-  rotate(v.begin(), v.begin() + 1, v.end());
-  print(v);
 
+  solve();
+
+  return 0;
 }
