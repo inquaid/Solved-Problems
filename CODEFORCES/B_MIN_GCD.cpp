@@ -110,44 +110,43 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n), b(n); 
-  map<int, int> mp1, mp2;
+  int n;
+  scan(n);
+  int mn = INT_MAX;
+  map<int, int> mp;
+  vi a(n);
   for (int i = 0; i < n; ++i) {
-    cin >> a[i]; mp1[a[i]] = i + 1;
+    cin >> a[i]; mn = min(mn, a[i]);
+    mp[a[i]]++;
   }
-  for (int i = 0; i < n; ++i) {
-    cin >> b[i]; mp2[b[i]] = i + 1;
-  }
-  // bug(a);
-  // bug(b);
-  int gap = mp1[1] - mp2[1], cnt = 0, ans = 0, temp;
   
-  for (int i = 0; i < n; ++i) {
-    int p1 = mp1[a[i]], p2 = mp2[a[i]];
-    int gap = p2 - p1;
-    cnt = 1;
-    if(gap < 0) gap += n;
-    while(i + 1 < n and mp2[a[i + 1]] - mp1[a[i + 1]] == gap) {
-
-      i++;
-      cnt++;
-    // bug(gap);
-    }
-  //   do {
-  //     i++;
-  //     cnt++;
-  //     p1 = mp1[a[i]], p2 = mp2[a[i]];
-  //   }
-  //   while(p1 - p2 == gap); 
-    ans = max(ans, cnt);
+  int cnt = 0ll, g = 0ll;
+  sort(all(a));
+  mn = a[0];
+  if(mp[mn] >= 2) {
+    yes; return;
   }
 
-  print(ans);
+  for (int i = 0 ; i < n; ++i) {
+    if(a[i] % mn == 0 and a[i] != mn) {
+      
+      cnt++;
+      g = __gcd(g, a[i] / mn);
+    // }
+  //   if(a[i] != mn) 
+  //     g = __gcd(g, a[i]);
+  //   if(g == mn) {
+  //     yes; return;
+    }
+    bug(g);
+
+  }
+  yesif(g == 1);
+  // no;
 }
 
 void solve() {
-  int t = 1; // cin >> t;
+  int t; cin >> t;
   for(int i = 1; i <= t; i++) {
     tTestCase(i);
   }

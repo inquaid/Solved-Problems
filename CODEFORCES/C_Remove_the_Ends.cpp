@@ -111,43 +111,64 @@ bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
   int n; cin >> n;
-  vi a(n), b(n); 
-  map<int, int> mp1, mp2;
-  for (int i = 0; i < n; ++i) {
-    cin >> a[i]; mp1[a[i]] = i + 1;
-  }
-  for (int i = 0; i < n; ++i) {
-    cin >> b[i]; mp2[b[i]] = i + 1;
-  }
-  // bug(a);
-  // bug(b);
-  int gap = mp1[1] - mp2[1], cnt = 0, ans = 0, temp;
-  
-  for (int i = 0; i < n; ++i) {
-    int p1 = mp1[a[i]], p2 = mp2[a[i]];
-    int gap = p2 - p1;
-    cnt = 1;
-    if(gap < 0) gap += n;
-    while(i + 1 < n and mp2[a[i + 1]] - mp1[a[i + 1]] == gap) {
+  vi a(n); cin >> a;
 
-      i++;
-      cnt++;
-    // bug(gap);
+  int i = 0, val = 0;
+  bool flag = (a[0] < 0);
+  vi b;
+  while(i < n) {
+    val = 0;
+    while(i < n and a[i] < 0) {
+      val += abs(a[i++]);
     }
-  //   do {
-  //     i++;
-  //     cnt++;
-  //     p1 = mp1[a[i]], p2 = mp2[a[i]];
-  //   }
-  //   while(p1 - p2 == gap); 
-    ans = max(ans, cnt);
+    if(val)
+      b.push_back(-val);
+    val = 0;
+    while(i < n and a[i] > 0) {
+      val += a[i++];
+    }
+    if(val)
+      b.push_back(val);
   }
+  bug(b);
+  int sum = 0, res = 0, m = b.size();
+  vi pref(m + 1, 0), suff(m + 1, 0);
 
-  print(ans);
+  for (int i = 0; i < m; ++i) {
+    if(b[i] > 0)
+      pref[i + 1] = pref[i] + b[i];
+    else pref[i + 1] = pref[i];
+  }
+  for (int i = m - 1; i >= 0; --i) {
+    if(b[i] < 0) 
+      suff[i] = suff[i + 1] + abs(b[i]);
+    else suff[i] = suff[i + 1];
+  }
+  bug(pref);
+  bug(suff);
+
+  for (int i = m - 1; i >= 0; --i) {
+    if(b[i] < 0) {
+      sum += abs(b[i]);
+      res = max(res, sum);
+    } else {
+      res = max(res, pref[i] + sum);
+    }
+  }
+  sum = 0;
+  for (int i = 0; i < m; ++i) {
+    if(b[i] > 0) {
+      sum += b[i];
+      res = max(res, sum);
+    } else {
+      res = max(res, suff[i] + sum);
+    }
+  }
+  print(res);
 }
 
 void solve() {
-  int t = 1; // cin >> t;
+  int t; cin >> t;
   for(int i = 1; i <= t; i++) {
     tTestCase(i);
   }

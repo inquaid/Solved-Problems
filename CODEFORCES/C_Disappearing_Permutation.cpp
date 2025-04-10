@@ -109,45 +109,65 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+map<int, int> parent, sz;
+
+void make_set(int v) {
+  parent[v] = v;
+  sz[v] = 1;
+}
+
+int find_set(int v) {
+  if (v == parent[v])
+    return v;
+  return parent[v] = find_set(parent[v]);
+}
+
+void union_sets(int a, int b) {
+  a = find_set(a);
+  b = find_set(b);
+  if (a != b) {
+    if (sz[a] < sz[b])
+      swap(a, b);
+    parent[b] = a;
+    sz[a] += sz[b];
+  }
+}
+
 void tTestCase(int t) {
   int n; cin >> n;
-  vi a(n), b(n); 
-  map<int, int> mp1, mp2;
-  for (int i = 0; i < n; ++i) {
-    cin >> a[i]; mp1[a[i]] = i + 1;
+  vi a(n + 1);
+  map<int, int> pos; 
+  for (int i = 1; i <= n; ++i) {
+    cin >> a[i];
+    pos[a[i]] = i;
   }
-  for (int i = 0; i < n; ++i) {
-    cin >> b[i]; mp2[b[i]] = i + 1;
+  for (int i = 0; i <= n; ++i) {
+    make_set(i);
   }
-  // bug(a);
-  // bug(b);
-  int gap = mp1[1] - mp2[1], cnt = 0, ans = 0, temp;
-  
+  int cnt = 0;
   for (int i = 0; i < n; ++i) {
-    int p1 = mp1[a[i]], p2 = mp2[a[i]];
-    int gap = p2 - p1;
-    cnt = 1;
-    if(gap < 0) gap += n;
-    while(i + 1 < n and mp2[a[i + 1]] - mp1[a[i + 1]] == gap) {
-
-      i++;
-      cnt++;
-    // bug(gap);
+    int d; cin >> d;
+    int temp = a[d];
+    // d--;
+    if(sz[find_set(d)] != 1) {
+      cout << cnt << " ";
+    } else {
+      while(find_set(a[d]) != find_set(a[a[d]])) {
+        union_sets(a[d], a[a[d]]);
+        d = a[d];
+      }
+      cnt += sz[temp];
+      // bug(sz[4]);
+      cout << cnt << " ";
+      // break;
     }
-  //   do {
-  //     i++;
-  //     cnt++;
-  //     p1 = mp1[a[i]], p2 = mp2[a[i]];
-  //   }
-  //   while(p1 - p2 == gap); 
-    ans = max(ans, cnt);
   }
-
-  print(ans);
+  // bug(sz);
+  newl;
 }
 
 void solve() {
-  int t = 1; // cin >> t;
+  int t; cin >> t;
   for(int i = 1; i <= t; i++) {
     tTestCase(i);
   }

@@ -111,43 +111,21 @@ bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
   int n; cin >> n;
-  vi a(n), b(n); 
-  map<int, int> mp1, mp2;
+  vector<pii> a;
   for (int i = 0; i < n; ++i) {
-    cin >> a[i]; mp1[a[i]] = i + 1;
+    int temp; cin >> temp;
+    a.push_back({temp, i + 1});
   }
-  for (int i = 0; i < n; ++i) {
-    cin >> b[i]; mp2[b[i]] = i + 1;
-  }
-  // bug(a);
-  // bug(b);
-  int gap = mp1[1] - mp2[1], cnt = 0, ans = 0, temp;
-  
-  for (int i = 0; i < n; ++i) {
-    int p1 = mp1[a[i]], p2 = mp2[a[i]];
-    int gap = p2 - p1;
-    cnt = 1;
-    if(gap < 0) gap += n;
-    while(i + 1 < n and mp2[a[i + 1]] - mp1[a[i + 1]] == gap) {
-
-      i++;
-      cnt++;
-    // bug(gap);
-    }
-  //   do {
-  //     i++;
-  //     cnt++;
-  //     p1 = mp1[a[i]], p2 = mp2[a[i]];
-  //   }
-  //   while(p1 - p2 == gap); 
-    ans = max(ans, cnt);
-  }
-
-  print(ans);
+  sort(all(a));
+  if(a[n - 1].ff + a[n - 1].ff > a[n - 1].ff) {
+    print(a[n - 1].ff, a[n - 1].ff);
+  } else if(a[0].ff + a[0].ff < a[0].ff) {
+    print(a[0].ff, a[0].ff);
+  } else print(-1);
 }
 
 void solve() {
-  int t = 1; // cin >> t;
+  int t; cin >> t;
   for(int i = 1; i <= t; i++) {
     tTestCase(i);
   }

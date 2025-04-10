@@ -107,47 +107,30 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(int a, int b) { return a > b; }
+bool comp(int a, int b) { 
+  if(__gcd(a, b) == 2) {
+    return a < b;
+  }
+  if(a < b) return a < b;
+  else return b < a;
+}
 
 void tTestCase(int t) {
   int n; cin >> n;
-  vi a(n), b(n); 
-  map<int, int> mp1, mp2;
+  vi a(n); cin >> a;
+  vi b = a;
+  sort(all(b));
   for (int i = 0; i < n; ++i) {
-    cin >> a[i]; mp1[a[i]] = i + 1;
-  }
-  for (int i = 0; i < n; ++i) {
-    cin >> b[i]; mp2[b[i]] = i + 1;
-  }
-  // bug(a);
-  // bug(b);
-  int gap = mp1[1] - mp2[1], cnt = 0, ans = 0, temp;
-  
-  for (int i = 0; i < n; ++i) {
-    int p1 = mp1[a[i]], p2 = mp2[a[i]];
-    int gap = p2 - p1;
-    cnt = 1;
-    if(gap < 0) gap += n;
-    while(i + 1 < n and mp2[a[i + 1]] - mp1[a[i + 1]] == gap) {
-
-      i++;
-      cnt++;
-    // bug(gap);
+    if(a[i] != b[i] and a[i] % b[0] != 0) {
+      no; return;
     }
-  //   do {
-  //     i++;
-  //     cnt++;
-  //     p1 = mp1[a[i]], p2 = mp2[a[i]];
-  //   }
-  //   while(p1 - p2 == gap); 
-    ans = max(ans, cnt);
   }
-
-  print(ans);
+  yes;
+  // bug(b);
 }
 
 void solve() {
-  int t = 1; // cin >> t;
+  int t; cin >> t;
   for(int i = 1; i <= t; i++) {
     tTestCase(i);
   }
@@ -160,7 +143,8 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();
-
-  return 0;
+  solve();  return 0;
+  vi v = {4,3,6,6,2,9};
+  sort(all(v), comp);
+  bug(v);
 }

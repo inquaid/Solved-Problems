@@ -110,40 +110,24 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n), b(n); 
-  map<int, int> mp1, mp2;
-  for (int i = 0; i < n; ++i) {
-    cin >> a[i]; mp1[a[i]] = i + 1;
-  }
-  for (int i = 0; i < n; ++i) {
-    cin >> b[i]; mp2[b[i]] = i + 1;
-  }
-  // bug(a);
-  // bug(b);
-  int gap = mp1[1] - mp2[1], cnt = 0, ans = 0, temp;
-  
-  for (int i = 0; i < n; ++i) {
-    int p1 = mp1[a[i]], p2 = mp2[a[i]];
-    int gap = p2 - p1;
-    cnt = 1;
-    if(gap < 0) gap += n;
-    while(i + 1 < n and mp2[a[i + 1]] - mp1[a[i + 1]] == gap) {
+  int n; cin >> n; 
+  vi a(n); cin >> a;
+  vi res;
+  int mn = min(a[0], a.back());
+    if(mn & 1 and mn != 1) mn = 1;
+  a[0] -= mn;
+  a[n - 1] -= mn;
+  res.push_back(mn * 2);
 
-      i++;
-      cnt++;
-    // bug(gap);
-    }
-  //   do {
-  //     i++;
-  //     cnt++;
-  //     p1 = mp1[a[i]], p2 = mp2[a[i]];
-  //   }
-  //   while(p1 - p2 == gap); 
-    ans = max(ans, cnt);
-  }
-
-  print(ans);
+  for (int i = 0; i < n - 1; ++i) {
+     int mn = min(a[i], a[i + 1]);
+    if(mn & 1 and mn != 1) mn--;
+    a[i] -= mn;
+    a[i + 1] -= mn;
+    res.push_back(mn * 2);
+   } 
+    bug(a);
+   print(res);
 }
 
 void solve() {

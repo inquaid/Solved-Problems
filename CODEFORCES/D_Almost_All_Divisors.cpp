@@ -110,44 +110,42 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n), b(n); 
-  map<int, int> mp1, mp2;
+  int n, temp;
+  cin >> n;
+  vi a;
+  int mn = INT_MAX, mx = 0;
   for (int i = 0; i < n; ++i) {
-    cin >> a[i]; mp1[a[i]] = i + 1;
+    cin >> temp; mn = min(mn, temp); mx = max(mx, temp);
+    a.push_back(temp);
   }
-  for (int i = 0; i < n; ++i) {
-    cin >> b[i]; mp2[b[i]] = i + 1;
-  }
-  // bug(a);
-  // bug(b);
-  int gap = mp1[1] - mp2[1], cnt = 0, ans = 0, temp;
-  
-  for (int i = 0; i < n; ++i) {
-    int p1 = mp1[a[i]], p2 = mp2[a[i]];
-    int gap = p2 - p1;
-    cnt = 1;
-    if(gap < 0) gap += n;
-    while(i + 1 < n and mp2[a[i + 1]] - mp1[a[i + 1]] == gap) {
-
-      i++;
-      cnt++;
-    // bug(gap);
+  int x = mn * mx;
+  vi div;
+  for (int i = 2; i * i <= x; ++i) {
+    if(x % i == 0) {
+      div.push_back(i);
+      if(i != x / i)
+        div.push_back(x / i);
     }
-  //   do {
-  //     i++;
-  //     cnt++;
-  //     p1 = mp1[a[i]], p2 = mp2[a[i]];
-  //   }
-  //   while(p1 - p2 == gap); 
-    ans = max(ans, cnt);
   }
-
-  print(ans);
+  sort(all(a));
+  sort(all(div));
+  // bug(a.size(), div.size());
+  // bug(x);
+  bug(a);
+  bug(div);
+  if(a.size() != div.size()) {
+    print(-1);return;
+  }
+  for (int i = 0; i < n; ++i) {
+    if(a[i] != div[i]) {
+      print(-1); return;
+    }
+  }
+  print(x);
 }
 
 void solve() {
-  int t = 1; // cin >> t;
+  int t; cin >> t;
   for(int i = 1; i <= t; i++) {
     tTestCase(i);
   }
@@ -160,7 +158,14 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();
+  solve();  return 0;
+  int n = 16;
+  for (int i = 2; i * i <= n; ++i) {
+    if(n % i == 0) {
+      print(i);
+      if(i != n / i) 
+        print(n / i);
+    }
+  }
 
-  return 0;
 }

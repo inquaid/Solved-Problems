@@ -109,45 +109,46 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+  // int cnt=0;
+int isp(int x) {
+  if(x < 2) return 0;
+  for (int i = 2; i * i <= x; ++i) {
+    // cnt++;
+    if(x % i == 0) return 0;
+  }
+  return 1;
+}
+
+// const int N = 1e9;
+// vector<int> lp(N+1);
+// vector<int> pr;
+// void seive() {
+//   for (int i=2; i <= N; ++i) {
+//     if (lp[i] == 0) {
+//       lp[i] = i;
+//       pr.push_back(i);
+//     }
+//     for (int j = 0; i * pr[j] <= N; ++j) {
+//       lp[i * pr[j]] = pr[j];
+//       if (pr[j] == lp[i]) {
+//         break;
+//       }
+//     }
+//   }
+// }
+
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n), b(n); 
-  map<int, int> mp1, mp2;
-  for (int i = 0; i < n; ++i) {
-    cin >> a[i]; mp1[a[i]] = i + 1;
+  int n, k; cin >> n >> k;
+  if(k == 1) {
+    yesif(isp(n));
+  } else {
+    yesif(n == 1 and k == 2);
   }
-  for (int i = 0; i < n; ++i) {
-    cin >> b[i]; mp2[b[i]] = i + 1;
-  }
-  // bug(a);
-  // bug(b);
-  int gap = mp1[1] - mp2[1], cnt = 0, ans = 0, temp;
-  
-  for (int i = 0; i < n; ++i) {
-    int p1 = mp1[a[i]], p2 = mp2[a[i]];
-    int gap = p2 - p1;
-    cnt = 1;
-    if(gap < 0) gap += n;
-    while(i + 1 < n and mp2[a[i + 1]] - mp1[a[i + 1]] == gap) {
-
-      i++;
-      cnt++;
-    // bug(gap);
-    }
-  //   do {
-  //     i++;
-  //     cnt++;
-  //     p1 = mp1[a[i]], p2 = mp2[a[i]];
-  //   }
-  //   while(p1 - p2 == gap); 
-    ans = max(ans, cnt);
-  }
-
-  print(ans);
+  // yesif(isp(n) and k == 1);
 }
 
 void solve() {
-  int t = 1; // cin >> t;
+  int t; cin >> t;
   for(int i = 1; i <= t; i++) {
     tTestCase(i);
   }
@@ -159,8 +160,18 @@ int32_t main() {
     // freopen("input.txt", "r" , stdin);
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
-
-  solve();
-
-  return 0;
+  // seive();
+  // print(pr.back());
+  solve();  return 0;
+  // yesif(isp(2*3*4*5*6*7*8*9*10));
+  // print(cnt);
+  // yesif(isp(52));
+  // for(auto i : pr) {
+  //   int x = i + ( pow(10, floor(log10(i)) + 1) * i);
+  //   // print(x);
+  //   // break;
+  //   if(isp(x)) {
+  //     print(i);
+  //   }
+  // }
 }

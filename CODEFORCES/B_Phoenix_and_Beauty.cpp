@@ -15,11 +15,14 @@
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
-#define newl "\n"
+#define newl cout << "\n"
 
 using namespace std;
+
 using vi = vector<int>;
+using vvi = vector<vector<int>>;
 using pii = pair<int, int>;
+using vii = vector<pii>;
 
 template <typename T, typename Y>
 istream &operator>>(istream &is, pair<T, Y> &p) {
@@ -103,12 +106,48 @@ template <typename Container> void print_container(const Container &container) {
 #define bug(...)
 #endif
 
+int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  if(is_sorted())
+  int n, k; cin >> n >> k;
+  vi a(n); 
+  map<int, int> mp;
+  set<int> st;
+  for (int i = 0; i < n; ++i) {
+    cin >> a[i]; st.insert(a[i]); mp[a[i]]++;
+  }
+  int mx = 0;
+  for(auto i : mp) mx = max(mx, i.ss);
+  if(k < st.size()) {
+    print(-1); return;
+  }
+  // newl;
+  vi res, ans;
+  int i = 0;
+  for(auto i : st) ans.push_back(i);
+    // bug(mx, st.size(), k - (int)st.size());
+  for (int i = 0; i < k - (int)st.size(); ++i) {
+    ans.push_back(ans[i % ans.size()]);
+    // bug(*st.begin());
+  }
+  bug(ans);
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < ans.size(); ++j) {
+      res.push_back(ans[j]);
+    }
+  }
+  // for(auto i : st) cout << i << " "; newl;
+  // for (int i = 0; i <= mx; ++i) {
+  //   // res.push_back(a[i]);
+  //   for(auto elem : st) {
+  //     res.push_back(elem);
+  //     // if(elem != a[i] and elem != a[i + 1]) res.push_back(elem);
+  //   }
+  // }
+  // res.push_back(a.back());
+  print(res.size());
+  print(res);
 }
 
 void solve() {
@@ -125,7 +164,9 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();
-
-  return 0;
+  solve();  return 0;
+  for (int i = 0; i < -12; ++i)
+  {
+    print(12);
+  }
 }

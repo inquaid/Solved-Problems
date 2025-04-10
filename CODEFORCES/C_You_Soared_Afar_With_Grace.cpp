@@ -110,44 +110,69 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n), b(n); 
+  int n;
+  scan(n);
+  vi a(n), b(n);
   map<int, int> mp1, mp2;
   for (int i = 0; i < n; ++i) {
-    cin >> a[i]; mp1[a[i]] = i + 1;
+    cin >> a[i]; mp1[a[i]] = i;
   }
   for (int i = 0; i < n; ++i) {
-    cin >> b[i]; mp2[b[i]] = i + 1;
+    cin >> b[i]; mp2[b[i]] = i;
   }
   // bug(a);
   // bug(b);
-  int gap = mp1[1] - mp2[1], cnt = 0, ans = 0, temp;
-  
+  int cnt = 0, indx = -1;
   for (int i = 0; i < n; ++i) {
-    int p1 = mp1[a[i]], p2 = mp2[a[i]];
-    int gap = p2 - p1;
-    cnt = 1;
-    if(gap < 0) gap += n;
-    while(i + 1 < n and mp2[a[i + 1]] - mp1[a[i + 1]] == gap) {
-
-      i++;
-      cnt++;
-    // bug(gap);
+    if(a[i] == b[i]) {cnt++; indx = i; }
+    if(mp1[b[i]] != mp2[a[i]] or cnt > 1) {
+      print(-1);
+      return;
     }
-  //   do {
-  //     i++;
-  //     cnt++;
-  //     p1 = mp1[a[i]], p2 = mp2[a[i]];
-  //   }
-  //   while(p1 - p2 == gap); 
-    ans = max(ans, cnt);
   }
+  vii res;
+  bug(indx);
+  vi marked(n + 2, 0);
+  if((n & 1) and indx != n / 2) {
+    res.push_back({indx + 1, n / 2 + 1});
+    marked[indx] = 1;
+    marked[n / 2] = 1;
+    swap(a[indx], a[n / 2]);
+    swap(b[indx], b[n / 2]);
+    mp1[a[indx]] = indx;
+    mp1[a[n / 2]] = n / 2;
+    mp2[b[indx]] = indx;
+    mp2[b[n / 2]] = n / 2;
+  }
+  bug(a);
+  bug(b);
+  for (int i = 0; i < n / 2; ++i) {
+    int j = n - 1 - i; 
+    if (!marked[i] && !marked[j]) {
+      if (b[j] != a[i]) {
+        int pos = mp2[a[i]];
+        if (pos != j) {
+          res.push_back({pos + 1, j + 1});
+          swap(a[pos], a[j]);
+          swap(b[pos], b[j]);
+          mp1[a[pos]] = pos;
+          mp1[a[j]] = j;
+          mp2[b[pos]] = pos;
+          mp2[b[j]] = j;
+        }
+      }
+      marked[i] = marked[j] = 1;
+    }
+  }
+  print(res.size());
+  // print(res);
+  for(auto i : res) print(i);
+  // print("OK");
 
-  print(ans);
 }
 
 void solve() {
-  int t = 1; // cin >> t;
+  int t; cin >> t;
   for(int i = 1; i <= t; i++) {
     tTestCase(i);
   }

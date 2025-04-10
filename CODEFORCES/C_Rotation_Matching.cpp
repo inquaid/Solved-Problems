@@ -121,26 +121,14 @@ void tTestCase(int t) {
   }
   // bug(a);
   // bug(b);
-  int gap = mp1[1] - mp2[1], cnt = 0, ans = 0, temp;
-  
+  map<int, int> gap_count;
+  int ans = 0;
+
   for (int i = 0; i < n; ++i) {
     int p1 = mp1[a[i]], p2 = mp2[a[i]];
-    int gap = p2 - p1;
-    cnt = 1;
-    if(gap < 0) gap += n;
-    while(i + 1 < n and mp2[a[i + 1]] - mp1[a[i + 1]] == gap) {
-
-      i++;
-      cnt++;
-    // bug(gap);
-    }
-  //   do {
-  //     i++;
-  //     cnt++;
-  //     p1 = mp1[a[i]], p2 = mp2[a[i]];
-  //   }
-  //   while(p1 - p2 == gap); 
-    ans = max(ans, cnt);
+    int gap = (p2 - p1 + n) % n; 
+    gap_count[gap]++;
+    ans = max(ans, gap_count[gap]); 
   }
 
   print(ans);

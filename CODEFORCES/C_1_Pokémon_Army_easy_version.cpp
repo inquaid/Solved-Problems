@@ -110,44 +110,49 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n), b(n); 
-  map<int, int> mp1, mp2;
-  for (int i = 0; i < n; ++i) {
-    cin >> a[i]; mp1[a[i]] = i + 1;
+  int n, q; cin >> n >> q;
+  vi a(n); cin >> a;
+  if(n == 1) {
+    print(a[0]);
+    return;
   }
-  for (int i = 0; i < n; ++i) {
-    cin >> b[i]; mp2[b[i]] = i + 1;
-  }
-  // bug(a);
-  // bug(b);
-  int gap = mp1[1] - mp2[1], cnt = 0, ans = 0, temp;
-  
-  for (int i = 0; i < n; ++i) {
-    int p1 = mp1[a[i]], p2 = mp2[a[i]];
-    int gap = p2 - p1;
-    cnt = 1;
-    if(gap < 0) gap += n;
-    while(i + 1 < n and mp2[a[i + 1]] - mp1[a[i + 1]] == gap) {
-
+  int i = 0;
+  vi res;
+  while(i + 1 < n) {
+    int temp = a[i];
+    while(i + 1 < n and a[i] < a[i + 1]) {
       i++;
-      cnt++;
-    // bug(gap);
+      temp = a[i];
     }
-  //   do {
-  //     i++;
-  //     cnt++;
-  //     p1 = mp1[a[i]], p2 = mp2[a[i]];
-  //   }
-  //   while(p1 - p2 == gap); 
-    ans = max(ans, cnt);
+    res.push_back(temp);
+    // temp = a[i];
+    while(i + 1 < n and a[i] > a[i + 1]) {
+      i++;
+      temp = a[i];
+    }
+    res.push_back(temp);
+    // i++;
+    // bug(i);
   }
-
-  print(ans);
+  int sz = res.size();
+  if(n > 1) {
+    if(res[sz - 1] == res[sz - 2]) res.pop_back(); sz--;
+  }
+  if(sz % 2 == 0) {
+    res.pop_back();
+    sz--;
+  }
+  bug(res);
+  int sum = 0;
+  for (int i = 0; i < sz; ++i) {
+    if(i % 2 == 0) sum += res[i];
+    else sum -= res[i];
+  }
+  print(sum);
 }
 
 void solve() {
-  int t = 1; // cin >> t;
+  int t; cin >> t;
   for(int i = 1; i <= t; i++) {
     tTestCase(i);
   }

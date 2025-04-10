@@ -110,52 +110,64 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n), b(n); 
-  map<int, int> mp1, mp2;
-  for (int i = 0; i < n; ++i) {
-    cin >> a[i]; mp1[a[i]] = i + 1;
-  }
-  for (int i = 0; i < n; ++i) {
-    cin >> b[i]; mp2[b[i]] = i + 1;
-  }
-  // bug(a);
-  // bug(b);
-  int gap = mp1[1] - mp2[1], cnt = 0, ans = 0, temp;
-  
-  for (int i = 0; i < n; ++i) {
-    int p1 = mp1[a[i]], p2 = mp2[a[i]];
-    int gap = p2 - p1;
-    cnt = 1;
-    if(gap < 0) gap += n;
-    while(i + 1 < n and mp2[a[i + 1]] - mp1[a[i + 1]] == gap) {
+  int n;
+  scan(n);
+}
 
-      i++;
-      cnt++;
-    // bug(gap);
-    }
-  //   do {
-  //     i++;
-  //     cnt++;
-  //     p1 = mp1[a[i]], p2 = mp2[a[i]];
-  //   }
-  //   while(p1 - p2 == gap); 
-    ans = max(ans, cnt);
-  }
-
-  print(ans);
+int ask(int l, int r) {
+  if(l >= r) return -1;
+  cout << "? " << l + 1 << " " << r + 1 << endl;
+  int x; cin >> x;
+  return x - 1;
 }
 
 void solve() {
-  int t = 1; // cin >> t;
-  for(int i = 1; i <= t; i++) {
-    tTestCase(i);
+  int n; cin >> n;
+  int pos = 0;
+  // bug(pos);
+  int l = 0, r = n, temp;
+  pos = ask(l, r - 1);
+  int ans = 0;
+  if(pos == 0 or ask(0, pos) != pos) {
+    l = pos, r = n - 1;
+    while(r - l > 1) {
+      int mid = l + (r - l) / 2;
+      if(ask(pos, mid) == pos) {
+        r = mid;
+      } else {
+        l = mid;
+      }
+    }
+  cout << "! " << r + 1 << endl;
+
+  } else {
+    l = 0, r = pos;
+    while(r - l > 1) {
+      int mid = l + (r - l) / 2;
+      if(ask(mid, pos) == pos) {
+        l = mid;
+      } else 
+        r = mid;
+    }
+  cout << "! " << l + 1 << endl;
   }
+  // while(l < r) {
+  //   int mid = l + (r - l) / 2;
+  //   if(ask(l, mid - 1) == pos) {
+  //     r = mid + 1;
+  //     ans = r;
+  //   } else {
+  //     l = mid - 1;
+  //     ans = l;
+  //   }
+  // }
+
+  // cout << "! " << ans << endl;
 }
 
 int32_t main() {
-  ios_base::sync_with_stdio(false);
-  cin.tie(NULL);
+  // ios_base::sync_with_stdio(false);
+  // cin.tie(NULL);
     // freopen("input.txt", "r" , stdin);
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);

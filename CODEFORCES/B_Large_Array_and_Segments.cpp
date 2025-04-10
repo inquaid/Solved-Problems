@@ -15,7 +15,7 @@
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
-#define newl cout << "\n"
+#define newl "\n"
 
 using namespace std;
 
@@ -110,44 +110,34 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n), b(n); 
-  map<int, int> mp1, mp2;
+  int n, k, x; cin >> n >> k >> x;
+  vi a(n); 
+  int sum = 0;
   for (int i = 0; i < n; ++i) {
-    cin >> a[i]; mp1[a[i]] = i + 1;
+    cin >> a[i]; sum += a[i];
   }
+  vi pref(n + 1, 0);
   for (int i = 0; i < n; ++i) {
-    cin >> b[i]; mp2[b[i]] = i + 1;
+    pref[i + 1] = pref[i] + a[i];
   }
-  // bug(a);
-  // bug(b);
-  int gap = mp1[1] - mp2[1], cnt = 0, ans = 0, temp;
-  
-  for (int i = 0; i < n; ++i) {
-    int p1 = mp1[a[i]], p2 = mp2[a[i]];
-    int gap = p2 - p1;
-    cnt = 1;
-    if(gap < 0) gap += n;
-    while(i + 1 < n and mp2[a[i + 1]] - mp1[a[i + 1]] == gap) {
+  int cnt = 0;
 
-      i++;
-      cnt++;
-    // bug(gap);
+  for (int r = 0; r < n; ++r) {
+    int temp = sum - pref[r];
+    int need = 0;
+    if(temp < x) {
+      need = ceil(x - temp, sum);
     }
-  //   do {
-  //     i++;
-  //     cnt++;
-  //     p1 = mp1[a[i]], p2 = mp2[a[i]];
-  //   }
-  //   while(p1 - p2 == gap); 
-    ans = max(ans, cnt);
+    if(need < k) {
+      cnt += (k - need);
+    }
   }
 
-  print(ans);
+  print(cnt);
 }
 
 void solve() {
-  int t = 1; // cin >> t;
+  int t; cin >> t;
   for(int i = 1; i <= t; i++) {
     tTestCase(i);
   }
