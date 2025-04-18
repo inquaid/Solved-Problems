@@ -141,21 +141,30 @@ void solve() {
       ost.insert(i);
   }
   // for(auto i : ost) {
-  //     print(i);
-  // }
+  //     cout << (i) << " ";
+  // } newl;
   int l_pos = 1, m = n - 1;
   for (int i = 0; i < m; i++) {
-      int temp = n - a[i] % n;
+      l_pos = (l_pos + a[i] - 1) % (n - i);
+      if(l_pos == 0) l_pos = ost.size();
+      // int temp = a[i];
+      // if(temp > n) temp = n - a[i] % n;
       // print(temp);
-      l_pos = (l_pos + temp - 1) % n;
-      ost.erase(l_pos - 1);
-      print(l_pos);
-      n--;
+      // bug(temp);
+      // bug(ost.size());
+      // l_pos = (l_pos + temp ) % n;
+      // l_pos = ost.order_of_key(l_pos) + 1;
+      bug(l_pos, *ost.find_by_order(l_pos - 1));
+      ost.erase(*ost.find_by_order(l_pos - 1));
+      // l_pos = (l_pos + a[i] - 1) % (n - i);
+      // break;
+      // print(l_pos);
+      // n--;
   }
   // print(*ost.find_by_order(0));
-  //  for(auto i : ost) {
-  //     print(i);
-  // }
+   for(auto i : ost) {
+      print(i);
+  }
 }
 
 int32_t main() {

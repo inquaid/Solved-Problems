@@ -13,21 +13,6 @@
 #include <iomanip>
 #include <numeric>
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-
-using namespace std;
-using namespace __gnu_pbds;
-
-template <class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update>;
-
-/**
- *  less_equal, greater, greater_equal
- *  order_of_key(k) : no. of elements < k
- *  find_by_order(i) : value at index i (0-based)
-**/
-
-
 #define int long long
 #define all(x) (x).begin(), (x).end()
 #define newl cout << "\n"
@@ -130,33 +115,51 @@ void tTestCase(int t) {
   int n;
   scan(n);
 }
-
-void solve() { 
-  int n;
-  cin >> n;
-  vi a(n - 1);
-  cin >> a;
-  ordered_set<int> ost;
-  for (int i = 1; i <= n; i++) {
-      ost.insert(i);
+int isPal(vi &a) {
+  int i = 0, j = a.size() - 1;
+  while(i <= j) {
+    if(a[i] != a[j]) return 0;
+    i++; j--;
   }
-  // for(auto i : ost) {
-  //     print(i);
-  // }
-  int l_pos = 1, m = n - 1;
-  for (int i = 0; i < m; i++) {
-      int temp = n - a[i] % n;
-      // print(temp);
-      l_pos = (l_pos + temp - 1) % n;
-      ost.erase(l_pos - 1);
-      print(l_pos);
-      n--;
-  }
-  // print(*ost.find_by_order(0));
-  //  for(auto i : ost) {
-  //     print(i);
-  // }
+  return 1;
 }
+int pos(int m, vi &a) {
+  vi b;
+  bool flag = 0;
+  for(auto &i : a) {
+    // i = i % m;
+    b.push_back(i % m);
+    // if(i != i % m) flag = 1;
+  }
+  // if(!flag) return 0;
+  bug(b);
+  return isPal(b);
+}
+
+void solve() {
+  int n; cin >> n;
+  vi a;
+  a.resize(n);
+  cin >> a;
+  // if(isPal(a)) {
+  //   print(-1); return;
+  // }
+  int mn = -1, res = 0;
+  int i = 0, j = n - 1;
+  // for(auto i : a) res = gcd(res, i);
+  while(i < j) {
+    bug(a[i], a[j]);
+  //   res = lcm(res, abs(a[i] - a[j]));
+    res = (__gcd(res, abs(a[i] - a[j])));
+
+    i++; j--;
+  }
+  if(res == 0) print(-1);
+  // for(auto i : a) mn = min(mn, i);
+  else
+    print(res);
+}
+
 
 int32_t main() {
   ios_base::sync_with_stdio(false);
@@ -165,7 +168,8 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();
-
-  return 0;
+  solve();  return 0;
+  int n; cin >> n;
+  vi a(n); cin >> a;
+  yesif(isPal(a));
 }

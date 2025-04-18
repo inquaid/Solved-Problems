@@ -13,21 +13,6 @@
 #include <iomanip>
 #include <numeric>
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-
-using namespace std;
-using namespace __gnu_pbds;
-
-template <class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update>;
-
-/**
- *  less_equal, greater, greater_equal
- *  order_of_key(k) : no. of elements < k
- *  find_by_order(i) : value at index i (0-based)
-**/
-
-
 #define int long long
 #define all(x) (x).begin(), (x).end()
 #define newl cout << "\n"
@@ -127,36 +112,53 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n;
-  scan(n);
+  int n, m, k; cin >> n >> m >> k; 
+  if(m % k != 0) {
+    int cnt = 0;
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < m; ++j) {
+        cout << (cnt % k) + 1 << " ";
+        cnt++;
+      }
+      newl;
+    }
+    return;
+  }
+  // no;
+  int cnt = 0;
+  vi res(k);
+  iota(all(res), 1);
+
+  vi r2(k);
+  copy(res.begin() + 1, res.end(), r2.begin());
+  r2.back() = 1;
+  bug(res);
+  bug(r2);
+  for (int i = 0; i < n; ++i) {
+    // if(i&1) swap(res[0], res[k - 1]);
+    for (int j = 0; j < m / k; ++j) {
+      for (int indx = 0; indx < k; ++indx) {
+        if(i&1)
+          cout << res[indx] << " ";
+        else
+          cout << r2[indx] << " ";
+      }
+      // cout << res[j % k] << " ";
+    }
+    // if(i&1) swap(res[0], res[k - 1]);
+  newl;
+  }
 }
 
-void solve() { 
-  int n;
-  cin >> n;
-  vi a(n - 1);
-  cin >> a;
-  ordered_set<int> ost;
-  for (int i = 1; i <= n; i++) {
-      ost.insert(i);
+void solve() {
+  int t = 1; 
+  cin >> t;
+  for(int i = 1; i <= t; i++) {
+    // cout << "Case " << i << ": ";
+    tTestCase(i);
   }
-  // for(auto i : ost) {
-  //     print(i);
-  // }
-  int l_pos = 1, m = n - 1;
-  for (int i = 0; i < m; i++) {
-      int temp = n - a[i] % n;
-      // print(temp);
-      l_pos = (l_pos + temp - 1) % n;
-      ost.erase(l_pos - 1);
-      print(l_pos);
-      n--;
-  }
-  // print(*ost.find_by_order(0));
-  //  for(auto i : ost) {
-  //     print(i);
-  // }
 }
+
 
 int32_t main() {
   ios_base::sync_with_stdio(false);
@@ -165,7 +167,8 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();
-
-  return 0;
+  solve();  return 0;
+  vi res(5);
+  iota(all(res), 2);
+  print(res);
 }

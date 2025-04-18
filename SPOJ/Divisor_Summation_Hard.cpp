@@ -13,21 +13,6 @@
 #include <iomanip>
 #include <numeric>
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-
-using namespace std;
-using namespace __gnu_pbds;
-
-template <class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update>;
-
-/**
- *  less_equal, greater, greater_equal
- *  order_of_key(k) : no. of elements < k
- *  find_by_order(i) : value at index i (0-based)
-**/
-
-
 #define int long long
 #define all(x) (x).begin(), (x).end()
 #define newl cout << "\n"
@@ -126,37 +111,96 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n;
-  scan(n);
+const int N = 100000000;
+// const int N = 1000;
+vector<int> lp(N+1);
+vector<int> pr;
+void seive() {
+  for (int i=2; i <= N; ++i) {
+    if (lp[i] == 0) {
+      lp[i] = i;
+      pr.push_back(i);
+    }
+    for (int j = 0; i * pr[j] <= N; ++j) {
+      lp[i * pr[j]] = pr[j];
+      if (pr[j] == lp[i]) {
+        break;
+      }
+    }
+  }
 }
 
-void solve() { 
-  int n;
-  cin >> n;
-  vi a(n - 1);
-  cin >> a;
-  ordered_set<int> ost;
-  for (int i = 1; i <= n; i++) {
-      ost.insert(i);
+
+__int128 read() {
+  string s; cin >> s;
+  __int128 ans = 0;
+  for (int i = 0; i < s.size(); i++) {
+    ans = ans * 10 + (s[i] - '0');
   }
-  // for(auto i : ost) {
-  //     print(i);
-  // }
-  int l_pos = 1, m = n - 1;
-  for (int i = 0; i < m; i++) {
-      int temp = n - a[i] % n;
-      // print(temp);
-      l_pos = (l_pos + temp - 1) % n;
-      ost.erase(l_pos - 1);
-      print(l_pos);
-      n--;
-  }
-  // print(*ost.find_by_order(0));
-  //  for(auto i : ost) {
-  //     print(i);
-  // }
+  return ans;
 }
+
+string to_string(__int128 x) {
+  string s;
+  while (x > 0) {
+    s += (char)(x % 10 + '0');
+    x /= 10;
+  }
+  reverse(s.begin(), s.end());
+  return s;
+}
+
+void write(__int128 x) {
+  cout << to_string(x) << '\n';
+}
+
+lll binpow(lll a, lll b) {
+    if (b == 0)
+        return 1;
+    lll res = binpow(a, b / 2);
+    if (b % 2)
+        return res * res * a;
+    else
+        return res * res;
+}
+
+void tTestCase(int t) {
+  lll a, b; a = read();
+  if(a == 1) {
+    print(0);
+    return;
+  }
+  lll temp = a;
+  lll res = 1ll;
+  for(auto i : pr) {
+    if(i * i > a) break;
+    if(a % i == 0) {
+      int cnt = 0;
+      while(a % i == 0) {
+        cnt++; a /= i; 
+      }
+      // bug(i, cnt);
+      res *= ((binpow(i, cnt + 1) - 1) / (i - 1));
+    }
+  }
+  // bug(a); 
+  // bug(a);
+  if(a != 1)
+    res *= ((binpow(a, 2) - 1) / (a - 1));
+  res -= temp;
+  write(res);
+  // print(res - temp);
+}
+
+void solve() {
+  int t = 1; 
+  cin >> t;
+  for(int i = 1; i <= t; i++) {
+    // cout << "Case " << i << ": ";
+    tTestCase(i);
+  }
+}
+
 
 int32_t main() {
   ios_base::sync_with_stdio(false);
@@ -164,8 +208,19 @@ int32_t main() {
     // freopen("input.txt", "r" , stdin);
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
-
-  solve();
-
-  return 0;
+  seive();
+  solve();  return 0;
+  set<int> st;
+  int n = 243;
+  for (int i = 2; i * i <= n; ++i) {
+    if(n % i == 0) {
+      // while(n % i == 0) n /= i;
+      st.insert(i);
+      if(n / i != i) st.insert(n / i);
+    }
+  }
+  // ans = ()
+  for(auto i : st) {
+    cout << i << " ";
+  }
 }

@@ -13,21 +13,6 @@
 #include <iomanip>
 #include <numeric>
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-
-using namespace std;
-using namespace __gnu_pbds;
-
-template <class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update>;
-
-/**
- *  less_equal, greater, greater_equal
- *  order_of_key(k) : no. of elements < k
- *  find_by_order(i) : value at index i (0-based)
-**/
-
-
 #define int long long
 #define all(x) (x).begin(), (x).end()
 #define newl cout << "\n"
@@ -126,37 +111,73 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n;
-  scan(n);
+map<int, vi> mp;
+int f(int k, int l, int r) {
+  vector<pii> v;
+  for (int d = 1; d * d <= k; ++d) {
+    if(k % d == 0) {
+      // bug(d, k / d);
+      auto pos = lower_bound(mp[d].begin(), mp[d].end(), l);
+      if(pos != mp[d].end() and *pos <= r ) {
+        v.push_back({*pos, d});
+      }
+      if(k / d != d) {
+        auto pos = lower_bound(mp[k / d].begin(), mp[k / d].end(), l);
+        if(pos != mp[k / d].end() and *pos <= r) {
+          v.push_back({*pos, k / d});
+        }
+      }
+    }
+  }
+  // for(auto i : v) print(i);
+  sort(all(v));
+  int ans = 0;
+  if(v.empty()) {
+    return k * (r - l + 1);
+  }
+  int last = v[0].ff;
+  int strt = 0;
+  if(last != l) ans = k * (last - l );
+  
+  for (int i = strt; i < v.size() ; ++i) {
+    int pos = v[i].ff, val = v[i].ss;
+    while(k % val == 0) k /= val;
+    if(i == v.size() - 1) last = r + 1;   
+    else last = v[i + 1].ff;
+    int gap = last - v[i].ff;
+    ans += (k * gap);
+  }
+  return ans;
 }
 
-void solve() { 
-  int n;
-  cin >> n;
-  vi a(n - 1);
-  cin >> a;
-  ordered_set<int> ost;
-  for (int i = 1; i <= n; i++) {
-      ost.insert(i);
+void tTestCase(int t) {
+  int n, q; cin >> n >> q;
+  vi a(n);
+  mp.clear();
+  // bug(mp.size());
+  for (int i = 0; i < n; ++i) {
+    cin >> a[i];
+    mp[a[i]].push_back(i);
   }
-  // for(auto i : ost) {
-  //     print(i);
-  // }
-  int l_pos = 1, m = n - 1;
-  for (int i = 0; i < m; i++) {
-      int temp = n - a[i] % n;
-      // print(temp);
-      l_pos = (l_pos + temp - 1) % n;
-      ost.erase(l_pos - 1);
-      print(l_pos);
-      n--;
+  // for(auto i : mp) print(i.ss);
+  for (int i = 0; i < q; ++i) {
+    int k, l, r; cin >> k >> l >> r;
+    // print(f(k, l, r, a));
+    int temp = (f(k, l - 1, r - 1));
+    print(temp);
+    // break;
   }
-  // print(*ost.find_by_order(0));
-  //  for(auto i : ost) {
-  //     print(i);
-  // }
 }
+
+void solve() {
+  int t = 1; 
+  cin >> t;
+  for(int i = 1; i <= t; i++) {
+    // cout << "Case " << i << ": ";
+    tTestCase(i);
+  }
+}
+
 
 int32_t main() {
   ios_base::sync_with_stdio(false);
@@ -165,7 +186,20 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-  solve();
-
-  return 0;
+  solve();  return 0;
+  for (int i = 0; i < 5; ++i)
+  {
+    if(i == 4) print(i);
+    // bug(i);
+  }
+  int n; cin >> n;
+  vi a(n); cin >> a;
+  for (int i = 0; i < a.size() - 1; ++i) {
+    bug(i, a[i]);
+  }
+  auto it = lower_bound(all(a), 1);
+  if(it == a.end()) yes;
+  print(*it);
+  print(it - a.begin());
+  print(a[it - a.begin()]);
 }

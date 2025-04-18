@@ -13,21 +13,6 @@
 #include <iomanip>
 #include <numeric>
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-
-using namespace std;
-using namespace __gnu_pbds;
-
-template <class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update>;
-
-/**
- *  less_equal, greater, greater_equal
- *  order_of_key(k) : no. of elements < k
- *  find_by_order(i) : value at index i (0-based)
-**/
-
-
 #define int long long
 #define all(x) (x).begin(), (x).end()
 #define newl cout << "\n"
@@ -130,33 +115,33 @@ void tTestCase(int t) {
   int n;
   scan(n);
 }
-
-void solve() { 
-  int n;
-  cin >> n;
-  vi a(n - 1);
-  cin >> a;
-  ordered_set<int> ost;
-  for (int i = 1; i <= n; i++) {
-      ost.insert(i);
+const int m = 1e9;
+void solve() {
+  int n, k; cin >> n >> k;
+  if(n < k) {
+    print(1);
+    return;
   }
-  // for(auto i : ost) {
-  //     print(i);
-  // }
-  int l_pos = 1, m = n - 1;
-  for (int i = 0; i < m; i++) {
-      int temp = n - a[i] % n;
-      // print(temp);
-      l_pos = (l_pos + temp - 1) % n;
-      ost.erase(l_pos - 1);
-      print(l_pos);
-      n--;
+  vi a(n + 1, 0);
+  int cnt = 0;
+  for (int i = 0; i < k; ++i) {
+    a[i] = 1; 
   }
-  // print(*ost.find_by_order(0));
-  //  for(auto i : ost) {
-  //     print(i);
-  // }
+  cnt = (k % m);
+  bug(cnt);
+  for (int i = k; i <= n; ++i) {
+    // bug(i - k );
+    a[i] = (a[i] % m +  cnt % m) % m;
+    cnt = (cnt % m - a[i - k] % m + m)% m;
+    cnt = (cnt % m + a[i] % m )% m;
+  // bug(cnt);
+    // bug(a[i]);
+  }
+  bug(a);
+  print(a.back());
+  return;
 }
+
 
 int32_t main() {
   ios_base::sync_with_stdio(false);

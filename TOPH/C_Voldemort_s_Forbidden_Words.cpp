@@ -13,21 +13,6 @@
 #include <iomanip>
 #include <numeric>
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-
-using namespace std;
-using namespace __gnu_pbds;
-
-template <class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update>;
-
-/**
- *  less_equal, greater, greater_equal
- *  order_of_key(k) : no. of elements < k
- *  find_by_order(i) : value at index i (0-based)
-**/
-
-
 #define int long long
 #define all(x) (x).begin(), (x).end()
 #define newl cout << "\n"
@@ -131,32 +116,38 @@ void tTestCase(int t) {
   scan(n);
 }
 
-void solve() { 
-  int n;
-  cin >> n;
-  vi a(n - 1);
-  cin >> a;
-  ordered_set<int> ost;
-  for (int i = 1; i <= n; i++) {
-      ost.insert(i);
+void solve() {
+  string s; cin >> s;
+  map<char, int> mp;
+  for(auto ch : s) {
+    mp[ch]++;
   }
-  // for(auto i : ost) {
-  //     print(i);
-  // }
-  int l_pos = 1, m = n - 1;
-  for (int i = 0; i < m; i++) {
-      int temp = n - a[i] % n;
-      // print(temp);
-      l_pos = (l_pos + temp - 1) % n;
-      ost.erase(l_pos - 1);
-      print(l_pos);
-      n--;
+  int n; cin >> n;
+  if(n == 0) {
+    print("No curse from Voldemort!");
+        // ok = 0;
+        return;
   }
-  // print(*ost.find_by_order(0));
-  //  for(auto i : ost) {
-  //     print(i);
-  // }
+  for (int i = 0; i < n; ++i) {
+    cin >> s;
+    int mn = INT_MAX;
+    map<char, int> temp;
+
+    for(auto ch : s) {
+      temp[ch]++;
+      mn = min(mn, temp[ch]);
+    }
+    int ans = INT_MAX;
+    bool ok = 1;
+    for(auto [ch, cnt] : temp) {
+      ans = min(ans, mp[ch] / cnt);
+    print(ans);
+    for(auto &i : temp) {
+      mp[i.ff] -= (ans * i.ss);
+    }
+  }
 }
+
 
 int32_t main() {
   ios_base::sync_with_stdio(false);

@@ -13,21 +13,6 @@
 #include <iomanip>
 #include <numeric>
 
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-
-using namespace std;
-using namespace __gnu_pbds;
-
-template <class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update>;
-
-/**
- *  less_equal, greater, greater_equal
- *  order_of_key(k) : no. of elements < k
- *  find_by_order(i) : value at index i (0-based)
-**/
-
-
 #define int long long
 #define all(x) (x).begin(), (x).end()
 #define newl cout << "\n"
@@ -131,32 +116,38 @@ void tTestCase(int t) {
   scan(n);
 }
 
-void solve() { 
-  int n;
-  cin >> n;
-  vi a(n - 1);
-  cin >> a;
-  ordered_set<int> ost;
-  for (int i = 1; i <= n; i++) {
-      ost.insert(i);
+void solve() {
+  int n; cin >> n;
+  vi s(n), c(n);
+  cin >> s >> c;
+
+  vi pref(n, 0);
+  int last_mn = c.back();
+  for (int i = n - 1; i >= 0; i--) {
+    last_mn = min(last_mn, c[i]);
+    pref[i] = last_mn;
   }
-  // for(auto i : ost) {
-  //     print(i);
-  // }
-  int l_pos = 1, m = n - 1;
-  for (int i = 0; i < m; i++) {
-      int temp = n - a[i] % n;
-      // print(temp);
-      l_pos = (l_pos + temp - 1) % n;
-      ost.erase(l_pos - 1);
-      print(l_pos);
-      n--;
-  }
-  // print(*ost.find_by_order(0));
-  //  for(auto i : ost) {
-  //     print(i);
-  // }
+  // print(pref);
+  int res = INT_MAX, cnt = 0;
+  for (int j = 0; j < n; ++j) {
+    int i = INT_MAX, k = INT_MAX;
+    for (int z = 0; z < n; ++z) {
+      if(z < j and s[z] < s[j]) {
+        i = min(i, c[z]);
+      } else if(z > j and s[z] > s[j]) {
+        k = min(k, c[z]);
+      }
+    }
+    if(i != INT_MAX and k != INT_MAX) {
+      res = min(res, i + c[j] + k);
+    }
+  } 
+  if(res == INT_MAX) print(-1);
+  else
+    print(res);
+  // print(cnt);
 }
+
 
 int32_t main() {
   ios_base::sync_with_stdio(false);
