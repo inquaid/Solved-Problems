@@ -12,9 +12,8 @@
 #include <bitset>
 #include <iomanip>
 #include <numeric>
-#include <chrono>
 
-// #define int long long
+#define int long long
 #define all(x) (x).begin(), (x).end()
 #define newl cout << "\n"
 
@@ -112,60 +111,39 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-const int N = 1e8;
-// vector<int> lp(N+1);
-vector<int> pr;
-// void sieve() {
-//   for (int i=2; i <= N; ++i) {
-//     if (lp[i] == 0) {
-//       lp[i] = i;
-//       pr.push_back(i);
-//     }
-//     for (int j = 0; i * pr[j] <= N; ++j) {
-//       lp[i * pr[j]] = pr[j];
-//       if (pr[j] == lp[i]) {
-//         break;
-//       }
-//     }
-//   }
-//   // print(pr.)
-// }
-void solve() {
-  // int t = 1; 
-  // cin >> t;
-  // for(int i = 1; i <= t; i++) {
-  //   // cout << "Case " << i << ": ";
-  //   tTestCase(i);
+void tTestCase(int t) {
+  int x, y; cin >> x >> y;
+  // int mn = min(x, y);
+  // int mx = max(x, y); 
+  // bug(mn, mx);
+  if(x > y) {
+    print(x + y);
+    return;
+  }
+  if(x == y) {
+    print(x);
+    return;
+  }
+  int temp = (y % x) / 2;
+  print(y - temp);
+  // for (int n = x; n <= y; ++n) {
+  //   if(n % x == y % n) {
+  //     print(n);
+  //     break;
+  //   }
   // }
 }
-bool Check(int N,int pos){return (bool)(N & (1<<pos));}
-int Set(int N,int pos){ return N=N | (1<<pos);}
 
-// int mx = 1000;
-int status[(100000000/32)+2];
-
-void sieve2()
-{
-   int i, j, sqrtN; 
-     sqrtN = int( sqrt( N ) );
-     for( i = 3; i <= sqrtN; i += 2 ) 
-     {
-     if( Check(status[i>>5],i&31)==0)
-     {
-       for( j = i*i; j <= N; j += (i<<1) )
-       {
-         status[j>>5]=Set(status[j>>5],j & 31)   ;
-       }
-     }
-   }
-  
-   // puts("2");
-   pr.push_back(2);
-   for(i=3;i<=N;i+=2)
-     if( Check(status[i>>5],i&31)==0)
-        pr.push_back(i);
-     // printf("%d\n",i);
+void solve() {
+  int t = 1; 
+  cin >> t;
+  for(int i = 1; i <= t; i++) {
+    // cout << "Case " << i << ": ";
+    tTestCase(i);
+  }
 }
+
+
 int32_t main() {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
@@ -173,22 +151,10 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    // auto t1 = std::chrono::high_resolution_clock::now();
-    sieve2();
-    // print
-    // solve();  // return 0;
-    // sieve();
-    for (int i = 0; i < pr.size(); i += 100) {
-      print(pr[i]);
+  solve(); return 0;
+  for (int n = 1; n < 50000000; ++n) {
+    if(n % 268 == 357934 % n) {
+      print(n);
     }
-    // print(pr[0]);
-    // print(pr.back());
-    // print(pr.size());
-    // print(pr[100]);
-    // print(pr[200]);
-    // auto t2 = std::chrono::high_resolution_clock::now();
-    // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
-    // cout << "    time: " << duration.count() << " ms" << endl;
-
-  return 0;
+  }
 }

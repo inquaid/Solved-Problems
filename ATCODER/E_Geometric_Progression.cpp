@@ -12,9 +12,8 @@
 #include <bitset>
 #include <iomanip>
 #include <numeric>
-#include <chrono>
 
-// #define int long long
+#define int long long
 #define all(x) (x).begin(), (x).end()
 #define newl cout << "\n"
 
@@ -112,60 +111,42 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-const int N = 1e8;
-// vector<int> lp(N+1);
-vector<int> pr;
-// void sieve() {
-//   for (int i=2; i <= N; ++i) {
-//     if (lp[i] == 0) {
-//       lp[i] = i;
-//       pr.push_back(i);
-//     }
-//     for (int j = 0; i * pr[j] <= N; ++j) {
-//       lp[i * pr[j]] = pr[j];
-//       if (pr[j] == lp[i]) {
-//         break;
-//       }
-//     }
-//   }
-//   // print(pr.)
-// }
+int a, x, m;
+
+int binpow(int a, int b) {
+  a %= m;
+  int res = 1;
+  while (b > 0) {
+    if (b & 1)
+      res = res * a % m;
+    a = a * a % m;
+    b >>= 1;
+  }
+  return res % m; 
+}
+
+int mul(int a, int b) {
+  return (a % m * b % m) % m;
+}
+
+int add(int a, int b) {
+  return (a % m + b % m) % m;
+}
+
+int s(int n) {
+  if(n == 1) return 1 % m;
+  if(n % 2 == 0) {
+    return mul(s(n / 2), add(1, binpow(a, n / 2)));
+  } else 
+    return add(s(n - 1), binpow(a, n - 1));
+}
+
 void solve() {
-  // int t = 1; 
-  // cin >> t;
-  // for(int i = 1; i <= t; i++) {
-  //   // cout << "Case " << i << ": ";
-  //   tTestCase(i);
-  // }
+  cin >> a >> x >> m;
+  print(s(x));
 }
-bool Check(int N,int pos){return (bool)(N & (1<<pos));}
-int Set(int N,int pos){ return N=N | (1<<pos);}
 
-// int mx = 1000;
-int status[(100000000/32)+2];
 
-void sieve2()
-{
-   int i, j, sqrtN; 
-     sqrtN = int( sqrt( N ) );
-     for( i = 3; i <= sqrtN; i += 2 ) 
-     {
-     if( Check(status[i>>5],i&31)==0)
-     {
-       for( j = i*i; j <= N; j += (i<<1) )
-       {
-         status[j>>5]=Set(status[j>>5],j & 31)   ;
-       }
-     }
-   }
-  
-   // puts("2");
-   pr.push_back(2);
-   for(i=3;i<=N;i+=2)
-     if( Check(status[i>>5],i&31)==0)
-        pr.push_back(i);
-     // printf("%d\n",i);
-}
 int32_t main() {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
@@ -173,22 +154,7 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    // auto t1 = std::chrono::high_resolution_clock::now();
-    sieve2();
-    // print
-    // solve();  // return 0;
-    // sieve();
-    for (int i = 0; i < pr.size(); i += 100) {
-      print(pr[i]);
-    }
-    // print(pr[0]);
-    // print(pr.back());
-    // print(pr.size());
-    // print(pr[100]);
-    // print(pr[200]);
-    // auto t2 = std::chrono::high_resolution_clock::now();
-    // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
-    // cout << "    time: " << duration.count() << " ms" << endl;
+  solve();
 
   return 0;
 }

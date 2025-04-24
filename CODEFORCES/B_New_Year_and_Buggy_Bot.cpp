@@ -14,7 +14,7 @@
 #include <numeric>
 #include <chrono>
 
-// #define int long long
+#define int long long
 #define all(x) (x).begin(), (x).end()
 #define newl cout << "\n"
 
@@ -112,60 +112,63 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-const int N = 1e8;
-// vector<int> lp(N+1);
-vector<int> pr;
-// void sieve() {
-//   for (int i=2; i <= N; ++i) {
-//     if (lp[i] == 0) {
-//       lp[i] = i;
-//       pr.push_back(i);
-//     }
-//     for (int j = 0; i * pr[j] <= N; ++j) {
-//       lp[i * pr[j]] = pr[j];
-//       if (pr[j] == lp[i]) {
-//         break;
-//       }
-//     }
-//   }
-//   // print(pr.)
-// }
+int n, m, si, sj, ei, ej; 
+vector<string> vs;
+int is_Possible(string &path, vi &v) {
+  int i = si, j = sj, k = 0;
+   while(k < path.size()) {
+    // if(i == ei and j == ej) return 1;
+    int temp = (v[path[k] - '0'] );
+    bug(i, j, temp);
+    // bug(temp);
+    if(temp == 0) {
+      i++;
+    } else if(temp == 1) {
+      i--;
+    } else if(temp == 2) {
+      j++;
+    } else {
+      j--;
+    }
+    if(i < 0 or j < 0 or i >= n or j >= m ) return 0;
+    if(vs[i][j] == '#') return 0;
+    if(vs[i][j] == 'E') return 1;
+    k++;
+  } 
+  // bug(12);
+  return 0;
+}
+
 void solve() {
-  // int t = 1; 
-  // cin >> t;
-  // for(int i = 1; i <= t; i++) {
-  //   // cout << "Case " << i << ": ";
-  //   tTestCase(i);
+  cin >> n >> m;
+  for (int i = 0; i < n; ++i) {
+    string temp; cin >> temp; vs.push_back(temp);
+    for (int j = 0; j < m; ++j) {
+      if(temp[j] == 'S') {si = i, sj = j;}
+      if(temp[j] == 'E') {ei = i, ej = j;}
+    }
+  }
+  string s; cin >> s;
+
+  vi v = {0, 1, 2, 3};
+  // v = {3,1,0,2};
+  // print(is_Possible(s, v));
+  // bug(si, sj);
+  // s = "0123";
+  int cnt = 0;
+  do {
+    cnt += is_Possible(s, v);
+    // print(v);
+    // bug("__________________________");
+  } while(next_permutation(all(v)));
+  print(cnt);
+  // for (int i = 0; i < (1<<4); ++i) {
+  //   // print(i);
+
   // }
 }
-bool Check(int N,int pos){return (bool)(N & (1<<pos));}
-int Set(int N,int pos){ return N=N | (1<<pos);}
 
-// int mx = 1000;
-int status[(100000000/32)+2];
 
-void sieve2()
-{
-   int i, j, sqrtN; 
-     sqrtN = int( sqrt( N ) );
-     for( i = 3; i <= sqrtN; i += 2 ) 
-     {
-     if( Check(status[i>>5],i&31)==0)
-     {
-       for( j = i*i; j <= N; j += (i<<1) )
-       {
-         status[j>>5]=Set(status[j>>5],j & 31)   ;
-       }
-     }
-   }
-  
-   // puts("2");
-   pr.push_back(2);
-   for(i=3;i<=N;i+=2)
-     if( Check(status[i>>5],i&31)==0)
-        pr.push_back(i);
-     // printf("%d\n",i);
-}
 int32_t main() {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
@@ -174,18 +177,11 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     // auto t1 = std::chrono::high_resolution_clock::now();
-    sieve2();
-    // print
-    // solve();  // return 0;
-    // sieve();
-    for (int i = 0; i < pr.size(); i += 100) {
-      print(pr[i]);
-    }
-    // print(pr[0]);
-    // print(pr.back());
-    // print(pr.size());
-    // print(pr[100]);
-    // print(pr[200]);
+
+    solve();  return 0;
+    int temp = ('1'-'0');
+    print(temp + 4);
+
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cout << "    time: " << duration.count() << " ms" << endl;

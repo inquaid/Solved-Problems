@@ -14,7 +14,7 @@
 #include <numeric>
 #include <chrono>
 
-// #define int long long
+#define int long long
 #define all(x) (x).begin(), (x).end()
 #define newl cout << "\n"
 
@@ -112,60 +112,58 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-const int N = 1e8;
-// vector<int> lp(N+1);
-vector<int> pr;
-// void sieve() {
-//   for (int i=2; i <= N; ++i) {
-//     if (lp[i] == 0) {
-//       lp[i] = i;
-//       pr.push_back(i);
-//     }
-//     for (int j = 0; i * pr[j] <= N; ++j) {
-//       lp[i * pr[j]] = pr[j];
-//       if (pr[j] == lp[i]) {
-//         break;
-//       }
-//     }
-//   }
-//   // print(pr.)
-// }
-void solve() {
-  // int t = 1; 
-  // cin >> t;
-  // for(int i = 1; i <= t; i++) {
-  //   // cout << "Case " << i << ": ";
-  //   tTestCase(i);
+int f2(int n) {
+  return n * (n + 1) / 2;
+}
+
+int f(int n, int x, int m) {
+  return ((x * n) - f2(x)) <= m;
+  // return pow(x, 2) - (2*x*n) + x <= (2*m);
+}
+
+void tTestCase(int t) {
+  int n, m; cin >> n >> m;
+  int ttl = n * (n - 1) / 2, mst = n-1;
+  int zero = (ttl - m);
+  int one = m;
+  // bug(ttl, mst, zero);
+  int mn_cost = max(n - 1 - zero, 0ll);
+  // print(mn_cost);
+  // int mx_cost = (n - 1), i = 2, cnt = 0;
+  // while(mx_cost <= m) {
+  //   if(n < i) break;
+  //   mx_cost += (n - i); i++;
+  //   cnt++;
   // }
+  // int temp = cnt;
+  int cnt = 0, l = 0, r = n - 1;
+  while(l <= r) {
+    int mid = l + (r - l) / 2;
+    if(f(n, mid, m)) {
+      l = mid + 1;
+      cnt = mid;
+    } else r = mid - 1;
+  }
+  // bug(temp, cnt);
+  // cnt = l - 1;
+  int res = f2(cnt) - f2(mn_cost - 1);
+  // int res = 0;
+  // for (int i = mn_cost; i <= cnt; ++i) {
+  //   res += i;
+  // }
+  print(res);
 }
-bool Check(int N,int pos){return (bool)(N & (1<<pos));}
-int Set(int N,int pos){ return N=N | (1<<pos);}
 
-// int mx = 1000;
-int status[(100000000/32)+2];
-
-void sieve2()
-{
-   int i, j, sqrtN; 
-     sqrtN = int( sqrt( N ) );
-     for( i = 3; i <= sqrtN; i += 2 ) 
-     {
-     if( Check(status[i>>5],i&31)==0)
-     {
-       for( j = i*i; j <= N; j += (i<<1) )
-       {
-         status[j>>5]=Set(status[j>>5],j & 31)   ;
-       }
-     }
-   }
-  
-   // puts("2");
-   pr.push_back(2);
-   for(i=3;i<=N;i+=2)
-     if( Check(status[i>>5],i&31)==0)
-        pr.push_back(i);
-     // printf("%d\n",i);
+void solve() {
+  int t = 1; 
+  cin >> t;
+  for(int i = 1; i <= t; i++) {
+    // cout << "Case " << i << ": ";
+    tTestCase(i);
+  }
 }
+
+
 int32_t main() {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
@@ -174,21 +172,12 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     // auto t1 = std::chrono::high_resolution_clock::now();
-    sieve2();
-    // print
-    // solve();  // return 0;
-    // sieve();
-    for (int i = 0; i < pr.size(); i += 100) {
-      print(pr[i]);
-    }
-    // print(pr[0]);
-    // print(pr.back());
-    // print(pr.size());
-    // print(pr[100]);
-    // print(pr[200]);
+  // bug(f2(5));
+    solve();  // return 0;
+
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
-    // cout << "    time: " << duration.count() << " ms" << endl;
+    // cerr << "    time: " << duration.count() << " ms" << endl;
 
   return 0;
 }

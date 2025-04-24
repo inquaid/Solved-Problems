@@ -14,7 +14,7 @@
 #include <numeric>
 #include <chrono>
 
-// #define int long long
+#define int long long
 #define all(x) (x).begin(), (x).end()
 #define newl cout << "\n"
 
@@ -112,60 +112,71 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-const int N = 1e8;
-// vector<int> lp(N+1);
-vector<int> pr;
-// void sieve() {
-//   for (int i=2; i <= N; ++i) {
-//     if (lp[i] == 0) {
-//       lp[i] = i;
-//       pr.push_back(i);
-//     }
-//     for (int j = 0; i * pr[j] <= N; ++j) {
-//       lp[i * pr[j]] = pr[j];
-//       if (pr[j] == lp[i]) {
-//         break;
-//       }
-//     }
-//   }
-//   // print(pr.)
-// }
+void tTestCase(int t) {
+  int n;
+  scan(n);
+}
+
 void solve() {
-  // int t = 1; 
-  // cin >> t;
-  // for(int i = 1; i <= t; i++) {
-  //   // cout << "Case " << i << ": ";
-  //   tTestCase(i);
-  // }
-}
-bool Check(int N,int pos){return (bool)(N & (1<<pos));}
-int Set(int N,int pos){ return N=N | (1<<pos);}
+  int n; cin >> n;
+  string s; cin >> s;
+  if(n == 1) {
+    yesif(s[0] == '?'); 
+    return;
+  }
+  int cnt = 0, temp = 0, c2 = 0;
+  for (int i = 0; i < n - 1; ++i) {
+    if(s[i] == s[i + 1] and s[i] != '?') {
+      no; return;
+    }
+    bug(s[i]);
+    if(s[i] == '?') {
+      c2++;
+      temp++;
+    } else {
+      cnt = max(cnt, temp); temp = 0;
+    }
+  }
+  if(s.back() == '?') {c2++; temp++;}
+  if(!c2) {
+    no; return;
+  }
+  cnt = max(cnt, temp);
+  // print(cnt);
+  if(cnt > 1) {
+    yes; return;
+  }
+  if(s[0] == '?' or s.back() == '?') {
+    yes; return;
+  }
+  bool flag = 0;
+  int c1 = 0; c2 = 0;
+  set<pair<char, char>> st1, st2;
+  for (int i = 1; i < n - 1; ++i) {
+    if(s[i] == '?' and s[i - 1] == s[i + 1]) {
+      // flag = 1;
+      // no; return;
+      // flag = 1;
+      // st1.insert({min(s[i - 1], s[i + 1]), max(s[i - 1], s[i + 1])});
+      // st1.insert(s[i - 1]);
+      // st2.insert(s[i + 1]);
+      c1++;
+    } else if(s[i] == '?')
+      c2++;
 
-// int mx = 1000;
-int status[(100000000/32)+2];
+  }
+  bug(c1, c2);
+  yesif(c1 or !c2);
+  // yesif(flag);
+  // for(auto i: st1) print(i);
+  // bug(st1.size(), st2.size());
+  // yesif(st1.size() > 1 or st2.size() > 1);
+  // yesif(!flag or c2 > 1);
 
-void sieve2()
-{
-   int i, j, sqrtN; 
-     sqrtN = int( sqrt( N ) );
-     for( i = 3; i <= sqrtN; i += 2 ) 
-     {
-     if( Check(status[i>>5],i&31)==0)
-     {
-       for( j = i*i; j <= N; j += (i<<1) )
-       {
-         status[j>>5]=Set(status[j>>5],j & 31)   ;
-       }
-     }
-   }
-  
-   // puts("2");
-   pr.push_back(2);
-   for(i=3;i<=N;i+=2)
-     if( Check(status[i>>5],i&31)==0)
-        pr.push_back(i);
-     // printf("%d\n",i);
+  // yes;
 }
+
+
 int32_t main() {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
@@ -174,18 +185,9 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     // auto t1 = std::chrono::high_resolution_clock::now();
-    sieve2();
-    // print
-    // solve();  // return 0;
-    // sieve();
-    for (int i = 0; i < pr.size(); i += 100) {
-      print(pr[i]);
-    }
-    // print(pr[0]);
-    // print(pr.back());
-    // print(pr.size());
-    // print(pr[100]);
-    // print(pr[200]);
+
+    solve();  // return 0;
+
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cout << "    time: " << duration.count() << " ms" << endl;
