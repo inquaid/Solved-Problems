@@ -113,7 +113,7 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 
-const int MAXN = 1e3;
+const int MAXN = 1e6, inf = 1e9 + 9;
 pii n, t[4 * MAXN];
 // vector<pii> t(4 * MAXN);
 pii cmp(pii &a, pii &b) {
@@ -134,11 +134,12 @@ void build(vi &a, int v, int tl, int tr) {
 }
 
 pii sum(int v, int tl, int tr, int l, int r) {
-  if(l > r) return {0, 0};
+  if(l > r) return {inf, inf};
   if(l == tl and r == tr) return t[v];
   int tm = (tl + tr) / 2;
-  return cmp(sum(v * 2, tl, tm, l, min(r, tm)), 
-          sum(v * 2 + 1, tm + 1, tr, max(l, tm + 1), r));
+  pii a = sum(v * 2, tl, tm, l, min(r, tm));
+  pii b = sum(v * 2 + 1, tm + 1, tr, max(l, tm + 1), r);
+  return cmp(a, b);
 }
 
 void update(int v, int tl, int tr, int pos, int new_val) {
@@ -153,12 +154,21 @@ void update(int v, int tl, int tr, int pos, int new_val) {
 
 void solve() {
   // print(t[0]);
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    // tTestCase(i);
+  int n, m; cin >> n >> m;
+  vi a(n); cin >> a;
+  build(a, 1, 0, a.size() - 1);
+  for (int i = 0; i < m; ++i) {
+    int type, u, v; cin >> type >> u >> v;
+    if(type == 1) {
+      update(1, 0, a.size() - 1, u , v);
+    }  else {
+      // bug(u, v -1);
+      print(sum(1, 0, a.size() - 1, u , v - 1));
+    }
   }
+  // for (int i = 1; i <= n; ++i) {
+  //   print(sum(1, 0, a.size() - 1, i - 1, i - 1));
+  // }
 }
 
 
@@ -170,6 +180,10 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     // auto t1 = std::chrono::high_resolution_clock::now();
+    for (int i = 0; i < MAXN; ++i) {
+      t[i] = {i, inf};
+    }
+
 
     solve();   return 0;
     vi a = {1, 2, 3, 4, 5};

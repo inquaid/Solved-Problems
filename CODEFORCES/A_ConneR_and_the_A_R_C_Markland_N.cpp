@@ -112,52 +112,52 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-
-const int MAXN = 1e3;
-pii n, t[4 * MAXN];
-// vector<pii> t(4 * MAXN);
-pii cmp(pii &a, pii &b) {
-  // return a + b;
-  if(a.ff == b.ff) return {a.ff, a.ss + b.ss};
-  if(a.ff < b.ff) return a;
-  else return b;
-}
-
-void build(vi &a, int v, int tl, int tr) {
-  if(tl == tr) t[v] = {a[tl], 1};
-  else {
-    int tm = (tl + tr) / 2;
-    build(a, v * 2, tl, tm);
-    build(a, v * 2 + 1, tm + 1, tr);
-    t[v] = cmp(t[v * 2], t[v * 2 + 1]); 
+void tTestCase(int t) {
+  int n, s, k; cin >> n >> s >> k;
+  vi a(k); 
+  set<int> st;
+  for (int i = 0; i < k; ++i) {
+    cin >> a[i]; st.insert(a[i]);
   }
-}
-
-pii sum(int v, int tl, int tr, int l, int r) {
-  if(l > r) return {0, 0};
-  if(l == tl and r == tr) return t[v];
-  int tm = (tl + tr) / 2;
-  return cmp(sum(v * 2, tl, tm, l, min(r, tm)), 
-          sum(v * 2 + 1, tm + 1, tr, max(l, tm + 1), r));
-}
-
-void update(int v, int tl, int tr, int pos, int new_val) {
-  if(tl == tr) t[v] = {new_val, 1};
-  else {
-    int tm = (tl + tr) / 2;
-    if(pos <= tm) update(v * 2, tl, tm, pos, new_val);
-    else update(v * 2 + 1, tm + 1, tr, pos, new_val);
-    t[v] = cmp(t[v * 2], t[v * 2 + 1]);
+  // if(st.find(s) == st.end()) {
+  //   print(0); return;
+  // }
+  int indx = 0;
+  sort(all(a));
+  for (int i = 0; i < k; ++i) {
+    if(a[i] <= s) indx = i;
   }
+  if(a[indx] != s) {
+    print(0); return;
+  }
+  int mn = s, i = indx - 1;
+  // newl;
+  while(i >= 0 and mn - 1 == a[i]) {
+    i--; mn--;
+  }
+  mn--;
+  bug(s - mn );
+  int res = INT_MAX;
+  // bug(i, mn);
+  if(mn >= 1) {
+    res = s - mn;
+  }
+  i = indx + 1; mn = s;
+  while(i < n and mn + 1 == a[i]) {
+    i++; mn++;
+  }
+  mn++;
+  if(mn <= n)
+    res = min(res, mn - s );
+  print(res);
 }
 
 void solve() {
-  // print(t[0]);
   int t = 1; 
   cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
-    // tTestCase(i);
+    tTestCase(i);
   }
 }
 
@@ -172,13 +172,9 @@ int32_t main() {
     // auto t1 = std::chrono::high_resolution_clock::now();
 
     solve();   return 0;
-    vi a = {1, 2, 3, 4, 5};
-    build(a, 1, 0 , a.size() - 1);
-    for (int i = 1; i <= a.size(); ++i) {
-      print(sum(1, 0, a.size() - 1, i - 1, i - 1));
-    }
-      print(sum(1, 0, a.size() - 1, 1, 4));
-
+  print((int)(INT_MAX - 1e9));
+    // vi a = {11, 12, 13, 14, 15};
+    // yesif(find(all(a), 13));
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

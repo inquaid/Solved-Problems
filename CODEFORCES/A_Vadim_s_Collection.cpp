@@ -97,9 +97,9 @@ template <typename Container> void print_container(const Container &container) {
   cout << container << "\n";
 }
 
-#define yesif(flag) cout << ((flag) ? "Yes\n" : "No\n")
-#define yes cout << "Yes\n"
-#define no cout << "No\n"
+#define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
+#define yes cout << "YES\n"
+#define no cout << "NO\n"
 #define ff first
 #define ss second
 
@@ -112,52 +112,36 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-
-const int MAXN = 1e3;
-pii n, t[4 * MAXN];
-// vector<pii> t(4 * MAXN);
-pii cmp(pii &a, pii &b) {
-  // return a + b;
-  if(a.ff == b.ff) return {a.ff, a.ss + b.ss};
-  if(a.ff < b.ff) return a;
-  else return b;
-}
-
-void build(vi &a, int v, int tl, int tr) {
-  if(tl == tr) t[v] = {a[tl], 1};
-  else {
-    int tm = (tl + tr) / 2;
-    build(a, v * 2, tl, tm);
-    build(a, v * 2 + 1, tm + 1, tr);
-    t[v] = cmp(t[v * 2], t[v * 2 + 1]); 
+char lb(string &s, char n) {
+  char temp;
+  for (int i = 0; i < s.size(); ++i) {
+    if(s[i] != ':' and s[i] >= n) {
+      char c = s[i];
+      s[i] = ':';
+      return c;
+    } if(s[i] != ':') temp = s[i];
   }
+  return temp;
 }
 
-pii sum(int v, int tl, int tr, int l, int r) {
-  if(l > r) return {0, 0};
-  if(l == tl and r == tr) return t[v];
-  int tm = (tl + tr) / 2;
-  return cmp(sum(v * 2, tl, tm, l, min(r, tm)), 
-          sum(v * 2 + 1, tm + 1, tr, max(l, tm + 1), r));
-}
-
-void update(int v, int tl, int tr, int pos, int new_val) {
-  if(tl == tr) t[v] = {new_val, 1};
-  else {
-    int tm = (tl + tr) / 2;
-    if(pos <= tm) update(v * 2, tl, tm, pos, new_val);
-    else update(v * 2 + 1, tm + 1, tr, pos, new_val);
-    t[v] = cmp(t[v * 2], t[v * 2 + 1]);
+void tTestCase(int t) {
+  string s; cin >> s;
+  string res = "";
+  sort(all(s));
+  for (int i = 1; i <= s.size(); ++i) {
+    char c = lb(s, '0' + (10 - i));
+    res += c;
   }
+  // bug(s);
+  print(res);
 }
 
 void solve() {
-  // print(t[0]);
   int t = 1; 
   cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
-    // tTestCase(i);
+    tTestCase(i);
   }
 }
 
@@ -172,13 +156,8 @@ int32_t main() {
     // auto t1 = std::chrono::high_resolution_clock::now();
 
     solve();   return 0;
-    vi a = {1, 2, 3, 4, 5};
-    build(a, 1, 0 , a.size() - 1);
-    for (int i = 1; i <= a.size(); ++i) {
-      print(sum(1, 0, a.size() - 1, i - 1, i - 1));
-    }
-      print(sum(1, 0, a.size() - 1, 1, 4));
-
+  char c = '0' + 10;
+  print(c);
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

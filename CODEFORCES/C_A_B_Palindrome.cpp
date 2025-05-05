@@ -112,52 +112,94 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-
-const int MAXN = 1e3;
-pii n, t[4 * MAXN];
-// vector<pii> t(4 * MAXN);
-pii cmp(pii &a, pii &b) {
-  // return a + b;
-  if(a.ff == b.ff) return {a.ff, a.ss + b.ss};
-  if(a.ff < b.ff) return a;
-  else return b;
-}
-
-void build(vi &a, int v, int tl, int tr) {
-  if(tl == tr) t[v] = {a[tl], 1};
-  else {
-    int tm = (tl + tr) / 2;
-    build(a, v * 2, tl, tm);
-    build(a, v * 2 + 1, tm + 1, tr);
-    t[v] = cmp(t[v * 2], t[v * 2 + 1]); 
+void tTestCase(int t) {
+  int a, b; cin >> a >> b;
+  string s; cin >> s;
+  int i = 0, j = s.size() - 1;
+  while(i < j) {
+    // print(i, j);
+    if(s[i] != s[j]) {
+      if(s[i] != '?' and s[j] != '?') {
+        print(-1); return;
+      }
+      if(s[i] == '?') s[i] = s[j];
+      else s[j] = s[i];
+    }
+    i++; j--;
   }
-}
+  int m = i;
+  int n = a + b;
+  int one = count(all(s), '1');
+  int zero = count(all(s), '0');
+  int ext = n - one - zero;
+  // bug(one, zero);
+  // if(n % 2 == 0) {
 
-pii sum(int v, int tl, int tr, int l, int r) {
-  if(l > r) return {0, 0};
-  if(l == tl and r == tr) return t[v];
-  int tm = (tl + tr) / 2;
-  return cmp(sum(v * 2, tl, tm, l, min(r, tm)), 
-          sum(v * 2 + 1, tm + 1, tr, max(l, tm + 1), r));
-}
+  if(n&1) {
+    if((a&1) and (b&1)) {
+      print(-1); return;
+    }
+    if(a&1) {
+      if(s[m] == '1') {
+        print(-1); return;
+      }
+      if(s[m] == '0') zero--;
+      s[m] = '0';
+      a--;
 
-void update(int v, int tl, int tr, int pos, int new_val) {
-  if(tl == tr) t[v] = {new_val, 1};
-  else {
-    int tm = (tl + tr) / 2;
-    if(pos <= tm) update(v * 2, tl, tm, pos, new_val);
-    else update(v * 2 + 1, tm + 1, tr, pos, new_val);
-    t[v] = cmp(t[v * 2], t[v * 2 + 1]);
+    } else {
+      if(s[m] == '0') {
+        print(-1); return;
+      }
+      if(s[m] == '1') one--;
+      s[m] = '1';
+      b--;
+    }
   }
+
+  if((one & 1) or (zero & 1)) {
+    print(-1); return;
+  }
+  int n1 = a - zero;
+  if(n1 < 0 or (n1 & 1)) {
+    print(-1); return;
+  }
+  int n2 = b - one;
+  if(n2 < 0 or (n2 & 1)) {
+    print(-1); return;
+  }
+  i = 0, j = s.size() - 1;
+
+  while(i < j) {
+    // print(i, j);
+    if(s[i] == '?') {
+      if(n1 > 0) {
+        s[i] = s[j] = '0'; 
+        n1 -= 2;
+      }
+      else {
+        s[i] = s[j] = '1';
+        n2 -= 2;
+      }
+    }
+
+
+    i++; j--;
+  }
+    print(s);
+  // } else {
+
+  // }
+  // print(s);
+  // print(i);
 }
 
 void solve() {
-  // print(t[0]);
   int t = 1; 
   cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
-    // tTestCase(i);
+    tTestCase(i);
   }
 }
 
@@ -171,13 +213,7 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();   return 0;
-    vi a = {1, 2, 3, 4, 5};
-    build(a, 1, 0 , a.size() - 1);
-    for (int i = 1; i <= a.size(); ++i) {
-      print(sum(1, 0, a.size() - 1, i - 1, i - 1));
-    }
-      print(sum(1, 0, a.size() - 1, 1, 4));
+    solve();  // return 0;
 
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);

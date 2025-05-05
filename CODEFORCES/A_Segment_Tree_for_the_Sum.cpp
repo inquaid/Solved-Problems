@@ -112,38 +112,39 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+const int MAXN = 1e6 + 8;
+int n, t[4 * MAXN];
 
-const int MAXN = 1e3;
-pii n, t[4 * MAXN];
-// vector<pii> t(4 * MAXN);
-pii cmp(pii &a, pii &b) {
-  // return a + b;
-  if(a.ff == b.ff) return {a.ff, a.ss + b.ss};
-  if(a.ff < b.ff) return a;
-  else return b;
+int cmp(int a, int b) {
+  return a + b;
+  // if(a > b) return a;
+  // else return b;
 }
 
 void build(vi &a, int v, int tl, int tr) {
-  if(tl == tr) t[v] = {a[tl], 1};
-  else {
+  if(tl == tr) {
+    t[v] = a[tl]; 
+  } else {
     int tm = (tl + tr) / 2;
     build(a, v * 2, tl, tm);
     build(a, v * 2 + 1, tm + 1, tr);
-    t[v] = cmp(t[v * 2], t[v * 2 + 1]); 
+    // t[v] = (t[v * 2] + t[v * 2 + 1]);
+    t[v] = cmp(t[v * 2], t[v * 2 + 1]);
   }
 }
 
-pii sum(int v, int tl, int tr, int l, int r) {
-  if(l > r) return {0, 0};
+int sum(int v, int tl, int tr, int l, int r) {
+  if(l > r) return 0;
   if(l == tl and r == tr) return t[v];
   int tm = (tl + tr) / 2;
   return cmp(sum(v * 2, tl, tm, l, min(r, tm)), 
-          sum(v * 2 + 1, tm + 1, tr, max(l, tm + 1), r));
+         sum(v * 2 + 1, tm + 1, tr, max(l, tm + 1), r));
 }
 
 void update(int v, int tl, int tr, int pos, int new_val) {
-  if(tl == tr) t[v] = {new_val, 1};
-  else {
+  if(tl == tr) {
+    t[v] = new_val;
+  } else {
     int tm = (tl + tr) / 2;
     if(pos <= tm) update(v * 2, tl, tm, pos, new_val);
     else update(v * 2 + 1, tm + 1, tr, pos, new_val);
@@ -151,14 +152,30 @@ void update(int v, int tl, int tr, int pos, int new_val) {
   }
 }
 
+void tTestCase(int t) {
+  int n;
+  scan(n);
+}
+
 void solve() {
-  // print(t[0]);
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    // tTestCase(i);
+  int n, m; cin >> n >> m;
+  // bug(n, m);
+  vi a(n); cin >> a;
+  build(a, 1, 0, a.size() - 1);
+  for (int i = 0; i < m; ++i) {
+    int type, u, v; cin >> type >> u >> v;
+    // bug(u, v);
+    if(type == 1) {
+      update(1, 0, a.size() -1 , u , v );
+    } else {
+      print(sum(1, 0, a.size()-1 , u , v - 1));
+      bug(u, v - 1);
+    }
   }
+  // for (int i = 1; i <= a.size(); ++i) {
+  //   print(sum(1, 0, a.size() - 1, i - 1, i - 1));
+  // }
+  // print(sum(1, 0, a.size() - 1, 0, 2 - 1));
 }
 
 
@@ -171,13 +188,15 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();   return 0;
-    vi a = {1, 2, 3, 4, 5};
-    build(a, 1, 0 , a.size() - 1);
-    for (int i = 1; i <= a.size(); ++i) {
-      print(sum(1, 0, a.size() - 1, i - 1, i - 1));
-    }
-      print(sum(1, 0, a.size() - 1, 1, 4));
+    solve();  return 0;
+  vi a = {1, 2, 3, 4, 5};
+  build(a, 1, 0, a.size() - 1);
+  update(1, 0, a.size() - 1, 2 - 1, 99);
+  for (int i = 1; i <= a.size(); ++i) {
+    print(sum(1, 0, a.size() - 1, i - 1, i - 1));
+  }
+
+  print(sum(1, 0, a.size() - 1, 1,4));
 
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);

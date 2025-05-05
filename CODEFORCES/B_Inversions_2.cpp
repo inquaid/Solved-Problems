@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <numeric>
 #include <chrono>
+#include <cstring>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -112,38 +113,41 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+const int MAXN = 1e6 + 8;
+int t[4 * MAXN] ;
 
-const int MAXN = 1e3;
-pii n, t[4 * MAXN];
-// vector<pii> t(4 * MAXN);
-pii cmp(pii &a, pii &b) {
-  // return a + b;
-  if(a.ff == b.ff) return {a.ff, a.ss + b.ss};
-  if(a.ff < b.ff) return a;
-  else return b;
+int cmp(int a, int b) {
+  return (a + b);
 }
 
 void build(vi &a, int v, int tl, int tr) {
-  if(tl == tr) t[v] = {a[tl], 1};
-  else {
+  if(tl == tr) {
+    t[v] = a[tl]; 
+  } else {
     int tm = (tl + tr) / 2;
     build(a, v * 2, tl, tm);
     build(a, v * 2 + 1, tm + 1, tr);
-    t[v] = cmp(t[v * 2], t[v * 2 + 1]); 
+    // t[v] = (t[v * 2] + t[v * 2 + 1]);
+    t[v] = cmp(t[v * 2], t[v * 2 + 1]);
   }
 }
 
-pii sum(int v, int tl, int tr, int l, int r) {
-  if(l > r) return {0, 0};
-  if(l == tl and r == tr) return t[v];
-  int tm = (tl + tr) / 2;
-  return cmp(sum(v * 2, tl, tm, l, min(r, tm)), 
-          sum(v * 2 + 1, tm + 1, tr, max(l, tm + 1), r));
+int n, m;
+int qry(int v, int l, int r, int k) {
+  if(l == r) return l;
+  
+  int left = 2 * v, right = 2 * v + 1, tm = (l + r) / 2;
+  if(t[right] > k) {
+    return 
+      qry(right, tm + 1, r, k);
+  } else return 
+      qry(left, l, tm, k - t[right]);
 }
 
 void update(int v, int tl, int tr, int pos, int new_val) {
-  if(tl == tr) t[v] = {new_val, 1};
-  else {
+  if(tl == tr) {
+    t[v] = new_val;
+  } else {
     int tm = (tl + tr) / 2;
     if(pos <= tm) update(v * 2, tl, tm, pos, new_val);
     else update(v * 2 + 1, tm + 1, tr, pos, new_val);
@@ -152,13 +156,37 @@ void update(int v, int tl, int tr, int pos, int new_val) {
 }
 
 void solve() {
-  // print(t[0]);
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    // tTestCase(i);
+  cin >> n;
+  // bug(n, m);
+  vi a(n); cin >> a;
+  vi b(n + 1, 1);
+  // bug(b); return;
+  // reverse(all(a));
+  build(b, 1, 0, b.size() - 1); 
+  // a.push_back(INT_MAX);
+  // build(a, 1, 0, a.size() - 1);
+  vi res;
+  for (int i = n; i > 0; --i) {
+    bug(a[i - 1]);
+    res.push_back(qry(1, 0, n, a[i - 1]));
+    // cout << (qry(1, 0, n, a[i - 1] - 1, n)) << " ";
+    update(1, 0, n , res.back() , 0);
+    // cout << (qry2(1, 0, n - 1, 0, i - 1, a[i - 1])) << " ";
   }
+  reverse(all(res));
+  print(res);
+  // for (int i = 0; i < 20; ++i)
+  // {
+  //   cout << t[i] << " ";
+  // }
+  // bug(a);
+  // for (int i = 0; i < n; ++i) {
+  //   print(qry(1, 0, n, i, i));
+  // }
+  // for (int i = 0; i < 20; ++i)
+  // {
+  //   print(t[i]);
+  // }
 }
 
 
@@ -170,15 +198,10 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     // auto t1 = std::chrono::high_resolution_clock::now();
-
-    solve();   return 0;
-    vi a = {1, 2, 3, 4, 5};
-    build(a, 1, 0 , a.size() - 1);
-    for (int i = 1; i <= a.size(); ++i) {
-      print(sum(1, 0, a.size() - 1, i - 1, i - 1));
-    }
-      print(sum(1, 0, a.size() - 1, 1, 4));
-
+    // memset(t, INT_MAX, sizeof(t));
+    solve();  return 0; 
+    // int n = 5;
+    // vi b(n + 1, 0);
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

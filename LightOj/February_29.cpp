@@ -97,9 +97,9 @@ template <typename Container> void print_container(const Container &container) {
   cout << container << "\n";
 }
 
-#define yesif(flag) cout << ((flag) ? "Yes\n" : "No\n")
-#define yes cout << "Yes\n"
-#define no cout << "No\n"
+#define yesif(flag) cout << ((flag) ? "YES\n" : "NO\n")
+#define yes cout << "YES\n"
+#define no cout << "NO\n"
 #define ff first
 #define ss second
 
@@ -112,52 +112,63 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+struct date {
+  string month = "";
+  int date = 0;
+  int year = 0;
+};
 
-const int MAXN = 1e3;
-pii n, t[4 * MAXN];
-// vector<pii> t(4 * MAXN);
-pii cmp(pii &a, pii &b) {
-  // return a + b;
-  if(a.ff == b.ff) return {a.ff, a.ss + b.ss};
-  if(a.ff < b.ff) return a;
-  else return b;
+void input(date &d) {
+  string s = "", temp; 
+  int d_temp, year;
+  cin >> s >> d_temp >> temp >> year;
+  d.month = s;  d.date = d_temp;  d.year = year;
 }
 
-void build(vi &a, int v, int tl, int tr) {
-  if(tl == tr) t[v] = {a[tl], 1};
-  else {
-    int tm = (tl + tr) / 2;
-    build(a, v * 2, tl, tm);
-    build(a, v * 2 + 1, tm + 1, tr);
-    t[v] = cmp(t[v * 2], t[v * 2 + 1]); 
+int f(int year) {
+  int cnt4 = (year / 4);
+  int cnt100 = (year / 100);
+  int cnt400 = (year / 400);
+  return cnt4 - cnt100 + cnt400;
+}
+
+int isp(int year) {
+  if(year % 4 == 0) {
+    if(year % 100 == 0) {
+      return year % 400 == 0;
+    }
+    return 1;
   }
+  return 0;
 }
 
-pii sum(int v, int tl, int tr, int l, int r) {
-  if(l > r) return {0, 0};
-  if(l == tl and r == tr) return t[v];
-  int tm = (tl + tr) / 2;
-  return cmp(sum(v * 2, tl, tm, l, min(r, tm)), 
-          sum(v * 2 + 1, tm + 1, tr, max(l, tm + 1), r));
-}
-
-void update(int v, int tl, int tr, int pos, int new_val) {
-  if(tl == tr) t[v] = {new_val, 1};
-  else {
-    int tm = (tl + tr) / 2;
-    if(pos <= tm) update(v * 2, tl, tm, pos, new_val);
-    else update(v * 2 + 1, tm + 1, tr, pos, new_val);
-    t[v] = cmp(t[v * 2], t[v * 2 + 1]);
+void tTestCase(int t) {
+  date d1, d2;
+  input(d1);
+  input(d2);
+  // cin >> d1;
+  // print(d1);
+  // print(d1.month, d1.date, d1.year);
+  // print(d2.month, d2.date, d2.year);
+  int cnt = f(d2.year) - f(d1.year - 1);
+  // bug(f(d2.year), f(d1.year - 1));
+  if(isp(d1.year) and d1.month != "January" and d1.month != "February") {
+    cnt--;
   }
+  if(isp(d2.year) and d2.month == "January") {
+    cnt--;
+  } else if(isp(d2.year) and d2.month == "February" and d2.date < 29) {
+    cnt--;
+  }
+  print(cnt);
 }
 
 void solve() {
-  // print(t[0]);
   int t = 1; 
   cin >> t;
   for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    // tTestCase(i);
+    cout << "Case " << i << ": ";
+    tTestCase(i);
   }
 }
 
@@ -171,13 +182,7 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();   return 0;
-    vi a = {1, 2, 3, 4, 5};
-    build(a, 1, 0 , a.size() - 1);
-    for (int i = 1; i <= a.size(); ++i) {
-      print(sum(1, 0, a.size() - 1, i - 1, i - 1));
-    }
-      print(sum(1, 0, a.size() - 1, 1, 4));
+    solve();  // return 0;
 
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
