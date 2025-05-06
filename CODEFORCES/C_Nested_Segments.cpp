@@ -165,7 +165,7 @@ void solve() {
   	if(mp[a[i]] == 2) {
   		int ans = sum(1, 0, n - 1, pos[a[i]], i - 1);
   		bug(a[i], ans, pos[a[i]], i);
-  		res[a[i] - 1] = (i - pos[a[i]] - 1 - (2 * ans));
+  		res[a[i] - 1] = ans;
   		update(1, 0, n - 1, pos[a[i]], 1);
   	}
   }
