@@ -112,67 +112,20 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-const int MAXN = 2e5 + 5;
-int t[4 * MAXN];
-
-void build(vi &a, int v, int tl, int tr) {
-	if(tl == tr) t[v] = a[tl];
-	else {
-		int tm = (tl + tr) / 2;
-		build(a, 2 * v, tl, tm);
-		build(a, 2 * v + 1, tm + 1, tr);
-		t[v] = t[2 * v] + t[2 * v + 1];		
-	}
-}
-
-int sum(int v, int tl, int tr, int l, int r) {
-	if(l > r) return 0;
-	if(l == tl and r == tr) return t[v];
-	int tm = (tl + tr) / 2;
-	return sum(2 * v, tl, tm, l, min(r, tm)) 
-		+ sum(2 * v + 1, tm + 1, tr, max(l, tm + 1), r);
-}
-
-void update(int v, int tl, int tr, int pos, int new_val) {
-	if(tl == tr) t[v] = new_val;
-	else {
-		int tm = (tl + tr) / 2;
-		if(pos <= tm) update(2 * v, tl, tm, pos, new_val);
-		else update(2 * v + 1, tm + 1, tr, pos, new_val);
-		t[v] = t[2 * v] + t[2 * v + 1];
-	}
-}
-
 void tTestCase(int t) {
   int n;
   scan(n);
+  string s; cin >> s;
+  yesif(s.size() >= 2 and s[0] != s.back());
 }
 
 void solve() {
-  int n; cin >> n; n *= 2;
-  vi a(n); 
-  map<int, int> pos;
-  for (int i = 0; i < n; ++i) {
-  	cin >> a[i]; if(pos.find(a[i]) == pos.end()) pos[a[i]] = i;
+  int t = 1; 
+  cin >> t;
+  for(int i = 1; i <= t; i++) {
+    // cout << "Case " << i << ": ";
+    tTestCase(i);
   }
-  // print(a);
-  vi b(n, 0);
-  build(b, 1, 0, n - 1);
-  vi res(n / 2, 0);
-  map<int, int> mp;
-  for (int i = 0; i < n; ++i) {
-  	mp[a[i]]++;
-  	if(mp[a[i]] == 2) {
-  		int ans = sum(1, 0, n - 1, pos[a[i]], i - 1);
-  		bug(a[i], ans, pos[a[i]], i);
-  		res[a[i] - 1] = (i - pos[a[i]] - 1 - (2 * ans));
-  		update(1, 0, n - 1, pos[a[i]], 1);
-  	}
-  }
-  print(res);
-  // for (int i = 0; i < n; ++i) {
-  // 	print(sum(1, 0, n - 1, i, i));
-  // }
 }
 
 

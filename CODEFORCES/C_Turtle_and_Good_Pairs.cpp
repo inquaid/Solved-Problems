@@ -110,17 +110,61 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(int a, int b) { return a > b; }
+bool comp(string &a, string &b) { return a.size() > b.size(); }
 
-void tTestCase(int t) {
+void tTestCase(int tc) {
   int n; cin >> n;
-  vi a(n); cin >> a;
-  sort(all(a));
-  // print(a);
-  // if(n&1) {
-  	print(a[n / 2]);
-  // } else 
-  // 	print(a[n / 2]);
+  string s; cin >> s;
+  map<char, int> mp;
+  for(auto ch : s) mp[ch]++;
+  // sort(all(s));
+  // cout << s << endl;
+  sort(all(s));
+	string res = "";
+	while(s.size()) {
+		if(s.size() >= 2) {
+			res += s[0];
+			res += s.back();
+			s.erase(s.begin());
+			s.pop_back();
+		} else {
+			res += s[0];
+			s.pop_back();
+		}
+
+	}
+	print(res);
+
+  // s.erase(unique(s.begin(), s.end()), s.end());
+  
+  // int i = 0, j = 1;
+  // n = s.size();
+  // while(i < j and j < n) {
+  // 	if(mp[s[i]] <= 1 and mp[s[j]] <= 1) {
+  // 		i++; j++;
+  // 	} 
+  // 	while(mp[s[i]] > 1 and mp[s[j]] > 1) {
+  // 		s += s[i]; s += s[j];
+  // 		mp[s[i]]--; mp[s[j]]--;
+  // 	}
+  // 	if(mp[s[i]] <= 1) i++;
+  // 	if(mp[s[j]] <= 1) j++;
+  // }
+  // print(s);
+  // // bug(s);
+  // // sort_unique(s);
+	// vector<string> vs;
+  // for (int i = 0; i < s.size(); ++i) {
+  // 	string temp = "";
+  // 	for (int ch = 0; ch < mp[s[i]]; ++ch)	{
+  // 		temp += s[i];
+  // 	}
+  // 	vs.push_back(temp);
+  // }
+  // sort(all(vs), comp);
+  // for(auto i : vs) {
+  // 	cout << i;
+  // } newl;
 }
 
 void solve() {
