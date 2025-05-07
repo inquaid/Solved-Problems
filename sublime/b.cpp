@@ -112,23 +112,43 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  sort(all(a));
-  // print(a);
-  // if(n&1) {
-  	print(a[n / 2]);
-  // } else 
-  // 	print(a[n / 2]);
+const int MAXN = 1e3;
+int t[4 * MAXN];
+
+void build(vi &a, int v, int tl, int tr) {
+  if(tl == tr) {
+    t[v] = a[tl];
+  } else {
+    int tm = (tl + tr) / 2;
+    build(a, 2 * v, tl, tm);
+    build(a, 2 * v + 1, tm + 1, tr);
+    t[v] = t[2 * v] + t[2 * v + 1];
+  }
+}
+
+int qry(int v, int tl, int tr, int l, int r) {
+  if(l > r) return 0;
+  if(l == tl and r == tr) return t[v];
+  int tm = (tl + tr) / 2;
+  return qry(2 * v, tl, tm, l, min(r, tm)) 
+        + qry(2 * v + 1, tm + 1, tr, max(l, tm + 1), r);
+}
+
+void update(int v, int tl, int tr, int pos, int new_val) {
+  if(tl == tr) t[v] = new_val;
+  else {
+    int tm = (tl + tr) / 2;
+    if(pos <= tm) update(2 * v, tl, tm, pos, new_val);
+    else update(2 * v + 1, tm + 1, tr, pos, new_val);
+    t[v] = t[2 * v] + t[2 * v + 1];
+  }
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  vi a = {1, 1, 1, 1, 1, 1};
+  build(a, 1, 0, a.size() - 1);
+  for (int i = 0; i < a.size() - 1; ++i) {
+    print(qry(1, 0, a.size() - 1, i, i + 1));
   }
 }
 
