@@ -112,24 +112,78 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+
 void tTestCase(int t) {
-  int n;
-  scan(n);
-  if(n % 2 == 0) {
-    print(-1); return;
+  int n; cin >> n;
+  vi a(2 * n); cin >> a;
+  if(n == 1) {
+    print(max(a[0], a[1])); return;
   }
-  int i = n / 2;
-  // print(i);
-  vi a(n, 1);
-  int cnt = 1;
-  while(i < n) {
-    a[i++] = cnt++;
+  multiset <int> mst;
+  // mst.insert(max(a[0], a[1]));
+  int p1 = a[0] + max(a[2], a[3]);
+  int p2 = a[1] + max(a[2], a[3]);
+  int p3 = a[2] + a[3], thrd = 0;
+  if(p1 >= p2 and p1 >= p3) {
+    mst.insert(a[0]);
+    mst.insert(max(a[2], a[3]));
+    thrd = max(a[1], min(a[2], a[3]));
+  } else if(p2 >= p1 and p2 >= p3) {
+    mst.insert(a[1]);
+    mst.insert(max(a[2], a[3])); thrd = max(a[0], min(a[2], a[3]));
+  } else {
+    mst.insert(a[2]); mst.insert(a[3]); thrd = max(a[0], a[1]);
   }
-  i = (n / 2) - 1;
-  while(i >= 0) {
-    a[i--] = cnt++;
+  // bug(a);
+  // mst.insert(max(a[2], a[3]));
+  // bool flag = 0;
+  for (int i = 4; i < 2 * n; i += 2) {
+    bug(a[i], a[i + 1]);
+    multiset<int> temp;
+    auto it = mst.begin();
+    // bug(mst.size());
+    temp.insert(*it);
+    // it = mst.begin();
+    // temp.insert(*it); mst.erase(it);
+
+    // temp.insert(a[i]); temp.insert(a[i + 1]);
+    // auto it2 = temp.rbegin(); 
+    if(*it < min(a[i], a[i + 1])) {
+      mst.erase(mst.begin());
+      mst.insert(a[i]); mst.insert(a[i + 1]);
+    } else {
+      mst.insert(max(a[i], a[i + 1]));
+    }
+    // for(auto i : mst) bug(i);
+
+    // // bug(*it2);
+    // mst.insert(*it2); it2--; 
+    // mst.insert(*it2);
+    // // mst.insert(p3);
+    // bug(p3);
+
+    // return;
+    // mst.insert(thrd);
+    // auto it3 = temp.begin();
+    // int p1 = *it3; it3++;
+    // int p2 = *it3;
+    // thrd = max(p1, p2);
+    // bug(thrd);
+    // if(i == 4) {
+      // it2--;
+      // mst.insert(*it2);
+    // }
   }
-  print(a);
+  // if(thrd > *mst.begin()) {
+  //   mst.erase(mst.begin());
+  //   mst.insert(thrd);
+  // }
+  int s = 0;
+  for(auto i : mst) {
+    bug(i);
+    s += i;
+  }
+  print(s);
 }
 
 void solve() {
@@ -151,8 +205,14 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
-
+    solve();   return 0;
+    multiset<int> mst;
+    mst.insert(1);
+    mst.insert(10);
+    mst.insert(11);
+    mst.insert(12);
+    auto it = mst.rbegin();
+    print(*it);
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

@@ -36,8 +36,11 @@ int main() {
   // }
   // cout << a.size() << endl;
   // cout << a.size() - 2 << endl;
-
-  // return 0;
+  int n; cin >> n;
+  cout << n << endl;
+  cerr << "hello\n";
+  cout << "Bye\n";
+  return 0;
   int t; cin >> t;
   while (t--) {
     int n; cin >> n;

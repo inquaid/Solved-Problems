@@ -112,24 +112,49 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+const int N = 5000000;
+vector<int> lp(N+1);
+vector<int> pr;
+
+void seive() {
+  // pr.push_back(1);
+  for (int i=2; i <= N; ++i) {
+      if (lp[i] == 0) {
+          lp[i] = i;
+          pr.push_back(i);
+      }
+      for (int j = 0; i * pr[j] <= N; ++j) {
+          lp[i * pr[j]] = pr[j];
+          if (pr[j] == lp[i]) {
+              break;
+          }
+      }
+  }
+}
+
 void tTestCase(int t) {
-  int n;
-  scan(n);
-  if(n % 2 == 0) {
+  int n, k; cin >> n >> k;
+  if(n > k + 1) {
     print(-1); return;
   }
-  int i = n / 2;
-  // print(i);
-  vi a(n, 1);
-  int cnt = 1;
+  vi a(n, 0);
+  k -= (n - 2);
+  a[0] = k; a[1] = 2 * k;
+  int i = 2, d = 0;
+  if(i < n) {
+    if(a[0] != 1 and a[1] != 1)
+      a[i++] = 1;
+  }
   while(i < n) {
-    a[i++] = cnt++;
+    if(pr[d] != a[0] and pr[d] != a[1] and __gcd(a[i - 1], pr[d]) == 1) {
+      a[i++] = pr[d];
+    }
+    d++;
   }
-  i = (n / 2) - 1;
-  while(i >= 0) {
-    a[i--] = cnt++;
-  }
-  print(a);
+  bug(i, n);
+  if(i == n)
+    print(a);
+  else print(-1);
 }
 
 void solve() {
@@ -150,7 +175,8 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     // auto t1 = std::chrono::high_resolution_clock::now();
-
+    seive();
+    // print(pr.size());
     solve();  // return 0;
 
     // auto t2 = std::chrono::high_resolution_clock::now();

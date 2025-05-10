@@ -110,26 +110,41 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(int a, int b) { return a > b; }
+bool comp(pii a, pii b) { 
+  if((a.ss / (a.ff * 1.0)) == (b.ss / (b.ff * 1.0))) return a.ff < b.ff;
+  return (a.ss / (a.ff * 1.0)) > (b.ss / (b.ff * 1.0)); 
+}
 
 void tTestCase(int t) {
-  int n;
-  scan(n);
-  if(n % 2 == 0) {
-    print(-1); return;
+  int n, h; cin >> n >> h;
+  vector<pii> v;
+  int mn = INT_MAX, mn_d = 0;
+  for (int i = 0; i < n; ++i) {
+    int ct, d; cin >> ct >> d;
+    if(ct < mn) {
+      mn = ct; mn_d = d;
+    }
+    v.push_back({ct, d});
   }
-  int i = n / 2;
-  // print(i);
-  vi a(n, 1);
-  int cnt = 1;
-  while(i < n) {
-    a[i++] = cnt++;
+  sort(all(v), comp);
+  // for(auto [ct, d] : v) {
+  //   print(ct, d);
+  // } return;
+  int res = 0, r2 = INT_MAX;
+  for (int i = 0; i < n; ++i) {
+    int times = h / v[i].ss;
+    bug(times);
+    r2 = min(r2, res + (ceil(h, v[i].ss)) * v[i].ff);
+    res += (times * v[i].ff);
+    h -= (times * v[i].ss);
+    if(h <= 0) break;
   }
-  i = (n / 2) - 1;
-  while(i >= 0) {
-    a[i--] = cnt++;
+  if(h > 0) {
+    res+=mn;
+    // int times = ceil(h, mn_d);
+    // res += (times / mn);
   }
-  print(a);
+  print(min(r2, res));
 }
 
 void solve() {
@@ -150,7 +165,8 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     // auto t1 = std::chrono::high_resolution_clock::now();
-
+    // int a = 53, b = 3;
+    // print(a / (b * 1.0));
     solve();  // return 0;
 
     // auto t2 = std::chrono::high_resolution_clock::now();

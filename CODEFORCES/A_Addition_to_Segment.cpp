@@ -112,32 +112,58 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n;
-  scan(n);
-  if(n % 2 == 0) {
-    print(-1); return;
+const int MAXN = 100000 + 10;
+int t[4 * MAXN];
+
+void build(vi &a, int v, int tl, int tr) {
+  if(tl == tr) {
+    t[v] = a[tl];
+  } else {
+    int tm = (tl + tr) / 2;
+    build(a, 2 * v, tl, tm);
+    build(a, 2 * v + 1, tm + 1, tr);
+    t[v] = 0;
   }
-  int i = n / 2;
-  // print(i);
-  vi a(n, 1);
-  int cnt = 1;
-  while(i < n) {
-    a[i++] = cnt++;
+}
+
+void update(int v, int tl, int tr, int l, int r, int add) {
+  if(l > r) return;
+  if(l == tl and r == tr) t[v] += add;
+  else {
+    int tm = (tl + tr) / 2;
+    update(2 * v, tl, tm, l, min(r, tm), add);
+    update(2 * v + 1, tm + 1, tr, max(l, tm + 1), r, add);
   }
-  i = (n / 2) - 1;
-  while(i >= 0) {
-    a[i--] = cnt++;
-  }
-  print(a);
+}
+
+int get(int v, int tl, int tr, int pos) {
+  if(tl == tr) return t[v];
+  int tm = (tl + tr) / 2;
+  if(pos <= tm) 
+    return t[v] + get(2 * v, tl, tm, pos);
+  else
+    return t[v] + get(2 * v + 1, tm + 1, tr, pos);
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  int n, m; cin >> n >> m;
+  vi a(n + 1, 0); 
+  build(a, 1, 0, n - 1);
+  // for (int i = 0; i < 50; ++i) {
+    // print(t[i]);
+  // }
+  // update(1, 0, n - 1, 1, 3, 999);
+  for (int i = 0; i < m; ++i) {
+    // cout << get(1, 0, n - 1, i) << " ";
+    int type; cin >> type;
+    // bug(type);
+    if(type == 1) {
+      int l, r, val; cin >> l >> r >> val;
+      update(1, 0, n - 1, l, r - 1, val);
+    } else {
+      int pos; cin >> pos;
+      print(get(1, 0, n - 1, pos));
+    }
   }
 }
 
