@@ -112,79 +112,62 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n;
-  scan(n);
+map<int, int> parent, rnk;
+
+void make_set(int v) {
+  parent[v] = v;
+  rnk[v] = 0;
 }
 
-void solve() {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int i = 0, j = 1;
-  int c1 = 0, c2 = 0, c3 = 0, res = 0;
-  deque<int> b;
-  // print(a);
-  j = 0;
-  for (int i = 0; i < n; ++i) {
-    b.push_back(a[i]);
-    if(b.size() >= 3) {
-      int n1 = b.size() - 3, n2 = b.size() - 2, n3 = b.size() - 1;
-      if(b[n1] < b[n2] and b[n2] > b[n3]) {
-        c1++;
-      } else if(b[n1] > b[n2] and b[n2] < b[n3]) {
-        c2++;
-       }
-    }
+int find_set(int v) {
+  if(v == parent[v]) return v;
+  return parent[v] = find_set(parent[v]);
+}
 
-    while(b.size() >= 2 and (b[0] >= b[1] or c1 > 1 or c2 > 1)) {
-      // if(b.size() >= 2 and b[0] >= b[1]) {
-        // b.erase(b.begin());
-      if(b.size() >= 3) {
-        int n1 = 0, n2 = 1, n3 = 2;
-       
-        if(b[n1] < b[n2] and b[n2] > b[n3]) c1--;
-        else if(b[n1] > b[n2] and b[n2] < b[n3]) c2--;
-        
-      }
-     b.pop_front();
- 
-      // }
-    }
-    if(b.size() >= 4 and c1 == 1 and c2 == 1) {
-      res += 1;
-    }
+void union_sets(int a, int b) {
+  a = find_set(a);
+  b = find_set(b);
+  if(a != b) {
+    if(rnk[a] < rnk[b]) swap(a, b);
+    parent[b] = a;
+    if(rnk[a] == rnk[b]) rnk[a]++;
   }
-  // while(j < n) {
-   
-  //   if(b.size() >= 4 and c1 and c2) {
-  //     res += b.size();
-  //   }
-  //   // print(b, c1, c2);
-  //   // return;
+}
+
+struct edge {
+  int u, v, weight;
+  bool operator<(edge const& other) {
+        return weight < other.weight;
+  }
+};
+
+void solve() {
+  int vertex, edg; cin >> vertex >> edg;
+  vector<edge> edges, result;
+  // input
+  for (int i = 0; i < edg; ++i) {
+    edge temp;
+    cin >> temp.u >> temp.v >> temp.weight;
+    edges.push_back(temp);
+  }
+  sort(all(edges));
+
+  // for (int i = 0; i < n; ++i) {
+  //   cout << edges[i].u << " " << edges[i].v << " " << edges[i].weight << endl;
   // }
-  // bug(b);
-  // for(auto i : b) bug(i);
-  while(b.size()) {
-    b.pop_front();
-    while(b.size() >= 2 and (b[0] >= b[1] or c1 > 1 or c2 > 1)) {
-      // if(b.size() >= 2 and b[0] >= b[1]) {
-        // b.erase(b.begin());
-      if(b.size() >= 3) {
-        int n1 = 0, n2 = 1, n3 = 2;
-       
-        if(b[n1] < b[n2] and b[n2] > b[n3]) c1--;
-        else if(b[n1] > b[n2] and b[n2] < b[n3]) c2--;
-        
-      }
-     b.pop_front();
- 
-      // }
-    }
-    if(b.size() >= 4 and c1 == 1 and c2 == 1) {
-      res += 1;
+  int cost = 0;
+  for (int i = 0; i <= edg; ++i) {
+    make_set(i);
+  }
+  for(auto e : edges) {
+    if(find_set(e.u) != find_set(e.v)) {
+      cost += e.weight;
+      result.push_back(e);
+      union_sets(e.u, e.v);
     }
   }
-  print(res);
+  print(cost);
+
 }
 
 
@@ -197,10 +180,8 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();   return 0;
-    vi a = {1,2,3,4,5};
-    print(a.size());
-    print(a[a.size() - 1]);
+    solve();  // return 0;
+
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

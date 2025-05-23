@@ -112,79 +112,77 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+int f(int n) {
+  return n * (n + 1) / 2;
+}
+
 void tTestCase(int t) {
-  int n;
-  scan(n);
+  int n; cin >> n;
+  vi a(n); cin >> a;
+  map<int, int> mp;
+  set<int> st;
+  st.insert(0);
+  vi b(n, 0), c;
+  int sum = 0;
+  for (int i = 0; i < n; ++i) {
+    mp[a[i]]++;
+    if(mp[a[i]] > 1) {
+      st.insert(a[i]);
+    }
+    sum += a[i];
+    b[i] = *st.rbegin();
+    if(c.empty()) {
+      c.push_back(b[i]);
+    } else {
+      if(c.back() != b[i])
+        c.push_back(b[i]);
+    }
+  }
+  // print(b);
+  // print(c); newl;
+  mp.clear();
+  for(auto i : b) {
+    mp[i]++;
+  }
+  int adj = 0, done = 0;
+  // bug(c.size());
+  for (int i = c.size() - 1; i >= 0; i--) {
+    // bug(c[i]);
+    if(mp[c[i]] > 1) {
+      sum += (adj * c[i] * mp[c[i]]) + (c[i] * f(mp[c[i]]));
+      bug((adj * c[i] * mp[c[i]]), (c[i] * f(mp[c[i]])));
+      // bug(adj * c[i] * mp[c[i]] + (c[i] * f(mp[c[i]] - 1)), adj, c[i]);
+      // bug(c[i] * mp[c[i]], adj);
+
+    } else {
+      sum += c[i];
+      // mp[c[i - 1]]++;
+    }     
+
+    // sum += (c[i] * f(mp[c[i]] - (adj >= 1)) * max(1LL, adj));
+    adj += mp[c[i]];
+    // adj = b.size() - done;
+    // if(mp[c[i]] > 1)
+    //   adj += c[i];
+
+  }
+  // int prevVal = 0, prevSum = 0;
+  // for(auto i : mp) {
+  //   int adjusted = 
+  //   sum += i.ff * f(i.ss);
+
+  //   // bug(i.ff, i.ss);
+  // }
+  print(sum);
 }
 
 void solve() {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int i = 0, j = 1;
-  int c1 = 0, c2 = 0, c3 = 0, res = 0;
-  deque<int> b;
-  // print(a);
-  j = 0;
-  for (int i = 0; i < n; ++i) {
-    b.push_back(a[i]);
-    if(b.size() >= 3) {
-      int n1 = b.size() - 3, n2 = b.size() - 2, n3 = b.size() - 1;
-      if(b[n1] < b[n2] and b[n2] > b[n3]) {
-        c1++;
-      } else if(b[n1] > b[n2] and b[n2] < b[n3]) {
-        c2++;
-       }
-    }
-
-    while(b.size() >= 2 and (b[0] >= b[1] or c1 > 1 or c2 > 1)) {
-      // if(b.size() >= 2 and b[0] >= b[1]) {
-        // b.erase(b.begin());
-      if(b.size() >= 3) {
-        int n1 = 0, n2 = 1, n3 = 2;
-       
-        if(b[n1] < b[n2] and b[n2] > b[n3]) c1--;
-        else if(b[n1] > b[n2] and b[n2] < b[n3]) c2--;
-        
-      }
-     b.pop_front();
- 
-      // }
-    }
-    if(b.size() >= 4 and c1 == 1 and c2 == 1) {
-      res += 1;
-    }
+  int t = 1; 
+  cin >> t;
+  for(int i = 1; i <= t; i++) {
+    // cout << "Case " << i << ": ";
+    tTestCase(i);
   }
-  // while(j < n) {
-   
-  //   if(b.size() >= 4 and c1 and c2) {
-  //     res += b.size();
-  //   }
-  //   // print(b, c1, c2);
-  //   // return;
-  // }
-  // bug(b);
-  // for(auto i : b) bug(i);
-  while(b.size()) {
-    b.pop_front();
-    while(b.size() >= 2 and (b[0] >= b[1] or c1 > 1 or c2 > 1)) {
-      // if(b.size() >= 2 and b[0] >= b[1]) {
-        // b.erase(b.begin());
-      if(b.size() >= 3) {
-        int n1 = 0, n2 = 1, n3 = 2;
-       
-        if(b[n1] < b[n2] and b[n2] > b[n3]) c1--;
-        else if(b[n1] > b[n2] and b[n2] < b[n3]) c2--;
-        
-      }
-     b.pop_front();
- 
-      // }
-    }
-    if(b.size() >= 4 and c1 == 1 and c2 == 1) {
-      res += 1;
-    }
-  }
-  print(res);
 }
 
 
@@ -197,10 +195,8 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();   return 0;
-    vi a = {1,2,3,4,5};
-    print(a.size());
-    print(a[a.size() - 1]);
+    solve();  // return 0;
+
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

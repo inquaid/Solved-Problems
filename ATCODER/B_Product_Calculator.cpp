@@ -116,75 +116,63 @@ void tTestCase(int t) {
   int n;
   scan(n);
 }
+__int128 read() {
+    __int128 x = 0, f = 1;
+    char ch = getchar();
+    while (ch < '0' || ch > '9') {
+        if (ch == '-') f = -1;
+        ch = getchar();
+    }
+    while (ch >= '0' && ch <= '9') {
+        x = x * 10 + ch - '0';
+        ch = getchar();
+    }
+    return x * f;
+}
+void print(__int128 x) {
+    if (x < 0) {
+        putchar('-');
+        x = -x;
+    }
+    if (x > 9) print(x / 10);
+    putchar(x % 10 + '0');
+}
+int d(lll n) {
+  
+  // return n.size();
+  // return 1;
+  // string num = to_string(n);
+  // return num.length();
+  int cnt = 0;
+  while(n){ 
+    n /= 10;
+    cnt++;
+  }
+  return cnt;
+  // return floor(log10(n)) + 1;
+}
 
 void solve() {
-  int n; cin >> n;
+  int n, k; cin >> n >> k;
   vi a(n); cin >> a;
-  int i = 0, j = 1;
-  int c1 = 0, c2 = 0, c3 = 0, res = 0;
-  deque<int> b;
-  // print(a);
-  j = 0;
+  lll sum = 1;
+  // sort(all(a));
   for (int i = 0; i < n; ++i) {
-    b.push_back(a[i]);
-    if(b.size() >= 3) {
-      int n1 = b.size() - 3, n2 = b.size() - 2, n3 = b.size() - 1;
-      if(b[n1] < b[n2] and b[n2] > b[n3]) {
-        c1++;
-      } else if(b[n1] > b[n2] and b[n2] < b[n3]) {
-        c2++;
-       }
-    }
-
-    while(b.size() >= 2 and (b[0] >= b[1] or c1 > 1 or c2 > 1)) {
-      // if(b.size() >= 2 and b[0] >= b[1]) {
-        // b.erase(b.begin());
-      if(b.size() >= 3) {
-        int n1 = 0, n2 = 1, n3 = 2;
-       
-        if(b[n1] < b[n2] and b[n2] > b[n3]) c1--;
-        else if(b[n1] > b[n2] and b[n2] < b[n3]) c2--;
-        
-      }
-     b.pop_front();
- 
-      // }
-    }
-    if(b.size() >= 4 and c1 == 1 and c2 == 1) {
-      res += 1;
+    // if(d(a[i]) > k) {
+    //   a[i] = 1;
+    // }
+    sum *= a[i];
+    if(d(sum) > k) {
+      sum = 1;
+      // bug(d(sum), sum);
+      // print(1);
+      // return;
     }
   }
-  // while(j < n) {
-   
-  //   if(b.size() >= 4 and c1 and c2) {
-  //     res += b.size();
-  //   }
-  //   // print(b, c1, c2);
-  //   // return;
+  // if(d(sum) > k) {
+  //   sum = 1;
   // }
-  // bug(b);
-  // for(auto i : b) bug(i);
-  while(b.size()) {
-    b.pop_front();
-    while(b.size() >= 2 and (b[0] >= b[1] or c1 > 1 or c2 > 1)) {
-      // if(b.size() >= 2 and b[0] >= b[1]) {
-        // b.erase(b.begin());
-      if(b.size() >= 3) {
-        int n1 = 0, n2 = 1, n3 = 2;
-       
-        if(b[n1] < b[n2] and b[n2] > b[n3]) c1--;
-        else if(b[n1] > b[n2] and b[n2] < b[n3]) c2--;
-        
-      }
-     b.pop_front();
- 
-      // }
-    }
-    if(b.size() >= 4 and c1 == 1 and c2 == 1) {
-      res += 1;
-    }
-  }
-  print(res);
+  print(sum);
 }
 
 
@@ -198,9 +186,7 @@ int32_t main() {
     // auto t1 = std::chrono::high_resolution_clock::now();
 
     solve();   return 0;
-    vi a = {1,2,3,4,5};
-    print(a.size());
-    print(a[a.size() - 1]);
+    print(d(1));
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

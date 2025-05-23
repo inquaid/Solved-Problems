@@ -112,25 +112,53 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n;
-  scan(n);
-  if(n % 2 == 0) {
-    print(-1); return;
-  }
-  int i = n / 2;
-  // print(i);
-  vi a(n, 1);
-  int cnt = 1;
-  while(i < n) {
-    a[i++] = cnt++;
-  }
-  i = (n / 2) - 1;
-  while(i >= 0) {
-    a[i--] = cnt++;
-  }
-  print(a);
+int f(int a, int b) {
+    if (a == 0)
+        return 1;
+    return 1 + f(b % a, a);
 }
+
+
+int func(int a, int b) {
+  int cnt = 0;
+  // while(a > 1) a = ceil(a, 2), cnt++;
+  // while(b > 1) b = ceil(b, 2), cnt++;
+  while(a > 1 or b > 1) {
+    if(a > b) a = ceil(a, 2) ;
+    else b = ceil(b, 2) ;
+    cnt++;
+  }
+  // if(a <= 1) {
+  //   return cnt + floor(log2(b));
+  // } 
+  // if(b <= 1)
+  //   return cnt + floor(log2(a)); 
+  cnt += (2 * (b - 1));
+  return cnt;
+}
+
+
+void tTestCase(int t) {
+  int n, m, a, b; cin >> n >> m >> a >> b;
+  pii u = {n - a + 1 , m};
+  pii d = {a , m};
+  pii l = {n , m - b + 1};
+  pii r = {n , b};
+  // print(func(n - a + 1, m));
+  // print(u, d, l, r);
+  // print(ans);
+  print(min({func(u.ff, u.ss), func(d.ff, d.ss), func(l.ff, l.ss), func(r.ff, r.ss)}) + 1);
+  // if(u >= d and u >= l and u >= r) {
+  //   print(func(n - a + 1, m) + 1);
+  // } else if(d >= u and d >= l and d >= r) {
+  //   print(func(a, m) + 1);
+  // } else if(l >= u and l >= d and l >= r) {
+  //   print(func(n , m - b + 1) + 1);
+  // } else
+  //   print(func(n, b) + 1);
+}
+
+
 
 void solve() {
   int t = 1; 
@@ -151,8 +179,13 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
-
+    solve(); return 0;
+    print(func(3, 99));
+    print(func(20, 99));
+    print(func(22, 30));
+    print(func(22, 70));
+  // print(func(4, 4));
+    // print(f(5, 5));
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

@@ -1,12 +1,5 @@
-2
-LR
-14
-RRRDDDDLLLUUUU
-12
-RRRDDDLLLUUU
-2
-LR
-2
-UD
-0
-
+mul 9
+digit
+digit
+add 91
+!

@@ -112,79 +112,92 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+int chk(vi &a, vi &b) {
+  int cnt = 0;
+  for (int i = 0; i < a.size(); ++i) {
+    for (int j = 0; j < a.size(); ++j) {
+      int s1 = 0, s2 = 0;
+      for (int k = i; k <= j; ++k) {
+        s1 += a[k]; s2 += b[k];
+      }
+      if(s1 == s2) cnt++;
+    }
+  }
+  return cnt;
+}
+
 void tTestCase(int t) {
   int n;
   scan(n);
+  vi a(n); cin >> a;
+  cout << a.back() << " ";
+  for (int i = 0; i < n - 1; ++i) {
+    cout << a[i] << " ";
+  } newl;
+  // vi b, c;
+  // if(n < 3) {
+  //   reverse(all(a));
+  //   print(a);
+  //   return;
+  // }
+  // if(n&1) {
+  //   int m = a[n / 2];
+  //   // print(m);
+  //   reverse(all(a));
+  //   cout << m << " ";
+  //   for (int i = 0; i < n; ++i) {
+  //     if(a[i] != m) cout << a[i] << " ";
+  //   }
+  //   newl;
+  // } else {
+  //   int m = a[0];
+  //   reverse(all(a));
+  //   // print(a);
+  //   cout << m << " ";
+  //   for (int i = 0; i < n; ++i) {
+  //     if(a[i] != m) cout << a[i] << " ";
+  //   }
+  //   newl;
+  // }
+  // for (int i = 0; i < n / 2; ++i) {
+  //   b.push_back(a[i]);
+  // }
+  // for (int i = n / 2; i < n; ++i) {
+  //   c.push_back(a[i]);
+  // }
+  // reverse(all(b));
+  // reverse(all(c));
+  // for (int i = 0; i < c.size(); ++i) {
+  //   cout << c[i] << " ";
+  // }
+  // print(b);
+  // vi b(n); cin >> b;
+  // // vi b = {6, 2, 1, 4, 7, 3, 5};
+  // print(chk(a, b));
+  // reverse(all(a));
+  // int indx = 0;
+  // for (int i = 1; i <= n; i += 2) {
+  //   // swap(a[i], a[i + 1]);
+  //   a[indx++] = i;
+  // }
+  // for (int i = 2; i <= n; i += 2)
+  // {
+  //   a[indx++] = i;
+  //   /* code */
+  // }
+  // if(n&1) {
+  //   swap(a[0], a.back());
+  // }
+  // print(a);
 }
 
 void solve() {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int i = 0, j = 1;
-  int c1 = 0, c2 = 0, c3 = 0, res = 0;
-  deque<int> b;
-  // print(a);
-  j = 0;
-  for (int i = 0; i < n; ++i) {
-    b.push_back(a[i]);
-    if(b.size() >= 3) {
-      int n1 = b.size() - 3, n2 = b.size() - 2, n3 = b.size() - 1;
-      if(b[n1] < b[n2] and b[n2] > b[n3]) {
-        c1++;
-      } else if(b[n1] > b[n2] and b[n2] < b[n3]) {
-        c2++;
-       }
-    }
-
-    while(b.size() >= 2 and (b[0] >= b[1] or c1 > 1 or c2 > 1)) {
-      // if(b.size() >= 2 and b[0] >= b[1]) {
-        // b.erase(b.begin());
-      if(b.size() >= 3) {
-        int n1 = 0, n2 = 1, n3 = 2;
-       
-        if(b[n1] < b[n2] and b[n2] > b[n3]) c1--;
-        else if(b[n1] > b[n2] and b[n2] < b[n3]) c2--;
-        
-      }
-     b.pop_front();
- 
-      // }
-    }
-    if(b.size() >= 4 and c1 == 1 and c2 == 1) {
-      res += 1;
-    }
+  int t = 1; 
+  cin >> t;
+  for(int i = 1; i <= t; i++) {
+    // cout << "Case " << i << ": ";
+    tTestCase(i);
   }
-  // while(j < n) {
-   
-  //   if(b.size() >= 4 and c1 and c2) {
-  //     res += b.size();
-  //   }
-  //   // print(b, c1, c2);
-  //   // return;
-  // }
-  // bug(b);
-  // for(auto i : b) bug(i);
-  while(b.size()) {
-    b.pop_front();
-    while(b.size() >= 2 and (b[0] >= b[1] or c1 > 1 or c2 > 1)) {
-      // if(b.size() >= 2 and b[0] >= b[1]) {
-        // b.erase(b.begin());
-      if(b.size() >= 3) {
-        int n1 = 0, n2 = 1, n3 = 2;
-       
-        if(b[n1] < b[n2] and b[n2] > b[n3]) c1--;
-        else if(b[n1] > b[n2] and b[n2] < b[n3]) c2--;
-        
-      }
-     b.pop_front();
- 
-      // }
-    }
-    if(b.size() >= 4 and c1 == 1 and c2 == 1) {
-      res += 1;
-    }
-  }
-  print(res);
 }
 
 
@@ -197,10 +210,8 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();   return 0;
-    vi a = {1,2,3,4,5};
-    print(a.size());
-    print(a[a.size() - 1]);
+    solve();  // return 0;
+
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

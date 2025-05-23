@@ -14,7 +14,7 @@
 #include <numeric>
 #include <chrono>
 
-#define int long long
+// #define int long long
 #define all(x) (x).begin(), (x).end()
 #define newl cout << "\n"
 
@@ -112,79 +112,58 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n;
-  scan(n);
+const int INF = 1000000, N = 1000;
+vector<vector<pair<int, int>>> adj;
+
+void dijkstra(int s, vi &d, vi &p) {
+  int n = adj.size();
+  d.assign(n, INF);
+  p.assign(n, -1);
+
+  d[s] = 0;
+  set<pair<int,int>> q;
+  q.insert({0, s});
+  while(!q.empty()) {
+    int v = q.begin()->second;
+    q.erase(q.begin());
+
+    for(auto edge : adj[v]) {
+      int to = edge.first;
+      int len = edge.second;
+
+      if(d[v] + len < d[to]) {
+        q.erase({d[to], to});
+        d[to] = d[v] + len;
+        p[to] = v;
+        q.insert({d[to], to});
+      }
+    }
+  }
+}
+
+vector<int> restore_path(int s, int t, vector<int> const& p) {
+    vector<int> path;
+
+    for (int v = t; v != s; v = p[v])
+        path.push_back(v);
+    path.push_back(s);
+
+    reverse(path.begin(), path.end());
+    return path;
 }
 
 void solve() {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int i = 0, j = 1;
-  int c1 = 0, c2 = 0, c3 = 0, res = 0;
-  deque<int> b;
-  // print(a);
-  j = 0;
-  for (int i = 0; i < n; ++i) {
-    b.push_back(a[i]);
-    if(b.size() >= 3) {
-      int n1 = b.size() - 3, n2 = b.size() - 2, n3 = b.size() - 1;
-      if(b[n1] < b[n2] and b[n2] > b[n3]) {
-        c1++;
-      } else if(b[n1] > b[n2] and b[n2] < b[n3]) {
-        c2++;
-       }
-    }
+  int vertices, edges; cin >> vertices >> edges;
+  adj.assign(vertices + 2, {});
+  for (int i = 0; i < edges; ++i) {
+    int u, v, wt; cin >> u >> v >> wt;
+    adj[u].push_back({wt, v});
+    adj[v].push_back({wt, u});
+  }
+  vi d, p;
+  dijkstra(0, d, p);
+  print(d);
 
-    while(b.size() >= 2 and (b[0] >= b[1] or c1 > 1 or c2 > 1)) {
-      // if(b.size() >= 2 and b[0] >= b[1]) {
-        // b.erase(b.begin());
-      if(b.size() >= 3) {
-        int n1 = 0, n2 = 1, n3 = 2;
-       
-        if(b[n1] < b[n2] and b[n2] > b[n3]) c1--;
-        else if(b[n1] > b[n2] and b[n2] < b[n3]) c2--;
-        
-      }
-     b.pop_front();
- 
-      // }
-    }
-    if(b.size() >= 4 and c1 == 1 and c2 == 1) {
-      res += 1;
-    }
-  }
-  // while(j < n) {
-   
-  //   if(b.size() >= 4 and c1 and c2) {
-  //     res += b.size();
-  //   }
-  //   // print(b, c1, c2);
-  //   // return;
-  // }
-  // bug(b);
-  // for(auto i : b) bug(i);
-  while(b.size()) {
-    b.pop_front();
-    while(b.size() >= 2 and (b[0] >= b[1] or c1 > 1 or c2 > 1)) {
-      // if(b.size() >= 2 and b[0] >= b[1]) {
-        // b.erase(b.begin());
-      if(b.size() >= 3) {
-        int n1 = 0, n2 = 1, n3 = 2;
-       
-        if(b[n1] < b[n2] and b[n2] > b[n3]) c1--;
-        else if(b[n1] > b[n2] and b[n2] < b[n3]) c2--;
-        
-      }
-     b.pop_front();
- 
-      // }
-    }
-    if(b.size() >= 4 and c1 == 1 and c2 == 1) {
-      res += 1;
-    }
-  }
-  print(res);
 }
 
 
@@ -197,10 +176,8 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();   return 0;
-    vi a = {1,2,3,4,5};
-    print(a.size());
-    print(a[a.size() - 1]);
+    solve();  // return 0;
+
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

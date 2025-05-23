@@ -113,78 +113,46 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n;
-  scan(n);
-}
-
-void solve() {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int i = 0, j = 1;
-  int c1 = 0, c2 = 0, c3 = 0, res = 0;
-  deque<int> b;
-  // print(a);
-  j = 0;
+  int n, m; cin >> n >> m;
+  vi a(n);
+  map<int, int> mp;
   for (int i = 0; i < n; ++i) {
-    b.push_back(a[i]);
-    if(b.size() >= 3) {
-      int n1 = b.size() - 3, n2 = b.size() - 2, n3 = b.size() - 1;
-      if(b[n1] < b[n2] and b[n2] > b[n3]) {
-        c1++;
-      } else if(b[n1] > b[n2] and b[n2] < b[n3]) {
-        c2++;
-       }
-    }
-
-    while(b.size() >= 2 and (b[0] >= b[1] or c1 > 1 or c2 > 1)) {
-      // if(b.size() >= 2 and b[0] >= b[1]) {
-        // b.erase(b.begin());
-      if(b.size() >= 3) {
-        int n1 = 0, n2 = 1, n3 = 2;
-       
-        if(b[n1] < b[n2] and b[n2] > b[n3]) c1--;
-        else if(b[n1] > b[n2] and b[n2] < b[n3]) c2--;
-        
-      }
-     b.pop_front();
- 
-      // }
-    }
-    if(b.size() >= 4 and c1 == 1 and c2 == 1) {
-      res += 1;
-    }
+    cin >> a[i]; mp[a[i]]++;
   }
-  // while(j < n) {
-   
-  //   if(b.size() >= 4 and c1 and c2) {
-  //     res += b.size();
-  //   }
-  //   // print(b, c1, c2);
-  //   // return;
-  // }
-  // bug(b);
-  // for(auto i : b) bug(i);
-  while(b.size()) {
-    b.pop_front();
-    while(b.size() >= 2 and (b[0] >= b[1] or c1 > 1 or c2 > 1)) {
-      // if(b.size() >= 2 and b[0] >= b[1]) {
-        // b.erase(b.begin());
-      if(b.size() >= 3) {
-        int n1 = 0, n2 = 1, n3 = 2;
-       
-        if(b[n1] < b[n2] and b[n2] > b[n3]) c1--;
-        else if(b[n1] > b[n2] and b[n2] < b[n3]) c2--;
-        
+  sort_unique(a);
+  // bug(a.size());
+  bool flag = 0;
+  int res = 0;
+  for (int i = 0; i < a.size(); ++i) {
+    if (a[i] > m) continue;
+
+    int count1 = mp[a[i]];
+    int max1 = min(m / a[i], count1);
+    res = max(res, a[i] * max1); 
+    if (i + 1 < a.size() && a[i] + 1 == a[i + 1]) {
+      int count2 = mp[a[i + 1]];
+      
+      for (int used2 = 0; used2 <= count2; ++used2) {
+        int sum2 = used2 * a[i + 1];
+        if (sum2 > m) break;
+        int remain = m - sum2;
+        int used1 = min(count1, remain / a[i]);
+        int total = sum2 + used1 * a[i];
+        res = max(res, total);
       }
-     b.pop_front();
- 
-      // }
-    }
-    if(b.size() >= 4 and c1 == 1 and c2 == 1) {
-      res += 1;
     }
   }
   print(res);
+  // newl;
+}
+
+void solve() {
+  int t = 1; 
+  cin >> t;
+  for(int i = 1; i <= t; i++) {
+    // cout << "Case " << i << ": ";
+    tTestCase(i);
+  }
 }
 
 
@@ -197,10 +165,8 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();   return 0;
-    vi a = {1,2,3,4,5};
-    print(a.size());
-    print(a[a.size() - 1]);
+    solve();  // return 0;
+
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;
