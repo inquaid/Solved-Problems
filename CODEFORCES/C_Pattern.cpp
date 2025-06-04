@@ -113,30 +113,37 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
-    }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
-  }
-  print(res);
+  int n;
+  scan(n);
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  int n; cin >> n;
+  vector<string> vs;
+  string s;
+  for (int i = 0; i < n; ++i) {
+     cin >> s; vs.push_back(s);
   }
+  string res = "";
+  for (int i = 0; i < vs[0].size(); ++i) {
+     map<char, int> mp;
+     for (int j = 0; j < n; ++j) {
+        mp[vs[j][i]]++;
+     }
+     if(mp.size() == 1) {
+      if(mp.begin()->ff != '?')
+        res += mp.begin()->ff;
+      else res += 't';
+     } else if(mp.size() == 2 and mp.find('?') != mp.end()) {
+     //  // res += '?';
+        for(auto ch : mp) {
+          if(ch.ff != '?') res += ch.ff;
+        }
+     } else {
+      res += '?';
+     }
+  }
+  print(res);;
 }
 
 
@@ -149,8 +156,10 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
-
+    solve();   return 0;
+    map<int, int> mp;
+    mp[12] = 2;
+    print(mp.begin()->first);
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

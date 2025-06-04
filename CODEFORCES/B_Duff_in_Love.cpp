@@ -113,30 +113,42 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
+  int n;
+  scan(n);
+}
+int isSqr(int n) {
+  if(n == 1) return 0;
+  double temp = sqrt(n);
+  // bug(temp, temp * temp);
+  return floor(temp) == temp;
+}
+int isp(int d) {
+  for (int i = 1; i * i <= d; ++i) {
+    if(d % i == 0) {
+      // bug(i, d / i);
+      if(isSqr(i) or isSqr(d / i)) return 0;
     }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
-  }
-  print(res);
+  } return 1;
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  int n; cin >> n;
+  if(isp(n)) {
+    print(n); return;
   }
+  set<int> divs;
+  for (int i = 2; i * i <= n; ++i) {
+    if(n % i == 0) {
+      divs.insert(i); divs.insert(n / i);
+    }
+  }
+  for(auto it = divs.rbegin(); it != divs.rend(); it++) {
+    // print(*it);
+    if(isp(*it)) {
+      print(*it); return;
+    }
+  }
+
 }
 
 
@@ -149,8 +161,8 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
-
+    solve();   return 0;
+    yesif(isSqr(17));
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

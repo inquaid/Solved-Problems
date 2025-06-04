@@ -113,30 +113,62 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
+  int n;
+  scan(n);
+}
+const int N = 1e3;
+vi g[N];
+vi vis;
+vi d, f;
+int cnt;
+void dfs(int u) {
+  vis[u] = 1;
+  // print(u);
+  d[u] = ++cnt;
+  // cnt++;
+  // int temp = cnt;
+  for(auto v : g[u]) {
+    if(!vis[v]){
+      // temp++;
+      dfs(v);
     }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
   }
-  print(res);
+
+  f[u] = ++cnt;
+  // return 1;
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  int n; cin >> n;
+  vis.assign(n + 1, 0);
+  d.assign(n + 1, 0);
+  f.assign(n + 1, 0);
+  for (int i = 0; i < n; ++i) {
+    int u; cin >> u;
+    int e; cin >> e;
+    for (int j = 0; j < e; ++j) {
+      int v; cin >> v;
+      g[u].push_back(v);
+    }
   }
+  for (int i = 1; i <= n; ++i) {
+    if(!vis[i])
+      dfs(i);
+  }
+  // dfs(1);
+  for (int i = 1; i <= n; ++i) {
+    print(i, d[i], f[i]);
+  }
+  // for (int i = 0; i <= n; ++i) {
+  //   if(g[i].size()) {
+  //     // cout << i << " -> ";
+  //     for(auto v : g[i]) {
+  //     print(i, v);
+  //       // cout << v << " ";
+  //     } 
+  //   }
+  // }
+
 }
 
 

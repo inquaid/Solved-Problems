@@ -113,21 +113,45 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
+  int n;
+  scan(n);
+  string s; cin >> s;
+  vector<pair<char, int>> v;
   int i = 0;
   while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
+    int cnt = 1, j = i;
+    while(i + 1 < n and s[i + 1] == s[i]) {
       cnt++; i++;
     }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
+    v.push_back({s[j], cnt});
     i++;
   }
-  print(res);
+  int m = v.size(), cnt = 0;
+  for (int i = 0; i < m; ++i) {
+    if(i + 2 < m and v[i].ff == 'A' and v[i + 1].ff == 'B' and v[i + 2].ff == 'C') {
+      cnt += max(v[i].ss * v[i + 1].ss, v[i + 1].ss * v[i + 2].ss);
+      i += 2;
+      if(i + 3 < m and v[i + 3].ff == 'B' and v[i].ss * v[i + 1].ss < v[i + 1].ss * v[i + 2].ss) {
+        v[i + 3].ss += v[i + 1].ss;
+        // swap(v[i], v[i + 1]);
+        // if(i + 2 )
+      }// else swap(v[i + 1], v[i + 2]);
+    } else if(i + 1 < m and v[i].ff == 'A' and v[i + 1].ff == 'B') {
+      cnt += (v[i].ss * v[i + 1].ss); 
+      if(i + 2 < m and v[i + 2].ff == 'A') {
+        v[i + 2].ss += v[i].ss;
+      } i++;
+    } else if(i + 1 < m and v[i].ff == 'B' and v[i + 1].ff == 'C') {
+      cnt += (v[i].ss * v[i + 1].ss); 
+      if(i + 2 < m and v[i + 2].ff == 'B') {
+        v[i + 2].ss += v[i].ss;
+      }
+    }
+  }
+  print(cnt);
+  // for(auto [val, cnt] : v) {
+  //   print(val, cnt);
+  // } newl;
 }
 
 void solve() {

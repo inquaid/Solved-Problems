@@ -112,31 +112,57 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
+map<int, vi> g;
+int n, m; 
+
+const int INF = 1e9;
+void bfs(int s) {
+  queue<int> q;
+  vi d(n + 1, INF), p(n + 1, 0);
+  q.push(s);
+  p[s] = -1;
+  d[s] = 0;
+  while(q.size()) {
+    int u = q.front(); q.pop();
+    // cout << u << " ";
+    for(auto v : g[u]) {
+      if(d[u] + 1 < d[v]) {
+        d[v] = d[u] + 1;
+        p[v] = u;
+        q.push(v);
+      }
     }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
+    // bug(d);
   }
-  print(res);
+  // newl;
+  // for (int i = 1; i <= n; ++i) {
+    // if(used[i])
+    if(d[n] == INF) {
+      print("IMPOSSIBLE");
+      return;
+    }
+    print(d[n] + 1);
+    vi res;
+    int i = n;
+    while(p[i] != -1) {
+      res.push_back(i); i = p[i];
+    }
+    reverse(all(res));
+    cout << 1 << " ";
+    print(res);
+    // else print(i, -1);
+  // }
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  cin >> n >> m;
+  for (int i = 0; i < m; ++i) {
+    int u, v; cin >> u >> v;
+    g[u].push_back(v);
+    g[v].push_back(u);
   }
+  bfs(1);
+  bug(g);
 }
 
 

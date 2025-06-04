@@ -112,30 +112,52 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
-    }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
+int n, m;
+vector<string> vs;
+int fx[] = {0, 0, 1, -1, 1, 1, -1, -1};
+int fy[] = {1, -1, 0, 0, -1,1, -1, 1};
+int valid(int i, int j) {
+  return (0 <= i and i < n and 0 <= j and j < m);
+}
+
+void f(int i, int j) {
+  if(!valid(i, j) or vs[i][j] == '*') return;
+  vs[i][j] = '*';
+  for (int d = 0; d < 8; ++d) {
+    f(i + fx[d], j + fy[d]);
   }
-  print(res);
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  cin >> n >> m;
+
+  while(n != 0 and m != 0) {
+    // vs.assign(n, vi(m, 0));
+    vi tmp; tmp.assign(n, 0);
+    vs.clear();
+    // vs.resize(n, vector<string>(m, '0'));
+    for (int i = 0; i < n; ++i) {
+      string s; cin >> s;
+      vs.push_back(s);
+      // for (int j = 0; j < m; ++j) {
+      //   char ch;
+      //   cin >> ch;
+      // }
+    }
+    int cnt = 0;
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < m; ++j) {
+        if(vs[i][j] == '@') {
+          cnt++;
+          f(i, j);
+        }
+      }
+    }
+    print(cnt);
+    // print(f(0, 0));
+    // for(auto str : vs) print(str);
+    // bug(n, m);
+    cin >> n >> m;
   }
 }
 

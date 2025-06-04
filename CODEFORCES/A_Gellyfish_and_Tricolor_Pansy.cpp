@@ -113,21 +113,12 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
-    }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
+  int Ghp, Fhp, GKhp, FKhp;
+  cin >> Ghp >> Fhp >> GKhp >> FKhp;
+  if((GKhp >= FKhp and Ghp >= FKhp) or (Ghp >= Fhp and GKhp >= Fhp)) {
+    print("Gellyfish"); return;
   }
-  print(res);
+  print("Flower");
 }
 
 void solve() {

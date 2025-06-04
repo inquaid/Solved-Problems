@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <numeric>
 #include <chrono>
+#include <stack>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -113,21 +114,18 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
-    }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
+  string s; cin >> s;
+  // if(s.size() == 2) {
+  //   no; return;
+  // }
+  int cnt = 0;
+  stack<char> st;
+  for (int i = 0; i < s.size(); ++i) {
+    if(s[i] == '(') st.push('(');
+    else st.pop();
+    if(st.empty()) cnt++;
   }
-  print(res);
+  yesif(cnt != 1);
 }
 
 void solve() {

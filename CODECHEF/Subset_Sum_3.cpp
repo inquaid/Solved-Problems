@@ -113,21 +113,17 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
+  int n;
+  scan(n);
   vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
-    }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
+  int three = 0, one = 0, two = 0;
+  for (int i = 0; i < n; ++i) {
+    if(a[i] % 3 == 0) three++;
+    else if(a[i] % 3 == 2) two++;
+    else one++;
   }
-  print(res);
+  bug(one, two, three);
+  yesif(three or (one and two) or one >= 3 or two >= 3);
 }
 
 void solve() {

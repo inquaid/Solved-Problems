@@ -108,35 +108,6 @@ void dfs(int u) {
     }
 }
 
-void tTestCase(int t) {
-    int n, k, q;
-    scan(n, k, q);
-    vector<int> a(k + 1, 0), b(k + 1, 0); 
-    for (int i = 0; i < k; ++i) {
-        cin >> a[i + 1];
-    }
-    for (int i = 0; i < k; ++i) {
-        cin >> b[i + 1];
-    }
-    
-    while(q--){
-        int temp; scan(temp);
-        int strt = lower_bound(all(a), temp) - a.begin();
-        int end = upper_bound(all(a), temp) - a.begin();
-        if(strt == end) {
-            strt--;
-            // int ans = 0;
-            int ans = b[strt] + ((temp - a[strt]) * (b[end] - b[strt]) / (a[end] - a[strt])) ;
-            // bug(ans);
-            cout << ans << " ";
-        } else {
-            cout << (int)b[strt] << " ";
-        }
-        // print(strt, end);
-    }
-    print();
-}
-
 void solve() {
     int n, m; scan(n, m);
 

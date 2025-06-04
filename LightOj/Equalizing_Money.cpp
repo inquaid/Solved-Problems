@@ -112,29 +112,57 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
-    }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
+map<int, vi> g;
+vi vis, a;
+int sum, cnt;
+void dfs(int u) {
+  vis[u] = 1;
+  // bug(a[u], u);
+  sum += a[u - 1]; cnt++;
+  // cout << u << " ";
+  for(auto v : g[u]) {
+    if(!vis[v]) dfs(v);
   }
-  print(res);
+}
+
+void tTestCase(int t) {
+  int n, m; cin >> n >> m;
+  vis.assign(n + 1, 0);
+  a.resize(n);
+  cin >> a;
+  g.clear();
+  for (int i = 0; i < m; ++i) {
+    int u, v; cin >> u >> v;
+    g[u].push_back(v);
+    g[v].push_back(u);
+  }
+  // dfs(1);
+  set<int> res;
+  for (int i = 1; i <= n; ++i) {
+    if(!vis[i]) {
+      sum = 0; cnt = 0;
+      dfs(i);
+      bug(sum, cnt);
+      if(sum % cnt != 0) {
+        no; return;
+      }
+      res.insert(sum / cnt);
+    } 
+  }
+  yesif(res.size() == 1);
+  // newl;
+  // for(auto i : g) {
+  //   cout << i.ff << " -> ";
+  //   print(i.ss);
+  // }  
+
 }
 
 void solve() {
   int t = 1; 
   cin >> t;
   for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
+    cout << "Case " << i << ": ";
     tTestCase(i);
   }
 }

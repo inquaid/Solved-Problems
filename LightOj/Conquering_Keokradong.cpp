@@ -112,29 +112,54 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
+int n, k; 
+vi a;
+int pos(int x){
+  int cnt = 0, sum = 0;
+  for(auto i : a) {
+    if(i > x) {
+      return 0;
     }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
+    // sum += i;
+    if(sum + i > x) {
+      sum = i; cnt++;
+    } else sum += i;
+  } return cnt <= k;
+}
+
+void tTestCase(int t) {
+  cin >> n >> k;
+  a.resize(n + 1); cin >> a; 
+  int l = 1, r = 1e8, ans = -1;
+  while(l <= r) {
+    int mid = l + (r - l) / 2;
+    if(pos(mid)) {
+      r = mid - 1; ans = mid;
+    } else l = mid + 1;
+  }
+  print(ans);
+  // bug(a);
+  int sum = 0;
+  int cnt = n - k;
+  bug(cnt);
+  int i = 0;
+  while(i <= n) {
+    // print(a[i]);
+    int sum = a[i];
+    while(cnt > 0 and i + 1 <= n and sum + a[i + 1] <= ans) {
+      sum += a[i + 1]; cnt--; i++;
+    }
+    print(sum);
     i++;
   }
-  print(res);
+  // print(sum);
 }
 
 void solve() {
   int t = 1; 
   cin >> t;
   for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
+    cout << "Case " << i << ": ";
     tTestCase(i);
   }
 }

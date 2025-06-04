@@ -113,21 +113,35 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
-    }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
+  string s; cin >> s;
+  if(s.size() < 2) {
+    cout << (s[0] == 'a' ? 'b' : 'a');
+    print(s); return;
   }
-  print(res);
+
+  auto f = [](string &s, int indx) {
+    for (char ch = 'a'; ch < 'e'; ++ch) {
+      // cout << ch << " ";
+      // bug((ch - 'a'));
+      if(s[indx] != ch and s[indx + 1] != ch) {
+        s.insert(s.begin() + indx + 1, ch);
+        break;
+      }
+    }
+  };
+  bool flag = 0;
+  for (int i = 0; i < s.size() - 1; ++i) {
+    if(s[i] == s[i + 1]) {
+      f(s, i);
+      flag = 1;
+      break;
+    }
+  }
+  if(!flag) f(s, 0);
+  // if(s[0] == 'a') {
+  //   cout << 'b';
+  // } else cout << 'a';
+  print(s);
 }
 
 void solve() {
@@ -156,4 +170,4 @@ int32_t main() {
     // cerr << "    time: " << duration.count() << " ms" << endl;
 
   return 0;
-}
+} 

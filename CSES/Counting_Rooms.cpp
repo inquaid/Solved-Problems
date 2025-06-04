@@ -112,31 +112,38 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
-    }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
+int n, m;
+vector<string> vs;
+int valid(int x, int y) {
+  return 0 <= x and x < n and 0 <= y and y < m;
+}
+
+void f(int i, int j) {
+  if(!valid(i, j) or vs[i][j] != '.') return;
+  vs[i][j] = '#';
+  int fx[] = {1, -1, 0, 0};
+  int fy[] = {0,  0, 1,-1};
+  for (int k = 0; k < 4; ++k) {
+    f(i + fx[k], j + fy[k]);
   }
-  print(res);
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  cin >> n >> m;
+  for (int i = 0; i < n; ++i) {
+    string temp; cin >> temp;
+    vs.push_back(temp);
   }
+  int cnt = 0;
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < m; ++j) {
+      if(vs[i][j] == '.') {
+        cnt++;
+        f(i, j);
+      }
+    }
+  }
+  print(cnt);
 }
 
 

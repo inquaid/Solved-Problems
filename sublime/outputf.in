@@ -1,5 +1,3 @@
-mul 9
-digit
-digit
-add 91
-!
+MISMATCH FOUND while running test case 1
+
+Check the input.txt file to find the case, correct_solution.txt to find the correct output and similarly check the wrong_solution.txt

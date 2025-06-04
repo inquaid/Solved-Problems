@@ -111,23 +111,67 @@ template <typename Container> void print_container(const Container &container) {
 
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
+const int m = 998244353;
+long long binpow(long long a, long long b) {
+  a %= m;
+  long long res = 1;
+  while (b > 0) {
+   if (b & 1)
+    res = res * a % m;
+    a = a * a % m;
+    b >>= 1;
+  }
+  return res % m;
+}
+
+int f(int a, int b) {
+  // bug(a, b);
+  return (binpow(2, a) % m + binpow(2, b) % m) % m;
+}
 
 void tTestCase(int t) {
   int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
-    }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
+  vi p(n), q(n);
+  map<int, int> mp1, mp2;
+  for (int i = 0; i < n; ++i) {
+    cin >> p[i]; mp1[p[i]] = i;
   }
-  print(res);
+  for (int i = 0; i < n; ++i) {
+    cin >> q[i]; mp2[q[i]] = i;
+  }
+  // cin >> p >> q;
+  // print(p); print(q);
+  vi r(n);
+  int val1 = 0, val2 = 0, pj = 0, qij = 0;
+  for (int k = 0; k < n; ++k) {
+    if (p[k] > val1) val1 = p[k];
+    if (q[k] > val2) val2 = q[k];
+    int index1 = mp1[val1];
+    int j1 = k - index1;
+    int b1 = q[j1];
+
+    int index2 = mp2[val2];
+    int i2 = k - index2;
+    int a2 = p[i2];
+
+    int max1 = max(val1, b1);
+    int min1 = min(val1, b1);
+    int max2 = max(val2, a2);
+    int min2 = min(val2, a2);
+
+    if (max1 > max2) {
+      r[k] = (binpow(2, val1) + binpow(2, b1)) % m;
+    } else if (max1 < max2) {
+      r[k] = (binpow(2, val2) + binpow(2, a2)) % m;
+    } else {
+      if (min1 >= min2) {
+        r[k] = (binpow(2, val1) + binpow(2, b1)) % m;
+      } else {
+        r[k] = (binpow(2, val2) + binpow(2, a2)) % m;
+      }
+    }  
+  }
+  print(r);
 }
 
 void solve() {

@@ -113,30 +113,83 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
+  int n;
+  scan(n);
+}
+set<int> nodes;
+map<int, vi> g;
+int bfs(int s, int ttl, int n) {
+// print("OKOKO");
+ queue<int> q;
+ // n = 2147483650;
+ // int n = 100;
+ // vi used(n + 1, 0), d(n + 1, 0), p(n + 1, 0); 
+ map<int, int> used, d, p;
+ used[s] = 1;
+ p[s] = -1;
+ q.push(s);
+ while(q.size()) {
+  int u = q.front(); q.pop();
+  for(auto v : g[u]) {
+    if(!used[v]) {
+      used[v] = 1;
+      q.push(v);
+      d[v] = d[u] + 1;
+      p[v] = u;
     }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
   }
-  print(res);
+ }
+ // print(d)
+ int cnt = 0;
+ for(auto i : nodes) {
+  if(i == s) continue;
+  if(d[i] > ttl or !used[i]) cnt++;
+ }
+ // for (int i = 0; i < nodes.size(); ++i) {
+ //  if(nodes[i] == s) continue;
+ //  if(d[nodes[i]] > ttl or !used[nodes[i]]) cnt++;
+ //  // if(d[i] > ttl ) cnt++;
+ //    // print(i, d[i]);
+ //  // else print(i, -1);
+ // }
+ return cnt;
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  int n, cnt = 1;
+  cin >> n;
+  while(n) {
+    g.clear(); nodes.clear();
+    int mx = 0;
+    for (int i = 0; i < n; ++i) {
+      int u, v; cin >> u >> v;
+      g[u].push_back(v); g[v].push_back(u);
+      mx = max(mx, max(u, v)); 
+      nodes.insert(u);
+      nodes.insert(v);
+      // cout << u << " " << v << "  ";
+      // print(u, v);
+    }
+    // newl;
+    int node, ttl; 
+    // int cnt = 6;
+    while(1) {
+      // cnt--;
+      cin >> node >> ttl;
+      // cout << node << " " << ttl << "  ";
+      if(node == 0 and ttl == 0) break;
+      
+      // print(node, ttl);
+
+      int node_not_reached = bfs(node, ttl, mx + 1);
+
+      cout << "Case " << cnt++ << ": " << node_not_reached << " nodes not reachable from node " << node << " with TTL = " << ttl << ".\n";
+      // cin >> node >> ttl;
+    }
+    // newl;
+    cin >> n; 
   }
+
 }
 
 
@@ -149,8 +202,14 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
-
+    solve();  return 0;
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; ++i) {
+      int u, v; cin >> u >> v;
+      g[u].push_back(v); g[v].push_back(u);
+    }
+    // bfs(1);
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

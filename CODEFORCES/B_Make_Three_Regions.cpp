@@ -112,22 +112,35 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+int n, m = 2;
+int valid(int i, int j) {
+  return 0 <= i and i < n and 0 <= j and j < m;
+}
+
+
+
+
 void tTestCase(int t) {
   int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
-    }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
+  vector<string> vs;
+  for (int i = 0; i < 2; ++i) {
+    string s; cin >> s; vs.push_back(s); 
   }
-  print(res);
+  // for(auto i : vs) print(i);
+  auto possible = [](int i, int j, vector<string> &vs) {
+    if(i == 0) {
+      return vs[i + 1][j] == '.' and vs[i + 1][j - 1] == '.' and vs[i + 1][j + 1] == '.';
+    } else {
+      return vs[i - 1][j] == '.' and vs[i - 1][j - 1] == '.' and vs[i - 1][j + 1] == '.';
+    }
+  };
+  int cnt = 0;
+  for (int i = 0; i < 2; ++i) {
+    for (int j = 1; j < n - 1; ++j) {
+      if(vs[i][j - 1] == 'x' and vs[i][j] == '.' and vs[i][j + 1] == 'x' and possible(i, j, vs)) cnt++; 
+    }
+  }
+  print(cnt);
 }
 
 void solve() {

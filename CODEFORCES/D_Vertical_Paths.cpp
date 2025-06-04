@@ -112,22 +112,80 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
+map<int, vi> g;
+vi vis, temp;
+int n;
+
+void dfs(int u) {
+  vis[u] = 1;
+  temp.push_back(u);
+  bool flag = 0;
+  for(auto v : g[u]) {
+    if(!vis[v]) {
+      dfs(v); flag = 1; break;
     }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
   }
-  print(res);
+  if(!flag) return;
+}
+
+deque<int> bfs(int root) {
+  deque<int> dq, res;
+  vi visited(n + 1, 0);
+  visited[root] = 1;
+  dq.push_back(root);
+
+  while(dq.size()) {
+    int u = dq.front(); dq.pop_front();
+    // cout << u << " ";
+    res.push_back(u);
+
+    for(auto v : g[u]) {
+      if(!visited[v]) {
+        visited[v] = 1;
+        dq.push_back(v);
+      }
+    }
+  }
+  // newl;
+  return res;
+}
+
+void tTestCase(int t) {
+  g.clear();
+  cin >> n;
+  vi p(n); cin >> p;
+  bug(p);
+  int root = 0;
+  vis.assign(n + 1, 0);
+  temp.clear();
+  for (int i = 0; i < n; ++i) {
+    if(i + 1 == p[i]) {
+      root = p[i]; continue;
+    }
+    g[i + 1].push_back(p[i]);
+    g[p[i]].push_back(i + 1);
+  }
+
+  deque<int> lvl = bfs(root);
+ 
+  vector<vi> paths;
+  // dfs(root);
+  // paths.push_back(temp);
+
+  for (int i = 0; i < n; ++i) {
+    // if(lvl[i] == root) continue;
+    if(!vis[lvl[i]]) {
+      temp.clear();
+      dfs(lvl[i]);
+      paths.push_back(temp);
+    }
+  }
+  print(paths.size());
+  for(auto i : paths) {
+    print(i.size());
+    print(i);
+  }
+  newl;
 }
 
 void solve() {

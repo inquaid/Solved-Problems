@@ -115,19 +115,14 @@ bool comp(int a, int b) { return a > b; }
 void tTestCase(int t) {
   int n; cin >> n;
   vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
+  int cnt = 1, prev = a[0];
+  for (int i = 1; i < n; ++i) {
+    if(prev + 1 < a[i]) {
+      cnt++;
+      prev = a[i];
     }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
   }
-  print(res);
+  print(cnt);
 }
 
 void solve() {

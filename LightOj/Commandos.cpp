@@ -112,29 +112,50 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
+map<int, vi> g;
+
+map<int, int> bfs(int s) {
+  map<int, int> used, d, p;
+  queue<int> q;
+  q.push(s);
+  used[s] = 1;
+  while(q.size()) {
+    int u = q.front(); q.pop();
+    for(auto v : g[u]) {
+      if(!used[v]) {
+        used[v] = 1;
+        q.push(v);
+        d[v] = d[u] + 1;
+        p[v] = u;
+      }
     }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
+  } return d;
+}
+
+void tTestCase(int t) {
+  int vertices, edges;
+  g.clear();
+  cin >> vertices >> edges;
+  for (int i = 0; i < edges; ++i) {
+    int u, v; cin >> u >> v;
+    g[u].push_back(v); g[v].push_back(u);
   }
-  print(res);
+  int src, dest;
+  cin >> src >> dest;
+  map<int, int> d1, d2;
+  d1 = bfs(src); d2 = bfs(dest);
+  int ans = 0;
+  for (int i = 0; i < vertices; ++i) {
+    ans = max(ans, d1[i] + d2[i]);
+  }
+  print(ans);
 }
 
 void solve() {
   int t = 1; 
   cin >> t;
   for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
+    cout << "Case " << i << ": ";
     tTestCase(i);
   }
 }

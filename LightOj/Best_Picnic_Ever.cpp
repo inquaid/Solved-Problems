@@ -112,29 +112,53 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
+map<int, vi> g;
+map<int, int> cnt;
+vi vis;
+
+void dfs(int u) {
+  // cout << u << " ";
+  cnt[u]++;
+  vis[u] = 1;
+  for(auto v : g[u]) {
+    if(!vis[v]) {
+      dfs(v);
     }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
   }
-  print(res);
+}
+
+void tTestCase(int t) {
+  g.clear();
+  cnt.clear();
+  vis.clear();
+  int k, n, m;
+  cin >> k >> n >> m;
+  vi pl(k); // person lives
+  cin >> pl;
+  for (int i = 0; i < m; ++i) {
+    int u, v; cin >> u >> v;
+    g[u].push_back(v);
+  }
+  // cnt.assign(n + 1, 0);
+  for (int i = 0; i < k; ++i) {
+    vis.assign(n + 1, 0);
+    dfs(pl[i]);    
+  }
+  int ans = 0;
+  for (int i = 0; i <= n; ++i) {
+    if(cnt[i] == k) ans++;
+    // print(i, cnt[i]);
+    // if(cnt[pl[i]] == k) ans++;
+  }
+  print(ans);
+
 }
 
 void solve() {
   int t = 1; 
   cin >> t;
   for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
+    cout << "Case " << i << ": ";
     tTestCase(i);
   }
 }
@@ -156,4 +180,4 @@ int32_t main() {
     // cerr << "    time: " << duration.count() << " ms" << endl;
 
   return 0;
-}
+} 

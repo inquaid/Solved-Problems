@@ -113,21 +113,32 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
+  string s; cin >> s;
+  string temp_a = ""; temp_a += s[0]; temp_a += s[1];  
+  string temp_b = ""; temp_b += s[2]; temp_b += s[3];  
+  // string temp_a = s[0] + s[1];  
+  int a;
+  if(temp_a[0] == '0' and temp_a[1] == '0') {
+    a = 0;
+  } else  a = stoi(temp_a);
+  int b;
+  if(temp_b[0] == '0' and temp_b[1] == '0') {
+    b = 0;
+  } else  b = stoi(temp_b);
+  int total;
+  if(s[0] == '0' and s[1] == '0' and s[2] == '0' and s[3] == '0') total = 0;
+  else total = stoi(s);
+  // print(total);
+  // b = stoi(temp_b);
+  // print(a, b);
+  for (int a = 0; a < 100; ++a) {
+    for (int b = 0; b < 100; ++b) {
+      if(pow(a + b, 2) == total) {
+        print(a, b); return;
+      }
     }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
   }
-  print(res);
+  print(-1);
 }
 
 void solve() {

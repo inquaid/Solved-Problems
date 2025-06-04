@@ -113,30 +113,26 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
-    }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
-  }
-  print(res);
+  int n;
+  scan(n);
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  string s; cin >> s;
+  int m; cin >> m;
+  for (int i = 0; i < m; ++i) {
+    int l, r, k; cin >> l >> r >> k;
+    k %= (r - l + 1);
+    // print(k);
+    for (int j = 0; j < k; ++j) {
+      s.insert(s.begin() + l - 1, s[r - 1]);
+      s.erase(s.begin() + r);
+    }
+    // break;
   }
+  // s.erase(s.begin() + 1);
+  // s.insert(s.begin() + 1, 'A');
+  print(s);
 }
 
 

@@ -112,22 +112,37 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+int even(int n) {
+    return n % 2 == 0;
+}
+
 void tTestCase(int t) {
-  int n; cin >> n;
+  int n;
+  scan(n);
   vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
+  sort(all(a));
+  for (int i = 0; i < n; ++i) {
+    if(even(a[i])) {
+        a[i] = 1; 
+    } else a[i] = 0;
+  }
+  int frst = 0, lst = 0;
   int i = 0;
   while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
-    }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
+    if(a[i] != a[0])
+      break;
+    i++; frst++;  
   }
-  print(res);
+  i = n - 1;
+
+  while(i >= 0) {
+    if(a[i] != a.back())
+      break;
+    i--; lst++;
+  }
+  if(a[0] == a.back()){
+    print(0);
+  } else print(min(frst, lst));
 }
 
 void solve() {

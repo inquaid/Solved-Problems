@@ -113,21 +113,45 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
-    }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
+  int n, k; cin >> n >> k;
+  vi a(n), b(n);
+  cin >> a >> b;
+  // print(a); print(b); 
+  map<int, int> mp;
+  for (int i = 0; i < n; ++i) {
+    mp[a[i]] = b[i];
   }
-  print(res);
+  // for(auto i : mp) print(i);
+  // bug(k);
+  multiset<int> st;
+  int sum = 0;
+  for(auto [lvl, gc] : mp) {
+    // print(val, cnt);
+    // bug(st.size());
+    mp[lvl] = sum;
+
+    if(st.size() < k) {
+      st.insert(gc); sum += gc;
+    } else if( *st.begin() < gc) {
+      sum -= *st.begin(); sum += gc;
+    bug(st.size());
+      st.erase(st.begin()); 
+      bug(gc);
+      st.insert(gc);    
+    bug(st.size());
+
+    }
+
+    // for(auto i : st) print(i); newl;
+
+  }
+  // for(auto [lvl, gc] : mp) {
+  //   cout << gc << " ";
+  // } newl;
+  for (int i = 0; i < n; ++i) {
+    cout << mp[a[i]] << " ";
+  } newl;
+  
 }
 
 void solve() {

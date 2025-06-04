@@ -115,19 +115,17 @@ bool comp(int a, int b) { return a > b; }
 void tTestCase(int t) {
   int n; cin >> n;
   vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
-    }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
+  int up = 0, down = 0, mx = 0;
+  map<int, int> mp;
+  for (int i = 0; i < n; ++i) {
+    mp[a[i]]++;  
   }
-  print(res);
+  int ans = n, sum = 0;
+  for(auto [val, cnt] : mp) {
+    sum += cnt;
+    ans = min(ans, val + n - sum);
+  }
+  print(ans);
 }
 
 void solve() {
@@ -156,4 +154,4 @@ int32_t main() {
     // cerr << "    time: " << duration.count() << " ms" << endl;
 
   return 0;
-}
+} 

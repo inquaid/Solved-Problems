@@ -13,6 +13,7 @@
 #include <iomanip>
 #include <numeric>
 #include <chrono>
+#include <stack>
 
 #define int long long
 #define all(x) (x).begin(), (x).end()
@@ -114,20 +115,31 @@ bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
   int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
+  string s; cin >> s;
+  stack<char> st;
+  for (int i = 0; i < n; ++i) {
+    if(s[i] != '_') {
+      if(s[i] == '(') st.push(s[i]);
+      else st.pop();
+    } else {
+      if(st.size()) {
+        s[i] = ')'; st.pop();
+      } else {
+        s[i] = '('; st.push(s[i]);
+      }
     }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
   }
-  print(res);
+  int cnt = 0;
+  stack<int> st2;
+  for (int i = 0; i < n; ++i) {
+    if(s[i] == '(') {
+      st2.push(i);
+    } else {
+      cnt += i - st2.top();
+      st2.pop();
+    }
+  }
+  print(cnt);
 }
 
 void solve() {

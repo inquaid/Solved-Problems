@@ -114,20 +114,50 @@ bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
   int n; cin >> n;
-  vi a(n); cin >> a;
-  int res = 1e18;
-  // print(res);
-  int i = 0;
-  while(i < n) {
-    int cnt = 1;
-    while(i + 1 < n and a[i] == a[i + 1]) {
-      cnt++; i++;
-    }
-    // bug(a[i], cnt);
-    res = min(res, (n - cnt) * a[i]);
-    i++;
+  vi d(n); 
+  int one = 0;
+  for (int i = 0; i < n; ++i) {
+    cin >> d[i]; 
+    // if(d[i] == 1) one++;
   }
-  print(res);
+  vi l(n), r(n);
+  int mx = 0, h = 0;
+  for (int i = 0; i < n; ++i) {
+    cin >> l[i] >> r[i];
+    mx++;
+    if(mx < l[i] or mx > r[i]) {
+      // print(-1); return;
+    }
+  } // newl; return;
+  vi p;
+  h = 0;
+  for (int i = 0; i < n; ++i) {
+    if(d[i] == -1) {
+      p.push_back(i);
+    }
+    if(d[i] == 1) h++;
+    while(h < l[i]) {
+      if(p.empty()) {
+        print(-1); return;
+      }
+      d[p.back()] = 1;
+      p.pop_back();
+      h++;
+    }
+    while(h + p.size() > r[i]) {
+      if(p.empty()) {
+        print(-1); return;
+      }
+      d[p.back()] = 0;
+      p.pop_back();
+    }
+  }
+  // print(d);
+  for(auto i : d) {
+    cout << max(0ll, i) << " ";
+  }
+  newl;
+  
 }
 
 void solve() {
