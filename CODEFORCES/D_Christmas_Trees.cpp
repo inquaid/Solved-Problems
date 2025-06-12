@@ -112,49 +112,40 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int pos(vi &a, vi &b, int x, int mid) {
-  int cnt = 0, temp_x = x - mid;
-  bug(temp_x);
-  for (int i = a.size() - 1; i >= 0; i--) {
-    if(temp_x < x and temp_x + 1 >= b[i]) {
-      cnt++; temp_x++;
-    }
-    if(temp_x < a[i]) return 0;
-
-    // bug(temp_x, b[i]);
-  }
-  // bug(temp_x);
-  return temp_x == x;
-}
-
 void tTestCase(int t) {
-  int n, x; cin >> n >> x;
-  vi a(n), b(n);
-  cin >> a >> b;
-  // bug(a, b);
-  // pos(a,b , x, 3);
-  int l = 0, r = x , res = 0;
-  while(l <= r) {
-    int mid = l + (r - l) / 2;
-    bug(l, r, mid);
-    if(pos(a, b, x, mid)) {
-      l = mid + 1; res = mid;
-    } else r = mid - 1;
-  }
-  // int mid = 0;
-  // while(pos(a, b, x, mid)) {
-  //   mid++;
-  // }
-  print(res);
+  int n;
+  scan(n);
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  int n, m; cin >> n >> m;
+  vi x(n), res;
+  map<int, int> d;
+  queue<int> q;
+  for (int i = 0; i < n; ++i) {
+    cin >> x[i]; d[x[i]]++;
+    q.push(x[i]);
   }
+  int ans = 0;
+  while(q.size()) {
+    if(res.size() == m) break;
+    int u = q.front(); q.pop();
+    if(d.find(u + 1) == d.end()) {
+      q.push(u + 1);
+      d[u + 1] = d[u] + 1;
+      ans += d[u];
+      res.push_back(u + 1);
+    }
+    if(res.size() == m) break;
+    if(d.find(u - 1) == d.end()) {
+      q.push(u - 1);
+      d[u - 1] = d[u] + 1;
+      ans += d[u];
+      res.push_back(u - 1);
+    }
+  } 
+  print(ans);
+  print(res);
 }
 
 

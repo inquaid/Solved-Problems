@@ -112,40 +112,71 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int pos(vi &a, vi &b, int x, int mid) {
-  int cnt = 0, temp_x = x - mid;
-  bug(temp_x);
-  for (int i = a.size() - 1; i >= 0; i--) {
-    if(temp_x < x and temp_x + 1 >= b[i]) {
-      cnt++; temp_x++;
-    }
-    if(temp_x < a[i]) return 0;
-
-    // bug(temp_x, b[i]);
-  }
-  // bug(temp_x);
-  return temp_x == x;
-}
-
 void tTestCase(int t) {
-  int n, x; cin >> n >> x;
-  vi a(n), b(n);
-  cin >> a >> b;
-  // bug(a, b);
-  // pos(a,b , x, 3);
-  int l = 0, r = x , res = 0;
-  while(l <= r) {
-    int mid = l + (r - l) / 2;
-    bug(l, r, mid);
-    if(pos(a, b, x, mid)) {
-      l = mid + 1; res = mid;
-    } else r = mid - 1;
+  int n; cin >> n;
+  map<int, deque<int>> mp;
+  vi a(n);
+
+  for (int i = 0; i < n; ++i) {
+    int temp; cin >> temp; mp[temp].push_back(i); a[i] = temp;
   }
-  // int mid = 0;
-  // while(pos(a, b, x, mid)) {
-  //   mid++;
+  // mp[a[0]].pop_front();
+  // int cnt = 1;
+  // if(mp[a[0]].empty()) {
+  //   print(cnt); return;
   // }
-  print(res);
+  if(mp[a[0]].size() < 2) {
+    print(1); return;
+  }
+  // bug(a);
+  int strt = 1, end = mp[a[0]][1], cnt = 1;
+  // for(auto i : mp) {
+  //   cout << i.ff  << " - > ";
+  //   for(auto val : i.ss) {
+  //     cout << val << " ";
+  //   } newl;
+  // }
+  mp[a[0]].pop_front();
+
+  while(end != n - 1 ) {
+    
+    cnt++;
+    bug(strt, end);
+    int temp = strt, temp_end = end;
+    for (int i = temp; i <= temp_end; ++i) {
+      mp[a[i]].pop_front();
+      if(mp[a[i]].empty()) {print(cnt); return;}
+      end = max(end, mp[a[i]][0]);
+    }
+    strt = temp_end + 1;
+    // for(auto i : mp) {
+    // cout << i.ff  << " - > ";
+    // for(auto val : i.ss) {
+    //   cout << val << " ";
+    // } newl;
+    //  }
+    // return;  
+    // if(mp[a[strt]].size() < 2) {
+    //   print(cnt); return;
+    // }
+    // end = max(end, mp[a[strt]][1]);
+    // cnt++;
+
+    // if(mp[strt].size() < 2) {
+    //   print(cnt); return;
+    // }
+    // end = mp[strt][1];
+  }
+  print(cnt + 1);
+
+
+
+  // print(mp[frst]);
+  // int res = 0, res_cnt = 0;
+  // for(auto [val, cnt] : mp) {
+  //   res = max(res, cnt);
+  // }
+  // print(res);
 }
 
 void solve() {

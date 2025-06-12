@@ -112,40 +112,25 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int pos(vi &a, vi &b, int x, int mid) {
-  int cnt = 0, temp_x = x - mid;
-  bug(temp_x);
-  for (int i = a.size() - 1; i >= 0; i--) {
-    if(temp_x < x and temp_x + 1 >= b[i]) {
-      cnt++; temp_x++;
-    }
-    if(temp_x < a[i]) return 0;
-
-    // bug(temp_x, b[i]);
-  }
-  // bug(temp_x);
-  return temp_x == x;
-}
-
 void tTestCase(int t) {
   int n, x; cin >> n >> x;
-  vi a(n), b(n);
-  cin >> a >> b;
-  // bug(a, b);
-  // pos(a,b , x, 3);
-  int l = 0, r = x , res = 0;
-  while(l <= r) {
-    int mid = l + (r - l) / 2;
-    bug(l, r, mid);
-    if(pos(a, b, x, mid)) {
-      l = mid + 1; res = mid;
-    } else r = mid - 1;
+  vi a(n); cin >> a;
+  int l = -1;
+  for (int i = 0; i < n; ++i) {
+    if(a[i] == 1) {
+      l = i; break;
+    }
   }
-  // int mid = 0;
-  // while(pos(a, b, x, mid)) {
-  //   mid++;
-  // }
-  print(res);
+  if(l == -1) {
+    yes; return;
+  }
+  int r = -1;
+  for (int i = n - 1; i >= 0; i--) {
+    if(a[i] == 1) {
+      r = i; break;
+    }
+  }
+  yesif(r - l + 1 <= x);
 }
 
 void solve() {

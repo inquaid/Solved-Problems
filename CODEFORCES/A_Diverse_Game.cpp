@@ -112,40 +112,28 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int pos(vi &a, vi &b, int x, int mid) {
-  int cnt = 0, temp_x = x - mid;
-  bug(temp_x);
-  for (int i = a.size() - 1; i >= 0; i--) {
-    if(temp_x < x and temp_x + 1 >= b[i]) {
-      cnt++; temp_x++;
-    }
-    if(temp_x < a[i]) return 0;
-
-    // bug(temp_x, b[i]);
-  }
-  // bug(temp_x);
-  return temp_x == x;
-}
-
 void tTestCase(int t) {
-  int n, x; cin >> n >> x;
-  vi a(n), b(n);
-  cin >> a >> b;
-  // bug(a, b);
-  // pos(a,b , x, 3);
-  int l = 0, r = x , res = 0;
-  while(l <= r) {
-    int mid = l + (r - l) / 2;
-    bug(l, r, mid);
-    if(pos(a, b, x, mid)) {
-      l = mid + 1; res = mid;
-    } else r = mid - 1;
+  int n, m; cin >> n >> m;
+  int a[n][m];
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < m; ++j) {
+      cin >> a[i][j];
+    }
   }
-  // int mid = 0;
-  // while(pos(a, b, x, mid)) {
-  //   mid++;
-  // }
-  print(res);
+  if(n == 1 and m == 1) {
+    print(-1); return;
+  }
+  if(m == 1) {
+    for (int i = 1; i < n; ++i) {
+      print(a[i][0]);
+    }
+    print(a[0][0]); return;
+  }
+  for (int i = 0; i < n; ++i) {
+    for (int j = 1; j < m; ++j) {
+      cout << a[i][j] << " ";
+    } print(a[i][0]);
+  }
 }
 
 void solve() {

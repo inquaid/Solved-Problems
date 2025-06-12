@@ -112,40 +112,57 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int pos(vi &a, vi &b, int x, int mid) {
-  int cnt = 0, temp_x = x - mid;
-  bug(temp_x);
-  for (int i = a.size() - 1; i >= 0; i--) {
-    if(temp_x < x and temp_x + 1 >= b[i]) {
-      cnt++; temp_x++;
-    }
-    if(temp_x < a[i]) return 0;
-
-    // bug(temp_x, b[i]);
-  }
-  // bug(temp_x);
-  return temp_x == x;
-}
-
 void tTestCase(int t) {
-  int n, x; cin >> n >> x;
-  vi a(n), b(n);
-  cin >> a >> b;
-  // bug(a, b);
-  // pos(a,b , x, 3);
-  int l = 0, r = x , res = 0;
-  while(l <= r) {
-    int mid = l + (r - l) / 2;
-    bug(l, r, mid);
-    if(pos(a, b, x, mid)) {
-      l = mid + 1; res = mid;
-    } else r = mid - 1;
+  int n, q; cin >> n >> q;
+  string s; cin >> s; // bug(n, q, s);
+  int b_a = 0, b_c = 0, c_a = 0, c_b = 0;
+  set<int> pos_b_a, pos_b_c, pos_c_a, pos_c_b;
+  for (int i = 0; i < q; ++i) {
+    char c1, c2; cin >> c1 >> c2;
+    if(c1 == 'b' and c2 == 'a') {
+      b_a++; pos_b_a.insert(i);
+    }
+    else if(c1 == 'b' and c2 == 'c') {
+      b_c++; pos_b_c.insert(i);
+    }
+    else if(c1 == 'c' and c2 == 'a') {
+      c_a++; pos_c_a.insert(i);
+    }
+    else if(c1 == 'c' and c2 == 'b') {
+      c_b++; pos_c_b.insert(i);
+    }
   }
-  // int mid = 0;
-  // while(pos(a, b, x, mid)) {
-  //   mid++;
-  // }
-  print(res);
+  for (int i = 0; i < n; ++i) {
+    if(s[i] == 'b') {
+      if(b_a > 0) {
+        b_a--; s[i] = 'a';
+      } else if(b_c > 0 and c_a > 0) {
+        if(pos_c_a.empty() or pos_b_c.empty()) continue;
+        auto it = pos_c_a.lower_bound(*pos_b_c.begin()); 
+        if(it != pos_c_a.end()) {
+          pos_c_a.erase(it); pos_b_c.erase(pos_b_c.begin());
+          b_c--; c_a--; s[i] = 'a';
+        }
+        // b_c--; c_a--;
+        // s[i] = 'a';
+      }
+    } else if(s[i] == 'c') {
+      if(c_a  > 0) {
+        c_a--; s[i] = 'a'; continue;
+      } 
+      if(c_b > 0) {
+        c_b--; s[i] = 'b';
+      }
+      if(b_a <= 0) continue;
+      if(pos_c_b.empty() or pos_b_a.empty()) continue;
+      auto it = pos_b_a.lower_bound(*pos_c_b.begin());
+      if(it != pos_b_a.end()) {
+        pos_b_a.erase(it); pos_c_b.erase(pos_c_b.begin());
+        b_a--; s[i] = 'a';
+      }
+    }
+  }
+  print(s);
 }
 
 void solve() {
@@ -167,11 +184,15 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
-
+    solve();  return 0;
+    for (int i = 0; i < 26; ++i) {
+      print(char('a' + i));  
+    }
+    // vi a = {10, 12, 14, 16, 18, 20};
+    // yesif((lower_bound(all(a), 1812) ) != a.end());
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;
 
   return 0;
-}
+} 
