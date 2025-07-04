@@ -111,15 +111,19 @@ template <typename Container> void print_container(const Container &container) {
 
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
-
+#define alice cout << "Alice\n"
+#define bob cout << "Bob\n"
 void tTestCase(int t) {
-  int x; cin >> x;
-  while(x > 1) {
-    if(x % 2 == 0) x /= 2;
-    else if(x > 3) x -= 3;
-    else break;
+  int n; cin >> n;
+  // bug(n);
+  if(n <= 2) {
+    alice; return;
   }
-  print(x);
+  if(n%2) alice;
+  else {
+    if(n % 4 == 0) bob;
+    else alice;
+  }
 }
 
 void solve() {
@@ -141,8 +145,16 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
+    solve();  return 0;
+    int cnt = 0;
+    for (int i = 0; i < 101; ++i)
+    {
+      if(i%4 == 3) {
+        bug(i); cnt++;
+      }
+       print(i, cnt);
 
+    }
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

@@ -112,11 +112,13 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+int cnt;
+
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int a, b;
+  cin >> a >> b;
+  if(b > a) cnt++;
+  bug(a, b);
 }
 
 void solve() {
@@ -126,6 +128,7 @@ void solve() {
     // cout << "Case " << i << ": ";
     tTestCase(i);
   }
+  print(cnt);
 }
 
 

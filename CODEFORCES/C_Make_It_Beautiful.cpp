@@ -114,9 +114,24 @@ bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
   int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  vi a(n); 
+  int sum = 0ll;
+  for (int i = 0; i < n; ++i) {
+    cin >> a[i];
+    bitset<32> b = a[i];
+    sum += b.count();
+  }
+  for (int b = 0; b < 62; ++b) {
+    for (int i = 0; i < n; ++i) {
+      // bug(1ll<<b);
+      // cout << (((a[i] >> b) & 1)) << " ";
+      if(!((a[i] >> b) & 1ll) and k >= (1ll<<b)) {
+        sum++; k -= (1ll<<b);
+      }
+      bug(k);
+    } // newl;
+  }
+  print(sum);
 }
 
 void solve() {

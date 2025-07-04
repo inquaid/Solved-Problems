@@ -1,176 +1,142 @@
-#include <algorithm>
-#include <cstdint>
-#include <iostream>
-#include <map>
-#include <set>
-#include <unordered_map>
-#include <unordered_set>
-#include <vector>
-#include <queue>
-#include <math.h>
-#include <climits>
-#include <bitset>
-#include <iomanip>
-#include <numeric>
-#include <chrono>
-
-#define int long long
-#define all(x) (x).begin(), (x).end()
-#define newl cout << "\n"
-
+#include<bits/stdc++.h>
 using namespace std;
 
-using vi = vector<int>;
-using vvi = vector<vector<int>>;
-using pii = pair<int, int>;
-using vii = vector<pii>;
-using ll = long long;
-using lll = __int128;
+#define all(a) a.begin(),a.end()
+#define pb push_back
+#define sz(a) ((int)a.size())
 
-template <typename T, typename Y>
-istream &operator>>(istream &is, pair<T, Y> &p) {
-  return is >> p.first >> p.second;
+using ll=long long;
+using u32=unsigned int;
+using u64=unsigned long long;
+using i128=__int128;
+using u128=unsigned __int128;
+using f128=__float128;
+
+using pii=pair<int,int>;
+using pll=pair<ll,ll>;
+
+template<typename T> using vc=vector<T>;
+template<typename T> using vvc=vc<vc<T>>;
+template<typename T> using vvvc=vc<vvc<T>>;
+
+using vi=vc<int>;
+using vll=vc<ll>;
+using vvi=vc<vi>;
+using vvll=vc<vll>;
+
+#define vv(type,name,n,...) \
+    vector<vector<type>> name(n,vector<type>(__VA_ARGS__))
+#define vvv(type,name,n,m,...) \
+    vector<vector<vector<type>>> name(n,vector<vector<type>>(m,vector<type>(__VA_ARGS__)))
+
+template<typename T> using min_heap=priority_queue<T,vector<T>,greater<T>>;
+template<typename T> using max_heap=priority_queue<T>;
+
+// https://trap.jp/post/1224/
+#define rep1(n) for(ll i=0; i<(ll)(n); ++i)
+#define rep2(i,n) for(ll i=0; i<(ll)(n); ++i)
+#define rep3(i,a,b) for(ll i=(ll)(a); i<(ll)(b); ++i)
+#define rep4(i,a,b,c) for(ll i=(ll)(a); i<(ll)(b); i+=(c))
+#define cut4(a,b,c,d,e,...) e
+#define rep(...) cut4(__VA_ARGS__,rep4,rep3,rep2,rep1)(__VA_ARGS__)
+#define per1(n) for(ll i=((ll)n)-1; i>=0; --i)
+#define per2(i,n) for(ll i=((ll)n)-1; i>=0; --i)
+#define per3(i,a,b) for(ll i=((ll)a)-1; i>=(ll)(b); --i)
+#define per4(i,a,b,c) for(ll i=((ll)a)-1; i>=(ll)(b); i-=(c))
+#define per(...) cut4(__VA_ARGS__,per4,per3,per2,per1)(__VA_ARGS__)
+#define rep_subset(i,s) for(ll i=(s); i>=0; i=(i==0?-1:(i-1)&(s)))
+
+template<typename T, typename S> constexpr T ifloor(const T a, const S b){return a/b-(a%b&&(a^b)<0);}
+template<typename T, typename S> constexpr T iceil(const T a, const S b){return ifloor(a+b-1,b);}
+
+template<typename T>
+void sort_unique(vector<T> &vec){
+    sort(vec.begin(),vec.end());
+    vec.resize(unique(vec.begin(),vec.end())-vec.begin());
 }
 
-template <typename T> istream &operator>>(istream &is, vector<T> &v) {
-  for (auto &elem : v)
-    is >> elem;
-  return is;
-}
+template<typename T, typename S> constexpr bool chmin(T &a, const S b){if(a>b) return a=b,true; return false;}
+template<typename T, typename S> constexpr bool chmax(T &a, const S b){if(a<b) return a=b,true; return false;}
 
-template <typename T, typename Y>
-ostream &operator<<(ostream &os, const pair<T, Y> &p) {
-  os << p.first << " " << p.second;
-  return os;
-}
+template<typename T, typename S> istream& operator >> (istream& i, pair<T,S> &p){return i >> p.first >> p.second;}
+template<typename T, typename S> ostream& operator << (ostream& o, const pair<T,S> &p){return o << p.first << ' ' << p.second;}
 
-template <typename T> ostream &operator<<(ostream &os, const vector<T> &v) {
-  for (size_t i = 0; i < v.size(); ++i) {
-    os << v[i] << (i + 1 == v.size() ? "" : " ");
-  }
-  return os;
-}
-
-template <typename T> ostream &operator<<(ostream &os, const set<T> &s) {
-  auto it = s.begin();
-  while (it != s.end()) {
-    os << *it;
-    if (++it != s.end())
-      os << " ";
-  }
-  return os;
-}
-
-template <typename T>
-ostream &operator<<(ostream &os, const unordered_set<T> &s) {
-  bool first = true;
-  for (const auto &elem : s) {
-    if (!first)
-      os << " ";
-    os << elem;
-    first = false;
-  }
-  return os;
-}
-
-template <typename T> void sort_unique(vector<T> &vec) {
-  sort(vec.begin(), vec.end());
-  vec.erase(unique(vec.begin(), vec.end()), vec.end());
-}
-
-template <class... T> void scan(T &...args) { (cin >> ... >> args); }
-
-template <typename T> void print(const T &value) { cout << value << "\n"; }
-
-template <typename T, typename... Args>
-void print(const T &first, const Args &...rest) {
-  cout << first;
-  if constexpr (sizeof...(rest) > 0) {
-    cout << " ";
-    print(rest...);
-  } else {
-    cout << "\n";
-  }
-}
-
-template <typename Container> void print_container(const Container &container) {
-  cout << container << "\n";
-}
-
-#define yes cout << "Yes\n"
-#define no cout << "No\n"
-#define yesif(flag) ((flag) ? yes : no)
-#define ff first
-#define ss second
-
-#ifdef LOCAL
-#include "debug.h"
+#ifdef i_am_noob
+#define bug(...) cerr << "#" << __LINE__ << ' ' << #__VA_ARGS__ << "- ", _do(__VA_ARGS__)
+template<typename T> void _do(vector<T> x){for(auto i: x) cerr << i << ' ';cerr << "\n";}
+template<typename T> void _do(set<T> x){for(auto i: x) cerr << i << ' ';cerr << "\n";}
+template<typename T> void _do(unordered_set<T> x){for(auto i: x) cerr << i << ' ';cerr << "\n";}
+template<typename T> void _do(T && x) {cerr << x << endl;}
+template<typename T, typename ...S> void _do(T && x, S&&...y) {cerr << x << ", "; _do(y...);}
 #else
-#define bug(...)
+#define bug(...) 777771449
 #endif
 
-int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(int a, int b) { return a > b; }
+template<typename T> void print(vector<T> x){for(auto i: x) cout << i << ' ';cout << "\n";}
+template<typename T> void print(set<T> x){for(auto i: x) cout << i << ' ';cout << "\n";}
+template<typename T> void print(unordered_set<T> x){for(auto i: x) cout << i << ' ';cout << "\n";}
+template<typename T> void print(T && x) {cout << x << "\n";}
+template<typename T, typename... S> void print(T && x, S&&... y) {cout << x << ' ';print(y...);}
 
-int pos(vi &a, vi &b, int x, int mid) {
-  int cnt = 0, temp_x = x - mid;
-  bug(temp_x);
-  for (int i = a.size() - 1; i >= 0; i--) {
-    if(temp_x < a[i]) return 0;
-    if(temp_x < x and temp_x + 1 >= b[i]) {
-      cnt++; temp_x++;
+template<typename T> istream& operator >> (istream& i, vector<T> &vec){for(auto &x: vec) i >> x; return i;}
+
+vvi read_graph(int n, int m, int base=1){
+    vvi adj(n);
+    for(int i=0,u,v; i<m; ++i){
+        cin >> u >> v,u-=base,v-=base;
+        adj[u].pb(v),adj[v].pb(u);
     }
-    // bug(temp_x, b[i]);
-  }
-  // bug(temp_x);
-  return temp_x == x;
+    return adj;
 }
 
-void tTestCase(int t) {
-  int n, x; cin >> n >> x;
-  vi a(n), b(n);
-  cin >> a >> b;
-  // bug(a, b);
-  // pos(a,b , x, 3);
-  int l = 0, r = x , res = -1;
-  // while(l <= r) {
-  //   int mid = l + (r - l) / 2;
-  //   bug(l, r, mid);
-  //   if(pos(a, b, x, mid)) {
-  //     l = mid + 1; res = mid;
-  //   } else r = mid - 1;
-  // }
-  int mid = 0;
-  while(pos(a, b, x, mid)) {
-    mid++;
-  }
-  print(mid - 1);
+vvi read_tree(int n, int base=1){return read_graph(n,n-1,base);}
+
+template<typename T, typename S> pair<T,S> operator + (const pair<T,S> &a, const pair<T,S> &b){return {a.first+b.first,a.second+b.second};}
+
+template<typename T> constexpr T inf=0;
+template<> constexpr int inf<int> = 0x3f3f3f3f;
+template<> constexpr ll inf<ll> = 0x3f3f3f3f3f3f3f3f;
+
+template<typename T> vector<T> operator += (vector<T> &a, int val){for(auto &i: a) i+=val; return a;}
+
+template<typename T> T isqrt(const T &x){T y=sqrt(x+2); while(y*y>x) y--; return y;}
+
+#define ykh mt19937 rng(chrono::steady_clock::now().time_since_epoch().count())
+
+//#include<atcoder/all>
+//using namespace atcoder;
+
+//using mint=modint998244353;
+//using mint=modint1000000007;
+
+void ahcorz(){
+    int n; cin >> n;
+    vvi adj=read_tree(n);
+    int rt=0;
+    while(rt<n&&sz(adj[rt])!=2) rt++;
+    if(rt==n){
+        print("NO");
+        return;
+    }
+    vc<pii> res;
+    auto dfs=[&](auto &self, int u, int fa, int val) -> void{
+        if(val) res.pb({u,fa});
+        else res.pb({fa,u});
+        for(auto v: adj[u]) if(v!=fa){
+            self(self,v,u,val^1);
+        }
+    };
+    dfs(dfs,adj[rt][0],rt,0);
+    dfs(dfs,adj[rt][1],rt,1);
+    assert(sz(res)==n-1);
+    print("YES");
+    for(auto &[x,y]: res) print(x+1,y+1);
 }
 
-void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
-  }
-}
-
-
-int32_t main() {
-  ios_base::sync_with_stdio(false);
-  cin.tie(NULL);
-    // freopen("input.txt", "r" , stdin);
-    // freopen("output.txt", "w", stdout);
-    // cout << fixed << setprecision(20);
-
-    // auto t1 = std::chrono::high_resolution_clock::now();
-
-    solve();  // return 0;
-
-    // auto t2 = std::chrono::high_resolution_clock::now();
-    // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
-    // cerr << "    time: " << duration.count() << " ms" << endl;
-
-  return 0;
+signed main(){
+    ios_base::sync_with_stdio(0),cin.tie(0);
+    cout << fixed << setprecision(20);
+    int t=1;
+    cin >> t;
+    while(t--) ahcorz();
 }

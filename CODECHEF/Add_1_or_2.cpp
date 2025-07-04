@@ -112,11 +112,43 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
+int n; 
+vi a, b;
   
+int pos(int x) {
+  int cnt = 0ll, extras = 0ll;
+  for (int i = 0; i < a.size(); ++i) {
+    int ai = a[i], bi = b[i];
+    if(a[i] > x) return 0;
+    int temp = min(b[i], x - a[i]);
+    ai += temp;
+    bi -= temp;
+    cnt += bi;
+    temp = x - ai;
+    if(temp > 0ll) {
+      if(temp&1) temp--;
+      extras += temp / 2ll;  
+    }
+    
+  }
+  // bug(cnt, extras);
+  return cnt <= extras;
+}
+
+void tTestCase(int t) {
+  cin >> n;
+  a.resize(n); b.resize(n);
+  cin >> a >> b;
+  // bug(a); bug(b);
+
+  int l = 0, r = 1e12;
+  while(l <= r) {
+    int mid = l + (r - l) / 2;
+    if(pos(mid)) {
+      r = mid - 1;
+    } else l = mid + 1;
+  }
+  print(r + 1);
 }
 
 void solve() {

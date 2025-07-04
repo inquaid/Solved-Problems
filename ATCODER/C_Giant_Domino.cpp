@@ -113,10 +113,51 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int n; cin >> n;
+  vi v(n), a; cin >> v;
+  int strt = v[0], end = v.back();
+  sort_unique(v);
+  int cnt = 1, temp = strt * 2;
+  if(strt * 2 >= end) {
+    print(2); return;
+  }
+  for (int i = 0; i < v.size(); ++i) {
+    if(strt <= v[i] and v[i] <= end) {
+      a.push_back(v[i]);
+    }
+  }
+  bug(a);
+  int i = 0;
+  vi res;
+  // for(auto [i, v] : pos){ 
+  //   print(i, v);
+  // }
+  cnt = 0;
+  temp = a[0] * 2;
+  res.push_back(a[0]);
+  for (int i = 1; i < a.size(); ++i) {
+    if(temp < a[i]) {
+      if(a[i - 1] == res.back()) {
+        print(-1); return;
+      }
+      res.push_back(a[i - 1]);
+      temp = a[i - 1] * 2;
+    }
+    if(a[i - 1] * 2 < a[i]) {
+      print(-1); return;
+    }
+  }
+  if(res.empty()) {
+    print(-1); return;
+  }
+  if(res.back() != end) {
+    if(res.back() * 2 >= end) {
+      res.push_back(end);
+    }
+  } 
+  if(res.back() == end) {
+    print(res.size());
+  } else print(-1);
 }
 
 void solve() {
@@ -138,8 +179,17 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
-
+    solve();   return 0;
+    int n; cin >> n;
+    vi v(n); cin >> v;
+    // sort(all(v));
+    // print(v);
+    auto it = upper_bound(all(v), 19);
+    if(it == v.begin()){
+      yes;
+    }
+    it--;
+    print(*it);
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

@@ -112,11 +112,35 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+int f(char a, char b) {
+  int _a = a - '0', _b = b - '0';
+  // if(_a == 0) _a = 10;
+  if(_b == 0 and _a != 0) _b = 10;
+
+  return abs(_a - _b) == 1;
+}
+
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  string a, b;
+  cin >> a >> b;
+  int i = 0, cnt = 0;
+  bug(a, b);
+  while(i < a.size() and a[i] == b[i]) {
+    // cout << a[i] << " " << b[i]; newl;
+    cnt += 2; i++;
+  }
+  while(i < a.size() and f(a[i], b[i])) {
+    // cout << a[i] << " " << b[i]; newl;
+    cnt += 1; i++;
+    break;
+  }
+  while(i < a.size()) {
+    if(a[i] == '9' and b[i] == '0') {
+      cnt++; 
+    } else break;
+    i++;
+  }
+  print(cnt);
 }
 
 void solve() {
@@ -136,13 +160,16 @@ int32_t main() {
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 
-    // auto t1 = std::chrono::high_resolution_clock::now();
+    auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
-
-    // auto t2 = std::chrono::high_resolution_clock::now();
-    // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
-    // cerr << "    time: " << duration.count() << " ms" << endl;
+    solve();  return 0;
+    // for (int i = 0; i < 449999999; ++i)
+    // {
+      
+    // }
+    auto t2 = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
+    cerr << "    time: " << duration.count() << " ms" << endl;
 
   return 0;
 }

@@ -113,19 +113,22 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int n;
+  scan(n);
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  string s, t;
+  cin >> s >> t;
+  map<char, int> mp;
+  for(auto ch : t) mp[ch]++;
+  for (int i = 1; i < s.size(); ++i) {
+    if(s[i] < 'a' and mp.find(s[i - 1]) == mp.end()) {
+      no; return;
+    }
   }
+  yes;
+
 }
 
 
@@ -138,7 +141,11 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
+    solve();  return 0;
+    for (int i = 0; i < 40; ++i) {
+      char ch = 'A'+ i;
+      print(ch);
+    }
 
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);

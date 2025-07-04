@@ -113,10 +113,16 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int a, x, y; cin >> a >> x >> y;
+  if(x > y) swap(x, y);
+  if(x <= a and a <= y) {
+    no; return;
+  }
+  // if(a + 1 == x or a - 1 == y) {
+  //   no; return;
+  // }
+  yes;
+
 }
 
 void solve() {

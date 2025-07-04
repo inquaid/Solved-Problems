@@ -112,19 +112,69 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+map<int, vi> g;
+
+int f(int a, int b) {
+  return (a&1) == (b&1);
+}
+
+void bfs(int n) {
+  int strt = 1;
+  queue<int> q;
+  q.push(strt);
+  vi vis(n + 1, 0), d(n), p(n);
+  vis[strt] = 1;
+  p[strt] = -1;
+  d[strt] = 1;
+  while(q.size()) {
+    // print("OK");
+    int u = q.front(); q.pop();
+    // print(u);
+    for(auto v : g[u]) {
+      if(!vis[v]) {
+        q.push(v);
+        vis[v] = 1;
+        d[v] = d[u] + 1;
+        p[u] = v;
+      }
+    }
+  }
+  for (int u = 0; u <= n; ++u) {
+    for(auto v : g[u]) {
+      if(f(d[u], d[v])) {
+        print("NOT BICOLORABLE."); return;
+      }
+    }
+  }
+  print("BICOLORABLE.");
+  // for (int i = 0; i <= n; ++i) {
+  //   print("Lvl: ",i, " ", d[i]);
+  // }
+  // bug(q.size());
+}
+
+void tTestCase(int n) {
+   int m; cin >> m;
+   g.clear();
+   for (int i = 0; i < m; ++i) {
+     int u, v;
+     cin >> u >> v;
+     g[u].push_back(v); g[v].push_back(u);
+   }
+   // for(auto [u, v] : g) {
+   //  for(auto val : v) {
+   //    print(u, val);
+   //  }
+   // } newl;
+   bfs(n);
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  int n; cin >> n;
+  while(n) {
+    tTestCase(n);
+
+    cin >> n;
   }
 }
 

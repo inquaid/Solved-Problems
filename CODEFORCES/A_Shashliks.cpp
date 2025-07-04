@@ -113,10 +113,26 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int k, a, b, x, y;
+  cin >> k >> a >> b >> x >> y;
+  if(x > y) {
+    swap(x, y); swap(a, b);
+  }
+  int cnt = 0;
+  if(k >= a) {
+    int mx_pos = k - a + 1;
+    cnt = ceil(mx_pos, x);
+    k -= cnt * x;    
+    // bug(mx_pos); return;
+  }
+  bug(cnt);
+  // bug(k);
+  if(k >= b) {
+    int mx_pos = k - b + 1;
+    // bug(mx_pos);
+    cnt += ceil(mx_pos, y);
+  }
+  print(cnt);
 }
 
 void solve() {

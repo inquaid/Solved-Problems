@@ -112,11 +112,52 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+const int N = 600;
+char arr[N][N];
+int pref[N][N];
+
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int n, m, k;
+  cin >> n >> m >> k;
+  k--;
+  int sum = 0;
+  for (int i = 1; i <= n; ++i) {
+    for (int j = 1; j <= m; ++j) {
+      cin >> arr[i][j];
+      if(arr[i][j] == 'g') sum++;
+    }
+  }
+  // for (int i = 1; i <= n; ++i) {
+  //   for (int j = 1; j <= m; ++j) {
+  //     cout << arr[i][j];
+  //     // if(arr[i][j] == 'g') sum++;
+  //   } newl;
+  // }
+  bug(sum);
+  for (int i = 1; i <= n; ++i) {
+    for (int j = 1; j <= m; ++j) {
+      int cnt = 0;
+      if(arr[i][j] == 'g') cnt++;
+      pref[i][j] = pref[i - 1][j] + pref[i][j - 1] - pref[i - 1][j - 1] + cnt;
+    }
+  }
+  int ans = 0;
+  for (int i = 1; i <= n; ++i) {
+    for (int j = 1; j <= m; ++j) {
+      int x1, y1, x2, y2;
+      if(arr[i][j] != '.') continue;
+      bug(i, j);
+
+      x1 = max(1ll, i - k); x2 = min(n, i + k);
+      y1 = max(1ll, j - k); y2 = min(m, j + k);
+      int temp = ((pref[x2][y2] - pref[x1 - 1][y2] - pref[x2][y1 - 1] + pref[x1 - 1][y1 - 1]));
+
+      bug(x1, y1, x2, y2, temp, pref[x2][y2]);
+
+      ans = max(ans, sum - (pref[x2][y2] - pref[x1 - 1][y2] - pref[x2][y1 - 1] + pref[x1 - 1][y1 - 1]));
+    } 
+  }
+  print(ans);
 }
 
 void solve() {

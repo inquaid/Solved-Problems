@@ -112,11 +112,27 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+int f(int x, int y) {
+  if(x % 2 == y % 2) return 0;
+  return 1;
+}
+
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
+  int x, y; cin >> x >> y;
+  if(__gcd(x, y) != 1) {
+    print(0); return;
+  }
+  if(f(x, y)) {
+    print(1); return;
+  }
+  if(__gcd(x + 1, y) != 1) {
+    print(1); return;
+  }
+  if(__gcd(x , y + 1) != 1) {
+    print(1); return;
+  }
   
+  print(2);
 }
 
 void solve() {
@@ -138,8 +154,12 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
-
+    solve();  return 0;
+    for (int i = 0; i < 5000; ++i) {
+      if(__gcd(i, i + 2) == 1) {
+        print(i, i + 4);
+      }
+    }
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

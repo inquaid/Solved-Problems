@@ -1,3 +1,17 @@
+/*
+  https://codeforces.com/contest/2123/problem/A
+  observation: 
+  1) (a+b)%4 == 3, a%4 + b%4 == 3
+  so the whole array % 4 will do just fine.
+  2) if alice gets the last one, meaning for any odd n, alice alws wins
+  3) else we have array of number 0, 1, 2, 3, 0, 1, 2, 3
+  4) 0 + 3 == 1 + 2 == 3 this is the only way and no two can exist without others.
+    0 alws needs a 3 and between are 1, 2. So, we need all four of them in order
+    for bob to win.
+    so, bob wins if (n % 4 == 0)
+    in all other cases alice wins.
+*/
+
 #include <algorithm>
 #include <cstdint>
 #include <iostream>
@@ -111,12 +125,19 @@ template <typename Container> void print_container(const Container &container) {
 
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
-
+#define alice cout << "Alice\n"
+#define bob cout << "Bob\n"
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int n; cin >> n;
+  // bug(n);
+  if(n <= 2) {
+    alice; return;
+  }
+  if(n%2) alice;
+  else {
+    if(n % 4 == 0) bob;
+    else alice;
+  }
 }
 
 void solve() {
@@ -138,8 +159,16 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
+    solve();  return 0;
+    int cnt = 0;
+    for (int i = 0; i < 101; ++i)
+    {
+      if(i%4 == 3) {
+        bug(i); cnt++;
+      }
+       print(i, cnt);
 
+    }
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

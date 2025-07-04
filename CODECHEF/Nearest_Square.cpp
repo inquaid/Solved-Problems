@@ -113,10 +113,9 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int n; cin >> n;
+  int temp = sqrt(n);
+  print(temp * temp);
 }
 
 void solve() {
@@ -126,7 +125,7 @@ void solve() {
     // cout << "Case " << i << ": ";
     tTestCase(i);
   }
-}
+} 
 
 
 int32_t main() {

@@ -113,10 +113,50 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int n; cin >> n;
+  vi a(n); cin >> a;
+  // print(a);
+  int res = INT_MAX;
+  for (int p = 0; p < n; ++p) {
+    if(p > 0) {
+      // cout << a[p] << " ";
+      // bug(p - 1);
+      int val = a[p]; 
+      bool flag = 0;
+      int mx, mn, i = p - 1; mx = mn = a[p - 1];
+      while(i >= 0) {
+        mx = max(mx, a[i]); mn = min(mn, a[i]);
+        if((mn <= val and val <= mx) or (mn <= val - 1 and val - 1 <= mx) or (mn <= val + 1 and val + 1 <= mx)) {
+          flag = 1;
+          break;
+        }
+        i--;
+      }
+      if(flag)
+        res = min(res, p - i - 1);
+    } 
+    if(p + 1 < n) {
+      // cout <<a[p] << " ";
+      int val = a[p];
+      bool flag = 0;
+      int mx, mn, i = p + 1; mx = mn = a[p + 1];
+      // bug(p + 1, n);
+      while(i < n) {
+        mx = max(mx, a[i]); mn = min(mn, a[i]);
+        if(mn <= val and val <= mx) {
+          flag = 1;
+          break;
+        }
+        i++;
+      }
+      if(flag) {
+        res = min(res, i - p - 1);
+      }
+    }
+  }
+  if(res == INT_MAX) res = -1;
+  print(res);
+  // newl;
 }
 
 void solve() {

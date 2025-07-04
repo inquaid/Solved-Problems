@@ -113,15 +113,19 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int n; cin >> n;
+  vi a(n); cin >> a;
+  int k; cin >> k;
+  int res = 0;
+  for (int i = 0; i < n; ++i) {
+    if(a[i] >= k) res++;
+  }
+  print(res);
 }
 
 void solve() {
   int t = 1; 
-  cin >> t;
+  // cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);
@@ -145,4 +149,4 @@ int32_t main() {
     // cerr << "    time: " << duration.count() << " ms" << endl;
 
   return 0;
-}
+} 

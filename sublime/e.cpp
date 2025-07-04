@@ -113,45 +113,47 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n;
-  scan(n);
-  string s; cin >> s;
-  vector<pair<char, int>> v;
+  int n; cin >> n;
+  vi a(n); cin >> a;
   int i = 0;
+  vi b;
   while(i < n) {
-    int cnt = 1, j = i;
-    while(i + 1 < n and s[i + 1] == s[i]) {
-      cnt++; i++;
+    if(a[i] == -1) {
+      int cnt = 1;
+      while(i + 1 < n and a[i + 1] == -1) {
+        cnt++; i++;
+      }
+      b.push_back(-cnt);
+      i++;
+      continue;
     }
-    v.push_back({s[j], cnt});
+    int sum = a[i], prev = a[i];
+    while(i + 1 < n and a[i + 1] != -1 and prev <= a[i + 1]) {
+      sum += a[i + 1]; prev = a[i + 1]; i++;
+    }
+    b.push_back(sum);
     i++;
   }
-  int m = v.size(), cnt = 0;
-  for (int i = 0; i < m; ++i) {
-    if(i + 2 < m and v[i].ff == 'A' and v[i + 1].ff == 'B' and v[i + 2].ff == 'C') {
-      cnt += max(v[i].ss * v[i + 1].ss, v[i + 1].ss * v[i + 2].ss);
-      i += 2;
-      if(i + 3 < m and v[i + 3].ff == 'B' and v[i].ss * v[i + 1].ss < v[i + 1].ss * v[i + 2].ss) {
-        v[i + 3].ss += v[i + 1].ss;
-        // swap(v[i], v[i + 1]);
-        // if(i + 2 )
-      }// else swap(v[i + 1], v[i + 2]);
-    } else if(i + 1 < m and v[i].ff == 'A' and v[i + 1].ff == 'B') {
-      cnt += (v[i].ss * v[i + 1].ss); 
-      if(i + 2 < m and v[i + 2].ff == 'A') {
-        v[i + 2].ss += v[i].ss;
-      } i++;
-    } else if(i + 1 < m and v[i].ff == 'B' and v[i + 1].ff == 'C') {
-      cnt += (v[i].ss * v[i + 1].ss); 
-      if(i + 2 < m and v[i + 2].ff == 'B') {
-        v[i + 2].ss += v[i].ss;
-      }
+  // bug(b);
+  vi c = b;
+  int res = max(b[0], b.back());
+  int mx_negs = 0, mx = 1e9;
+  for (int i = 0; i < b.size(); ++i) {
+    if(i > 0) {
+            
+    }   
+    if(i + 1 < n) {
+      if(b[i + 1] < 0) {
+        res = max(res, b[i] + (mx * abs(b[i + 1])));
+      } else
+        res = max(res, b[i]);
     }
+
+    if(b[i] < 0)
+      mx_negs = max(mx_negs, abs(b[i]));
   }
-  print(cnt);
-  // for(auto [val, cnt] : v) {
-  //   print(val, cnt);
-  // } newl;
+  // bug(b);
+  print(max(res, mx_negs * mx));
 }
 
 void solve() {

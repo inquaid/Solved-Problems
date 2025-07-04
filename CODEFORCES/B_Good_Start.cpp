@@ -100,8 +100,8 @@ template <typename Container> void print_container(const Container &container) {
 #define yes cout << "Yes\n"
 #define no cout << "No\n"
 #define yesif(flag) ((flag) ? yes : no)
-#define ff first
-#define ss second
+#define x first
+#define y second
 
 #ifdef LOCAL
 #include "debug.h"
@@ -113,10 +113,34 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
+  int w, h, a, b;
+  cin >> w >> h >> a >> b;
+  // int x1, y1, x2, y2;
+  pair<int, int> p1, p2;
+  cin >> p1.x >> p1.y >> p2.x >> p2.y;
   
+  pair<int, int> p3, p4;
+  p3.x = p1.x + a - 1, p3.y = p1.y + b - 1;
+  p4.x = p2.x + a - 1, p4.y = p2.y + b - 1;
+  int gapx = p2.x - p3.x - 1, gapy = p2.y - p3.y - 1;
+  bug(p1.x, p1.y, p2.x, p2.y);
+  bug(p3.x, p3.y, p4.x, p4.y, gapx, gapy);
+
+  if((p1.y <= p2.y and p2.y <= p3.y) or (p1.y <= p4.y and p4.y <= p3.y) ) {
+    if(gapx % a) {
+      no; return;
+    }
+  }
+  if((p1.x <= p2.x and p2.x <= p3.x) or (p1.x <= p4.x and p4.x <= p3.x) ) {
+    if(gapy % b) {
+      no; return;
+    }
+  }
+  if(gapx % a and gapy % b) {
+    no; return;
+  }
+  yes;
+
 }
 
 void solve() {
@@ -138,7 +162,33 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
+    solve();   return 0;
+    int w1 = 10,h1 = 9, a1 = 3, b1 = 2, x1 = 0, y1 = 0,x2 = 4,y2 = 3;
+    int a = w1, b = h1;
+    for (int i = 0; i < a; ++i) {
+      for (int j = 0; j < b; ++j) {
+        cout << i << " " << j << " ";
+      } newl;
+    }
+
+    print("red");
+    int w = a1, h = b1;
+
+    a = x1, b = y1;
+    for (int i = a; i < a + w; ++i) {
+      for (int j = b; j < b + h; ++j) {
+        cout << i << " " << j << " ";
+      } newl;
+    }
+
+    a = x2, b= y2;
+    for (int i = a; i < a + w; ++i) {
+      for (int j = b; j < b + h; ++j) {
+        cout << i << " " << j << " ";
+      } newl;
+    }
+
+
 
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);

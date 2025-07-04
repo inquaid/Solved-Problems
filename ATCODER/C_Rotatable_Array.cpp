@@ -113,15 +113,37 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int n, q; cin >> n >> q;
+  vi a(n);
+  for (int i = 0; i < n; ++i) {
+    a[i] = i + 1;
+  }
+  // iota(all(a), 1);
+  // print(a);
+  int strt = 0;
+  for (int i = 0; i < q; ++i) {
+    int type; cin >> type;
+    if(type == 1) {
+      int p, x; cin >> p >> x;
+      int indx = (strt + p - 1)% n;
+      a[indx] = x;
+      // bug(indx);
+    } else if(type == 2) {
+      int p; cin >> p;
+      int indx = (strt + p - 1)% n;
+      // bug(indx);
+      // if(indx == 0) print(a.back());
+      print(a[indx]);
+    } else {
+      int k; cin >> k;
+      strt = (strt + k) % n;  
+    }
+  }
 }
 
 void solve() {
   int t = 1; 
-  cin >> t;
+  // cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);

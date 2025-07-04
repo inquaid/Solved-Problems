@@ -113,15 +113,32 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int n, q; cin >> n >> q;
+  vi x(q); cin >> x;
+  map<int, int> pos, cnt;
+  for (int i = 0; i < q; ++i) {
+    if(x[i] == 0) {
+      int mn = INT_MAX, indx = 0;
+      for (int j = 1; j <= n; ++j) {
+        if(cnt[j] < mn) {
+          mn = cnt[j]; indx = j;
+        }
+      }
+      pos[i] = indx;
+      cnt[indx]++;
+    } else {
+      pos[i] = x[i];
+      cnt[x[i]]++;
+    } 
+  }
+  for (int i = 0; i < q; ++i) {
+    cout << pos[i] << " ";
+  }
 }
 
 void solve() {
   int t = 1; 
-  cin >> t;
+  // cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);

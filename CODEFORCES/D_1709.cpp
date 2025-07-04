@@ -112,11 +112,99 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+vi a, b;
+
+void f(int i, int j, vector<pii> &res) {
+  if(i < j) {
+    for (int k = i; k < j; ++k) {
+      res.push_back({1, k});
+      swap(a[k], a[k + 1]);
+    }
+    res.push_back({3, j});
+    swap(a[j], b[j]);
+  } else {
+    for (int k = j; k < i; ++k) {
+      res.push_back({2, k});
+      swap(b[k], b[k + 1]);
+    }
+    res.push_back({3, i});
+    swap(a[i], b[i]);
+  }
+}
+
+map<int, int> posA, posB;
+
+
+void f2(int i, int j, vector<pii> &res) {
+  // bug(i, j);
+  for (int k = j - 1; k >= i; k--) {
+    // swap(posA[a[k]], posA[a[k + 1]]);
+    res.push_back({1, k});
+    swap(a[k], a[k + 1]);
+    posA[a[k]] = k;
+    posA[a[k + 1]] = k + 1; 
+  }
+}
+
+void f3(int i, int j, vector<pii> &res) {
+  // bug(i, j);
+  for (int k = j - 1; k >= i; k--) {
+    // swap(posB[b[k]], posB[b[k + 1]]);
+    res.push_back({2, k});
+    swap(b[k], b[k + 1]);
+    posB[b[k]] = k; posB[b[k + 1]] = k + 1;
+  }
+}
+
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int n; cin >> n;
+  a.resize(n); b.resize(n);
+  vector<pii> res;
+  cin >> a >> b;
+  // bug(a); bug(b);
+  int i = 0, j = 0;
+  while(i < n and j < n) {
+    while(i < n and a[i] <= n) {
+      i++;
+    }
+    while(j < n and b[j] > n) {
+      j++;
+    }
+    if(i < n and j < n) {
+      if(a[i] > n and b[j] <= n) {
+        f(i, j, res);
+        // swap(a[i], b[j]);
+      }
+    } 
+    if(a[i] <= n) i++;
+    if(b[j] > n) j++;
+   // i++; j++; 
+  }
+  posA.clear(); posB.clear();
+  for (int i = 0; i < n; ++i) {
+    posA[a[i]] = i; posB[b[i]] = i;
+  }
+
+  for (int i = 0; i < n; ++i) {
+    int val = i + 1;
+    if(a[i] != val) {
+      // bug(i, val, posA[val], posA[i]);
+      f2(i, posA[val], res);
+    } // break;
+
+    val = n + i + 1;
+    // bug(val);
+    if(b[i] != val) {
+      f3(i, posB[val], res);
+    }
+  }
+
+
+  print(res.size());
+  // print(res);
+  for(auto [x, y] : res) print(x, y + 1);
+  // print(a);
+  // print(b); 
 }
 
 void solve() {

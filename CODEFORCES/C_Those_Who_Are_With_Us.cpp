@@ -110,13 +110,139 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(int a, int b) { return a > b; }
+bool comp(pii &a, pii &b) { 
+  if(a.ff != b.ff) {
+    return a.ff < b.ff;
+  } 
+  return a.ss < b.ss;
+}
+
+vector<vi> mtx;
+int n, m; 
+int pos(int x) {
+  vector<pair<int,int>> points;
+  // map<int, int> row, col;
+  set<int> row, col;
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < m; ++j) {
+      if(mtx[i][j] > x) {
+        points.push_back({i, j});
+        // row[i]++; col[j]++;
+        row.insert(i); col.insert(j);
+        bug(mtx[i][j], i);
+      }
+    }
+
+  }
+  bug(112, x);
+  for(auto i : row) {
+    cout << i << " ";
+  } newl; newl;
+  for(auto i : row) {
+    map<int, int> cnt;
+    for(auto[x, y]: points) {
+      if(x != i) {
+        cnt[y]++;
+      }
+    }
+    if(cnt.size() <= 1) {
+      return 1;
+    }
+  }
+
+  // if(points.empty()) return 1;
+  // sort(all(points), comp);
+  // for(auto i : points) print(i); newl; newl;
+  return 0;
+}
+
+pii f(vector<pii> &points) {
+  set<int> row;
+  for (int i = 0; i < points.size(); ++i) {
+    row.insert(points[i].ff);
+  }
+  for(auto i : row) {
+    map<int, int> cnt;
+    int val = 0;
+    for(auto [x, y] : points) {
+      if(i != x) {cnt[y]++; val = y;}
+    }
+    if(cnt.size() <= 1) {
+      // return cnt.size();
+      return {i, val};
+    }
+    // if(cnt.size() == )
+  }
+  return {-1, -1};
+}
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  cin >> n >> m;
+  mtx.clear();
+  mtx.resize(n + 1, vi(m + 1, 0));
+  // bug(n, m); return;
+  int mx = 0;
+  vi a;
+  map<int, vector<pii>> mp;
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < m; ++j) {
+      cin >> mtx[i][j];
+      a.push_back(mtx[i][j]);
+      mx = max(mx, mtx[i][j]);
+      mp[mtx[i][j]].push_back({i, j});
+      // cout << mtx[i][j] << " ";
+    } // newl;
+  }
+
+  if(n == 1 or m == 1) {
+    print(mx - 1); return;
+  }
+
+  sort_unique(a);
+  reverse(all(a));
+  // print(*mp.begin());
+  // for(auto i : mp) {
+  //   // print(v);
+  //   for(auto p : v) print(p);
+    // print(i.ff);
+    // for(auto p : i.)
+  // }
+  set<int> row, col;
+  mx = a[0];
+  vi b;
+  b.push_back(a[0]);
+  for (int i = 1; i < a.size(); ++i) {
+    if(b.back() + 1 == a[i]) {
+      b.push_back(a[i]);
+    } else break;
+  }
+  // bug(a);
+  for (int i = 0; i < a.size(); ++i) {
+    // if(mx - a[i] > 1) {
+    //   print(mx); return;
+    // }
+    // bug(a[i]);
+    pii temp = f(mp[a[i]]);
+    if(temp.ff == -1) {
+      print(a[i]);
+      return;
+    }
+    if(i + 1 == a.size()) {
+      print(a[i] - 1); return;
+    }
+    if(a[i] - 1 != a[i - 1]) {
+      print(a[i] - 1); return;
+    }
+    // bug(i, a.size());
+    row.insert(temp.ff);
+    col.insert(temp.ss);
+    if(row.size() > 1 or col.size() > 1) {
+      print(a[i]); return;
+    }
+  mx = a[i];
+
+  }
+
 }
 
 void solve() {
@@ -138,8 +264,13 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
-
+    solve();  return 0;
+    set<int> st;
+    st.insert(1);
+    st.insert(2);
+    st.insert(3);
+    st.insert(4);
+    // yesif(*st.lower_bound(12) != st.end());
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

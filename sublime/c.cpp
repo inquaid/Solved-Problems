@@ -112,39 +112,46 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int pos(vi &a, vi &b, int x, int mid) {
-  int cnt = 0, temp_x = x - mid;
-  bug(temp_x);
-  for (int i = a.size() - 1; i >= 0; i--) {
-    if(temp_x < x and temp_x + 1 >= b[i]) {
-      cnt++; temp_x++;
-    }
-    if(temp_x < a[i]) return 0;
-
-    // bug(temp_x, b[i]);
-  }
-  // bug(temp_x);
-  return temp_x == x;
+int f(int a, int mx, int mn) {
+  bug(a, mn,mx);
+  if(mn < a and a < mx) return 0;
+  return 1;
 }
 
 void tTestCase(int t) {
-  int n, x; cin >> n >> x;
-  vi a(n), b(n);
-  cin >> a >> b;
-  // bug(a, b);
-  // pos(a,b , x, 3);
-  int l = 0, r = x , res = 0;
-  while(l <= r) {
-    int mid = l + (r - l) / 2;
-    bug(l, r, mid);
-    if(pos(a, b, x, mid)) {
-      l = mid + 1; res = mid;
-    } else r = mid - 1;
+  int n;cin >> n;
+  vi a(n); cin >> a;
+  int mx = 0, mn = a[0];
+  vi max_s;
+  for (int i = n-1; i >= 0; --i) {
+    mx = max(mx, a[i]);
+    max_s.push_back(mx);
   }
-  // int mid = 0;
-  // while(pos(a, b, x, mid)) {
-  //   mid++;
-  // }
+  reverse(all(max_s));
+  // print(max_s); return;
+  set<int> st, ed;
+  for(auto i : a) st.insert(i);
+  st.erase(st.find(a[0]));
+  ed.insert(a[0]);
+  string res = "1";
+  for (int i = 1; i < n - 1; ++i) {
+    // st.erase(st.find(a[i]));
+    // if(a[i] == mx) {
+    //   // st.erase(st.rbegin());
+    //   auto it = st.end(); it--;
+    //   st.erase(it);
+    //   mx = *st.rbegin();
+    // }
+    mx = max_s[i+1];
+    // mx = min(mx, a[i]);
+    if(f(a[i], mx, mn)) {
+      res += '1';
+    } else res += '0';
+    // ed.insert(a[i]);
+    // mn = 
+    mn = min(mn, a[i]);
+  }
+  res += '1';
   print(res);
 }
 
@@ -167,8 +174,15 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
-
+    solve();   return 0;
+    set<int> st;
+    st.insert(1);
+    st.insert(12);
+    st.insert(2);
+    st.insert(21);
+    auto it = st.end(); it--;
+    st.erase(it);
+    print(*st.begin(), *st.rbegin());
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

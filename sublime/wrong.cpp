@@ -112,39 +112,43 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int pos(vi &a, vi &b, int x, int mid) {
-  int cnt = 0, temp_x = x - mid;
-  bug(temp_x);
-  for (int i = a.size() - 1; i >= 0; i--) {
-    if(temp_x < a[i]) return 0;
-    if(temp_x < x and temp_x + 1 >= b[i]) {
-      cnt++; temp_x++;
+int n; 
+vi a, b;
+  
+int pos(int x) {
+  int cnt = 0, extras = 0;
+  for (int i = 0; i < a.size(); ++i) {
+    int ai = a[i], bi = b[i];
+    if(a[i] > x) return 0;
+    int temp = min(b[i], x - a[i]);
+    ai += temp;
+    bi -= temp;
+    cnt += bi;
+    temp = x - ai;
+    if(temp > 0) {
+      if(temp&1) temp--;
+      extras += temp / 2;  
     }
-    // bug(temp_x, b[i]);
+    
   }
-  // bug(temp_x);
-  return temp_x == x;
+  // bug(cnt, extras);
+  return cnt <= extras;
 }
 
 void tTestCase(int t) {
-  int n, x; cin >> n >> x;
-  vi a(n), b(n);
+  cin >> n;
+  a.resize(n); b.resize(n);
   cin >> a >> b;
-  // bug(a, b);
-  // pos(a,b , x, 3);
-  int l = 0, r = x , res = -1;
+  // bug(a); bug(b);
+
+  int l = 0, r = 1e18;
   while(l <= r) {
     int mid = l + (r - l) / 2;
-    bug(l, r, mid);
-    if(pos(a, b, x, mid)) {
-      l = mid + 1; res = mid;
-    } else r = mid - 1;
+    if(pos(mid)) {
+      r = mid - 1;
+    } else l = mid + 1;
   }
-  // int mid = 0;
-  // while(pos(a, b, x, mid)) {
-  //   mid++;
-  // }
-  print(res);
+  print(r + 1);
 }
 
 void solve() {

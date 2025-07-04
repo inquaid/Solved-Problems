@@ -112,11 +112,54 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+map<int, vi> g;
+set<pii> res;
+vi vis;
+
+void dfs(int u, bool flag) {
+  vis[u] = 1;
+  for(auto v : g[u]) {
+    if(!vis[v]) {
+      if(flag) {
+        res.insert({u, v});
+      } else {
+        res.insert({v, u});
+      }
+      dfs(v, !flag);
+    }
+  }
+}
+
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int n; cin >> n;
+  g.clear();
+  for (int i = 1; i < n; ++i) {
+    int u, v; cin >> u >> v;
+    g[u].push_back(v);
+    g[v].push_back(u);
+  }
+  int v_ = -1;
+  for(auto [i, v] : g) {
+    if(v.size() == 2) {
+      v_ = i; break;
+    } 
+  }
+  if(v_ == -1) {
+    no; return;
+  }
+  yes;
+  res.clear();
+  vis.assign(n + 1, 0);
+  vis[v_] = 1;
+  bug(v_, g[v_][0], g[v_][1]);
+  dfs(g[v_][0], 0);
+  dfs(g[v_][1], 1);
+  res.insert({v_, g[v_][0]});
+  res.insert({g[v_][1], v_});
+  for(auto i : res) {
+    print(i);
+  }
+  // print(g[v_][0]);
 }
 
 void solve() {

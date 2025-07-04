@@ -112,60 +112,38 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int f2(int a, int b, int c) {
-  if(b <= a and b <= c) {
-    return b + b;
+#define alice cout << "Alice\n"
+#define bob cout << "Bob\n"
+
+int f(int i, int n, int k) {
+  if(i - k < 0 and i + k >= n) {
+    return 0;
   }
-  if(a < b) swap(a, b);
-  if(a < c) swap(a, c);
-  if(b < c) swap(b, c);
-  return b + c;
+  return 1;
 }
 
-int f(vi &a) {
-  int prev = a[0];
-  int sum = 0;
-  bug(a.size());
-  for (int i = 1; i + 1 < a.size(); i += 2) {
-    // print(i, i + 1);
-    sum += f2(prev, a[i], a[i + 1]);
-    prev = min({prev, a[i], a[i + 1]});
-  }
-  if((int)(a.size() - 1) % 2 != 0) {
-    sum += min(prev, a.back());
-  }
-
-  return sum;
-}
-int valid(int i, int n) {
-  return 0 <= i and i < n;
-}
 void tTestCase(int t) {
-  int n, q; cin >> n >> q;
-  vi a(n); cin >> a;
-  int sum = 0;
-  for (int i = 0; i < n - 1; ++i) {
-    sum += min(a[i], a[i + 1]);
-  }
-  for (int i = 0; i < q; ++i) {
-    int indx, x; cin >> indx >> x;
-    indx--;
-    if(valid(indx - 1, n)) {
-      sum -= min(a[indx], a[indx - 1]);
-    }
-    if(valid(indx + 1, n)) {
-      sum -= min(a[indx], a[indx + 1]);
-    }
-    a[indx] = x;
-    if(valid(indx - 1, n)) {
-      sum += min(a[indx], a[indx - 1]);
-    }
-    if(valid(indx + 1, n)) {
-      sum += min(a[indx], a[indx + 1]);
-    }
-    
-    print(sum);
-  }
+  int n, k; cin >> n >> k;
+
+  string s; cin >> s;
+  int one_cnt = count(all(s), '1');
+  if(one_cnt <= k ) {
+    bug(-1);
+    alice; return;
+  }  
+  // bob;
+  if(2*k <= n) {
+    bob;
+  } else alice;
+  return;
+  int cnt = 0;
+  for (int i = 0; i < n; ++i) {
+    if(s[i] == '1' and f(i, n, k)) cnt++;
+  }      
+  bug(cnt, k);
+  if(cnt > k) {
+    bob;
+  } else alice;
 }
 
 void solve() {
@@ -187,9 +165,8 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  return 0;
-    vi a = {1,5,4,2,6};
-    cout << f(a) << " ";
+    solve();  // return 0;
+
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

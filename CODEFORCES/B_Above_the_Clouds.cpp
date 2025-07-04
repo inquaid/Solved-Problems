@@ -113,10 +113,22 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int n; cin >> n;
+  string s; cin >> s;
+  map<char, int> mp;
+
+  for (int i = 0; i < n - 1; ++i) {
+    mp[s[i]]++;
+    if(mp[s[i]] > 1) {
+      yes; return;
+    }  
+  }
+  mp[s[0]]--;
+  mp[s.back()]++;
+  if(mp[s.back()] > 1) {
+    yes; return;
+  }
+  no;
 }
 
 void solve() {

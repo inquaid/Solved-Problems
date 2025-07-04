@@ -113,10 +113,25 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  bitset<32> b = n;
-  print(b.count());
-  
+  int n, s; cin >> n >> s;
+  vi x(n); 
+  int mn = INT_MAX, mx = 0;
+  for (int i = 0; i < n; ++i) {
+    cin >> x[i];
+    mn = min(mn, x[i]); mx = max(mx, x[i]);
+  }
+  if(s <= mn) {
+    print(mx - s);
+    bug(t, mn, mx, s);
+    return;
+  }
+  if(s >= mx) {
+    print(s - mn);
+    return;
+  }
+  int l = s - mn, r = mx - s;
+  int r1 = min(l, r), r2 = max(l, r);
+  print(r1 + r1 + r2);
 }
 
 void solve() {
