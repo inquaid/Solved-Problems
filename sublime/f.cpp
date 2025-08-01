@@ -1,62 +1,32 @@
 #include <bits/stdc++.h>
-
 using namespace std;
-using vi = vector<int>;
 
-void merge(vi &left, vi &right, vi &v);
-void mergeSort(vi &v);
-
-void mergeSort(vi &v) {
-    int len = v.size();
-    if(len <= 1) return;
-
-    int mid = len / 2;
-    vi left(mid), right(len - mid);
-
-    copy(v.begin(), v.begin() + mid, left.begin());
-    copy(v.begin() + mid, v.end(), right.begin());
-
-    mergeSort(left);
-    mergeSort(right);
-    merge(left, right, v);
-}
-
-void merge(vi &left, vi &right, vi &v) {
-    int ls = left.size(), rs = right.size(), i = 0, l = 0, r = 0;
-
-    while(l < ls and r < rs) {
-        if(left[l] < right[r]) {
-            v[i] = left[l++];
-        } else {
-            v[i] = right[r++];
-        }
-        i++;
+void transform(vector<string> &vs) {
+  vector<string> res(vs.size(), string(vs[0].size(), '0'));
+  for (int i = 0; i < vs.size(); ++i) {
+    for (int j = 0; j < vs[0].size(); ++j) {
+      res[i][j] = vs[j][i];
     }
-    while(l < ls) {
-        v[i++] = left[l++];
-    }
-    while(r < rs) {
-        v[i++] = right[r++];
-    }
+  }
+  vs = res;
+  int temp_n = vs.size();
+  for (int i = 0; i < temp_n / 2; ++i) {
+    swap(vs[i], vs[temp_n - i - 1]);
+  }
 }
 
 int main() {
-    int t;
-    cin>>t;
-    while(t--){
-        int n;
-        cin>>n;
-        vi v(n); 
-        for(auto &i : v) cin >> i;
-        string s; cin >> s;
-        vi myV; 
-        for (int i = 0; i < n; ++i) {
-            if(s[i] == '0') {
-                myV.push_back(v[i]);
-            }
-        }
-        mergeSort(myV);
-        cout << myV[0] << endl;
-    }
+  int n = 3;
+  vector<string> vs;
+  for (int i = 0; i < n; ++i) {
+    string temp; cin >> temp;
+    vs.push_back(temp);
+  }
+  for(auto s : vs) cout << s << endl;
+  cout << endl;
+  cout << endl;
+  cout << endl;
+  transform(vs);
+  for(auto s : vs) cout << s << endl;
 
 }

@@ -111,24 +111,32 @@ template <typename Container> void print_container(const Container &container) {
 
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
-#define alice cout << "Alice\n"
-#define bob cout << "Bob\n"
+
+map<int, int> mp;
+vector<vector<int>> dp;
+int subset(vi &v, int n, int sum) {
+  if(n == 0) {
+    mp[sum]++;
+    return 0;
+  }
+  if(dp[n][sum] != -1) return dp[n][sum];
+  return dp[n][sum] = subset(v, n-1, sum);
+  return dp[n][sum] = subset(v, n-1, sum + v[n-1]);
+}
+
 void tTestCase(int t) {
   int n; cin >> n;
-  // bug(n);
-  if(n <= 2) {
-    alice; return;
-  }
-  if(n%2) alice;
-  else {
-    if(n % 4 == 0) bob;
-    else alice;
+  vi v(n); cin >> v;
+  dp.assign(n + 1, vi(100 + 1, -1));
+  subset(v, n, 0);
+  for(auto i : mp) {
+    print(i);
   }
 }
 
 void solve() {
   int t = 1; 
-  cin >> t;
+  // cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);
@@ -145,16 +153,8 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  return 0;
-    int cnt = 0;
-    for (int i = 0; i < 101; ++i)
-    {
-      if(i%4 == 3) {
-        bug(i); cnt++;
-      }
-       print(i, cnt);
+    solve();  // return 0;
 
-    }
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

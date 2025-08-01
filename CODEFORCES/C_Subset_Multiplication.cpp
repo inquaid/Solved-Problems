@@ -114,45 +114,16 @@ bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
   int n; cin >> n;
-  vi a(n); cin >> a;
-  // bug(a);
-  unordered_map<int, int> mp;
-  int mx = a.back();
-  for (int i = 0; i < n - 1; ++i) {
-    if(a[i] > a[i + 1] or a[i + 1] % a[i] != 0) {
-      int cmn = __gcd(a[i], a[i + 1]);
-
-      for(int d = 1; d * d <= cmn; d++) {
-        // print(a[i+1], d);
-        if(cmn % d == 0) {
-          // bug(cmn, d);
-
-          mp[a[i] / d]++;
-          if(cmn/d != d) mp[a[i] / (cmn/d)]++;
-          // bug(a[i + 1], d);
-          // if(a[i] % d == 0)
-          //   mp[a[i] / d]++;
-          // if(a[i + 1] / d != d) {
-          //   // bug(a[i + 1],a[i+1]/d);
-          //   if(a[i] % (a[i+1]/d) == 0)
-          //     mp[a[i] / (a[i+1]/d)]++;
-          // }
-        }
-      }
-    }
-    mx = max(mx, a[i]);
-  }
-  int res = -1, cnt = -1;
-  for(auto [u, v] : mp) {
-    bug(u, v);
-    if(v > cnt) {
-      cnt = v; res = u;
-    }
-    if(v == cnt) {
-      res = min(res, u);
+  vi b(n); cin >> b;
+  int res = 1;
+  for (int i = n - 2; i >= 0; i--) {
+    if(b[i + 1] % b[i] != 0) {
+      int temp = __gcd(b[i + 1], b[i]);
+      // bug(temp);
+      res = lcm(res, b[i] / temp);
+      b[i] = temp;
     }
   }
-  if(res == -1) res = mx + 5;
   print(res);
 }
 

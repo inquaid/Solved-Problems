@@ -1,185 +1,90 @@
-#include <algorithm>
-#include <cstdint>
-#include <iostream>
-#include <map>
-#include <set>
-#include <unordered_map>
-#include <unordered_set>
-#include <vector>
-#include <queue>
-#include <math.h>
-#include <climits>
-#include <bitset>
-#include <iomanip>
-#include <numeric>
-#include <chrono>
-
-#define int long long
-#define all(x) (x).begin(), (x).end()
-#define newl cout << "\n"
-
+#include <bits/stdc++.h>
 using namespace std;
 
-using vi = vector<int>;
-using vvi = vector<vector<int>>;
-using pii = pair<int, int>;
-using vii = vector<pii>;
-using ll = long long;
-using lll = __int128;
+int n_times = 1, m_times = 2;
+const int n = n_times * 8, m = m_times * 8, p = (n_times - 1) * 8 + 1, q = (m_times - 1) * 8 + 1;
+vector<string> vs;
+vector<vector<string>> res;
 
-template <typename T, typename Y>
-istream &operator>>(istream &is, pair<T, Y> &p) {
-  return is >> p.first >> p.second;
-}
-
-template <typename T> istream &operator>>(istream &is, vector<T> &v) {
-  for (auto &elem : v)
-    is >> elem;
-  return is;
-}
-
-template <typename T, typename Y>
-ostream &operator<<(ostream &os, const pair<T, Y> &p) {
-  os << p.first << " " << p.second;
-  return os;
-}
-
-template <typename T> ostream &operator<<(ostream &os, const vector<T> &v) {
-  for (size_t i = 0; i < v.size(); ++i) {
-    os << v[i] << (i + 1 == v.size() ? "" : " ");
+void transform(vector<string> &vs) {
+  vector<string> res(vs.size(), string(vs[0].size(), '1'));
+  for (int i = 0; i < vs.size(); ++i) {
+    for (int j = 0; j < vs[0].size(); ++j) {
+      res[i][j] = vs[j][i];
+    }
   }
-  return os;
+  vs = res;
 }
 
-template <typename T> ostream &operator<<(ostream &os, const set<T> &s) {
-  auto it = s.begin();
-  while (it != s.end()) {
-    os << *it;
-    if (++it != s.end())
-      os << " ";
-  }
-  return os;
+void f(int b1, int b2) {
+  int strt, end, cnt;
+  int lim = b1 ? p : q;
+  strt = b2 ? (lim - 1) : 0;
+  end = b2 ? -1 : lim;
+  cnt = b2 ? -1 : 1;
+
+  for (int k = strt; k != end; k += cnt) {
+    for (int i = 0; i < 8; ++i) {
+      for (int j = 0; j < 8; ++j) {
+        cout << res[k][i][j] << "";
+      } cout << endl;
+    } cout << endl;
+  } 
 }
 
-template <typename T>
-ostream &operator<<(ostream &os, const unordered_set<T> &s) {
-  bool first = true;
-  for (const auto &elem : s) {
-    if (!first)
-      os << " ";
-    os << elem;
-    first = false;
-  }
-  return os;
-}
-
-template <typename T> void sort_unique(vector<T> &vec) {
-  sort(vec.begin(), vec.end());
-  vec.erase(unique(vec.begin(), vec.end()), vec.end());
-}
-
-template <class... T> void scan(T &...args) { (cin >> ... >> args); }
-
-template <typename T> void print(const T &value) { cout << value << "\n"; }
-
-template <typename T, typename... Args>
-void print(const T &first, const Args &...rest) {
-  cout << first;
-  if constexpr (sizeof...(rest) > 0) {
-    cout << " ";
-    print(rest...);
-  } else {
-    cout << "\n";
-  }
-}
-
-template <typename Container> void print_container(const Container &container) {
-  cout << container << "\n";
-}
-
-#define yes cout << "Yes\n"
-#define no cout << "No\n"
-#define yesif(flag) ((flag) ? yes : no)
-#define ff first
-#define ss second
-
-#ifdef LOCAL
-#include "debug.h"
-#else
-#define bug(...)
-#endif
-
-int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(int a, int b) { return a > b; }
-
-void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int i = 0;
-  vi b;
-  while(i < n) {
-    if(a[i] == -1) {
-      int cnt = 1;
-      while(i + 1 < n and a[i + 1] == -1) {
-        cnt++; i++;
+void f2(int b1) {
+  int end = b1 ? q : p;
+  int lim = b1 ? n : m;
+  for (int k = 0; k < end; ++k) {
+    vector<string> temp(lim, string(lim, '1'));
+    for (int i = 0; i < lim; ++i) {
+      for (int j = 0; j < lim; ++j) {
+        temp[i][j] = b1 ? vs[i][j + k] : vs[i+k][j];
       }
-      b.push_back(-cnt);
-      i++;
-      continue;
     }
-    int sum = a[i], prev = a[i];
-    while(i + 1 < n and a[i + 1] != -1 and prev <= a[i + 1]) {
-      sum += a[i + 1]; prev = a[i + 1]; i++;
-    }
-    b.push_back(sum);
-    i++;
-  }
-  // bug(b);
-  vi c = b;
-  int res = max(b[0], b.back());
-  int mx_negs = 0, mx = 1e9;
-  for (int i = 0; i < b.size(); ++i) {
-    if(i > 0) {
-            
-    }   
-    if(i + 1 < n) {
-      if(b[i + 1] < 0) {
-        res = max(res, b[i] + (mx * abs(b[i + 1])));
-      } else
-        res = max(res, b[i]);
-    }
-
-    if(b[i] < 0)
-      mx_negs = max(mx_negs, abs(b[i]));
-  }
-  // bug(b);
-  print(max(res, mx_negs * mx));
+    transform(temp);
+    res.push_back(temp);
+  }  
 }
 
-void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+int main() {
+  // freopen("input.txt", "r", stdin);   
+  // freopen("output.txt", "w", stdout); 
+
+  int mtx[n][m];
+  vs.assign(n, string(m, '1'));
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < m; ++j) {
+      mtx[i][j] = 1;
+    }
+    string temp; cin >> vs[i];
+    // cout << temp << endl;
+    // vs.push_back(temp);
   }
-}
+  // for(auto s : vs) cout << s << endl; return 0;
+  
+  // for (int i = 0; i < n; ++i) {
+  //   for (int j = 0; j < m; ++j) {
+  //     cout << mtx[i][j] << "";
+  //   } cout << endl;
+  // } return 0;
 
+  // cout << vs[7][0] << endl;
 
-int32_t main() {
-  ios_base::sync_with_stdio(false);
-  cin.tie(NULL);
-    // freopen("input.txt", "r" , stdin);
-    // freopen("output.txt", "w", stdout);
-    // cout << fixed << setprecision(20);
+  /***
+   * 0 col
+   * 1 row
+   **/
 
-    // auto t1 = std::chrono::high_resolution_clock::now();
+  f2(1);
 
-    solve();  // return 0;
+  /**
+   * 0 0 towards left
+   * 0 1 towards right
+   * 1 0 towards down
+   * 1 1 towards up
+   **/
 
-    // auto t2 = std::chrono::high_resolution_clock::now();
-    // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
-    // cerr << "    time: " << duration.count() << " ms" << endl;
-
-  return 0;
+  f(0, 0);
+  
 }

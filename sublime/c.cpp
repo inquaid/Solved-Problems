@@ -112,47 +112,16 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int f(int a, int mx, int mn) {
-  bug(a, mn,mx);
-  if(mn < a and a < mx) return 0;
-  return 1;
-}
-
 void tTestCase(int t) {
-  int n;cin >> n;
-  vi a(n); cin >> a;
-  int mx = 0, mn = a[0];
-  vi max_s;
-  for (int i = n-1; i >= 0; --i) {
-    mx = max(mx, a[i]);
-    max_s.push_back(mx);
-  }
-  reverse(all(max_s));
-  // print(max_s); return;
-  set<int> st, ed;
-  for(auto i : a) st.insert(i);
-  st.erase(st.find(a[0]));
-  ed.insert(a[0]);
-  string res = "1";
+  int n; cin >> n;
+  int temp; cin >> temp;
+  vi a(n - 1); cin >> a; 
   for (int i = 1; i < n - 1; ++i) {
-    // st.erase(st.find(a[i]));
-    // if(a[i] == mx) {
-    //   // st.erase(st.rbegin());
-    //   auto it = st.end(); it--;
-    //   st.erase(it);
-    //   mx = *st.rbegin();
-    // }
-    mx = max_s[i+1];
-    // mx = min(mx, a[i]);
-    if(f(a[i], mx, mn)) {
-      res += '1';
-    } else res += '0';
-    // ed.insert(a[i]);
-    // mn = 
-    mn = min(mn, a[i]);
+    if(a[i-1] < a[i]) {
+      no; return;
+    }
   }
-  res += '1';
-  print(res);
+  yes;
 }
 
 void solve() {
@@ -174,15 +143,8 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();   return 0;
-    set<int> st;
-    st.insert(1);
-    st.insert(12);
-    st.insert(2);
-    st.insert(21);
-    auto it = st.end(); it--;
-    st.erase(it);
-    print(*st.begin(), *st.rbegin());
+    solve();  // return 0;
+
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

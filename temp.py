@@ -1,79 +1,83 @@
-import itertools
+import graphviz
 
-def is_lab(code):
-    """Check if course is a lab course (ends in even digit)"""
-    return code[-1].isdigit() and int(code[-1]) % 2 == 0
+def draw_bplus_tree_step(step_num, tree_structure, title="B+ Tree Insertion"):
+    dot = graphviz.Digraph(format='png')
+    dot.attr(rankdir='TB')
+    dot.attr(label=f"{title} - Step {step_num}", fontsize='20')
 
-def candidate_blocks(teacher, year, course):
-    """
-    Return list of possible blocks for scheduling this course:
-    - Labs: fixed 3-hour contiguous slot 14-17 on any one available day
-    - Theory: any combination of 'credits' one-hour slots from available times
-    """
-    code = course['code']
-    hrs = 3 if is_lab(code) else int(course['credits'])
-    avail = teacher['available_time']
-    blocks = []
-    if is_lab(code):
-        # labs: find days where all of [14,15,16] are free
-        for day, times in avail.items():
-            if all(h in times for h in [14,15,16]):
-                slot = [(day, h) for h in [14,15,16]]
-                blocks.append(slot)
-    else:
-        # theory: choose any combination of hrs slots
-        slots = [(day, h) for day, times in avail.items() for h in times]
-        for combo in itertools.combinations(slots, hrs):
-            blocks.append(list(combo))
-    return blocks
+    for level_idx, level in enumerate(tree_structure):
+        with dot.subgraph() as s:
+            s.attr(rank='same')
+            for node_id, node_label in level:
+                s.node(node_id, label=node_label, shape='record')
 
-def schedule(teachers):
-    """
-    Return dict assignments: {year: {course: [(day,time), ...]}}
-    """
-    # sort by teacher priority
-    teachers = sorted(teachers, key=lambda t: t['rank'])
-    assignments = {}
-    if _assign(teachers, assignments, t_idx=0, c_idx=0):
-        return assignments
-    return None
+    for i in range(len(tree_structure) - 1):
+        parent_level = tree_structure[i]
+        child_level = tree_structure[i+1]
+        for parent_idx, (parent_id, parent_label) in enumerate(parent_level):
+            children = [cid for cid, _ in child_level if cid.startswith(parent_id)]
+            for cid in children:
+                dot.edge(parent_id, cid)
 
-def _assign(teachers, assignments, t_idx, c_idx):
-    if t_idx >= len(teachers):
-        return True
-    teacher = teachers[t_idx]
-    # flatten courses list
-    courses = [(yr, c) for yr, lst in teacher['courses'].items() for c in lst]
-    if c_idx >= len(courses):
-        return _assign(teachers, assignments, t_idx+1, 0)
-    year, course = courses[c_idx]
-    for block in candidate_blocks(teacher, year, course):
-        if all(_can_assign(teacher['name'], year, day, time, assignments)
-               for day, time in block):
-            # assign all slots
-            for day, time in block:
-                assignments.setdefault(year, {}).setdefault(course['code'], []).append(
-                    {'teacher': teacher['name'], 'day': day, 'time': time}
-                )
-            # recurse
-            if _assign(teachers, assignments, t_idx, c_idx+1):
-                return True
-            # backtrack
-            del assignments[year][course['code']]
-            if not assignments[year]:
-                del assignments[year]
-    return False
+    return dot
 
-def _can_assign(teacher_name, year, day, time, assignments):
-    # no same-year overlap
-    if year in assignments:
-        for info in assignments[year].values():
-            if any(i['day']==day and i['time']==time for i in info):
-                return False
-    # no teacher overlap
-    for yr, cmap in assignments.items():
-        for infos in cmap.values():
-            for i in infos:
-                if (i['teacher']==teacher_name and i['day']==day and i['time']==time):
-                    return False
-    return True
+# Step-by-step tree structures
+steps = []
+
+# Step 1: [5, 10, 15]
+steps.append([
+    [('R', '5 | 10 | 15')]
+])
+
+# Step 2: Insert 20, causes leaf split: promote 15
+steps.append([
+    [('R', '15')],
+    [('R0', '5 | 10'), ('R1', '15 | 20')]
+])
+
+# Step 3: Insert 25, 30, 35 — all go into R1 until split
+steps.append([
+    [('R', '15')],
+    [('R0', '5 | 10'), ('R1', '15 | 20 | 25 | 30 | 35')]
+])
+
+# Step 4: R1 splits, promote 25
+steps.append([
+    [('R', '15 | 25')],
+    [('R0', '5 | 10'), ('R1', '15 | 20'), ('R2', '25 | 30 | 35')]
+])
+
+# Step 5: Insert 40, 45, 50, 55 — go into R2 until split
+steps.append([
+    [('R', '15 | 25')],
+    [('R0', '5 | 10'), ('R1', '15 | 20'), ('R2', '25 | 30 | 35 | 40 | 45 | 50 | 55')]
+])
+
+# Step 6: R2 splits, promote 40
+steps.append([
+    [('R', '15 | 25 | 40')],
+    [('R0', '5 | 10'), ('R1', '15 | 20'), ('R2', '25 | 30 | 35'), ('R3', '40 | 45 | 50 | 55')]
+])
+
+# Step 7: Insert 60, 65, 70, 75 — go into R3 until split
+steps.append([
+    [('R', '15 | 25 | 40')],
+    [('R0', '5 | 10'), ('R1', '15 | 20'), ('R2', '25 | 30 | 35'), ('R3', '40 | 45 | 50 | 55 | 60 | 65 | 70 | 75')]
+])
+
+# Step 8: R3 splits, promote 60; root splits as well
+steps.append([
+    [('R', '40')],
+    [('R0', '15 | 25'), ('R1', '60')],
+    [('R00', '5 | 10'), ('R01', '15 | 20'), ('R02', '25 | 30 | 35'), ('R10', '40 | 45 | 50 | 55'), ('R11', '60 | 65 | 70 | 75')]
+])
+
+# Step 9: Insert 80, 85, 90 — go into R11, final leaf group
+steps.append([
+    [('R', '40')],
+    [('R0', '15 | 25'), ('R1', '60 | 80')],
+    [('R00', '5 | 10'), ('R01', '15 | 20'), ('R02', '25 | 30 | 35'), ('R10', '40 | 45 | 50 | 55'), ('R11', '60 | 65 | 70 | 75'), ('R12', '80 | 85 | 90')]
+])
+
+# Render final step
+draw_bplus_tree_step(9, steps[-1], title="B+ Tree Order 4 - Final Step")

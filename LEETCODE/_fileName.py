@@ -1,4 +1,4 @@
-with open(r'D:\\programs\\Solved-Problems\\LEETCODE\\_inputLeetCodeName.txt', 'r') as source_file:
+with open(r'/home/turjo-pop/Documents/Solved-Problems/LEETCODE/_inputLeetCodeName.txt', 'r') as source_file:
     content = source_file.read()
 
 
@@ -9,10 +9,10 @@ refactoredName = ''.join(strs)
 
 refactoredName = refactoredName.replace('\n','').replace('\r','')
 
-with open('D:\\programs\\Solved-Problems\\LEETCODE\\_outputLeetCodeName.txt', 'w') as destination_file:
+with open('/home/turjo-pop/Documents/Solved-Problems/LEETCODE/_outputLeetCodeName.txt', 'w') as destination_file:
     destination_file.write(refactoredName)
     
-directory = r'D:\\programs\\Solved-Problems\\LEETCODE\\'
+directory = r'/home/turjo-pop/Documents/Solved-Problems/LEETCODE/'
 
 file_path = directory + refactoredName + '.cpp'
 

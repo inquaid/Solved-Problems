@@ -14,7 +14,7 @@
 #include <numeric>
 #include <chrono>
 
-#define int long long
+// #define int long long
 #define all(x) (x).begin(), (x).end()
 #define newl cout << "\n"
 
@@ -97,8 +97,8 @@ template <typename Container> void print_container(const Container &container) {
   cout << container << "\n";
 }
 
-#define yes cout << "Yes\n"
-#define no cout << "No\n"
+#define yes cout << "YES\n"
+#define no cout << "NO\n"
 #define yesif(flag) ((flag) ? yes : no)
 #define ff first
 #define ss second
@@ -112,53 +112,116 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+int n, m;
+const int inf = 1e9;
+vector<string> g;
+vi vx {0, 0, 1, -1};
+vi vy {1, -1, 0, 0};
+
+bool isValid(int i, int j) {
+  return 0 <= i and i < n and 0 <= j and j < m;
+}
+
+void f(int prev_c, int prev_d, int c, int d, string &res) {
+  if(prev_c == c) {
+    if(prev_d < d) {
+      res += 'L';
+    } else {
+      res += 'R';
+    }
+  } else {
+    if(prev_c < c) {
+      res += 'U';
+    } else {
+      res += 'D';
+    }
+  }
+}
+
+int dist[1005][1005];
+pii p[1005][1005];
+
+
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  // bug(a);
-  unordered_map<int, int> mp;
-  int mx = a.back();
-  for (int i = 0; i < n - 1; ++i) {
-    if(a[i] > a[i + 1] or a[i + 1] % a[i] != 0) {
-      int cmn = __gcd(a[i], a[i + 1]);
+  cin >> n >> m;
+  int a, b, c, d;
 
-      for(int d = 1; d * d <= cmn; d++) {
-        // print(a[i+1], d);
-        if(cmn % d == 0) {
-          // bug(cmn, d);
+  // int px[n + 1][m + 1], py[n + 1][m + 1];
+  // vector<vi> px(n, vi(m, -1)), py(n, vi(m, -1));
+  // map<pii, pii> p;
+  for (int i = 0; i < n; ++i) {
+    string temp; cin >> temp;
+    g.push_back(temp);
+    for (int j = 0; j < m; ++j) {
+      if(temp[j] == 'A') {
+        a = i; b = j;
+      }
+      if(temp[j] == 'B') {
+        c = i; d = j;
+      }
+      dist[i][j] = inf; //px[i][j] = -1; py[i][j] = -1;
+      p[i][j] = {-1, -1};
+    }
+  }
+  // bug(a, b, c, d);
+  queue<pii> q;
+  q.push({a, b});
+  // for (int i = 0; i <= n; ++i) {
+  //    for (int j = 0; j <= m; ++j) {
+  //     dist[{i, j}] = inf; px[i][j] = -1; py[i][j] = -1;
+  //    }
+  // }
 
-          mp[a[i] / d]++;
-          if(cmn/d != d) mp[a[i] / (cmn/d)]++;
-          // bug(a[i + 1], d);
-          // if(a[i] % d == 0)
-          //   mp[a[i] / d]++;
-          // if(a[i + 1] / d != d) {
-          //   // bug(a[i + 1],a[i+1]/d);
-          //   if(a[i] % (a[i+1]/d) == 0)
-          //     mp[a[i] / (a[i+1]/d)]++;
-          // }
-        }
+  dist[a][b] = 0;
+  while(q.size()) {
+    auto u = q.front(); q.pop();
+  //   // bug(u);
+    for (int k = 0; k < 4; ++k) {
+      int i = u.ff + vx[k], j = u.ss + vy[k];
+      if(isValid(i, j) and (g[i][j] == '.' or g[i][j] == 'B') and dist[u.ff][u.ss] + 1 < dist[i][j]) {
+        dist[i][j] = dist[u.ff][u.ss] + 1;
+        // px[i][j] = u.ff; py[i][j] = u.ss;
+        p[i][j] = {u.ff, u.ss};
+        q.push({i, j});
+        g[i][j] = '!';
       }
     }
-    mx = max(mx, a[i]);
+
   }
-  int res = -1, cnt = -1;
-  for(auto [u, v] : mp) {
-    bug(u, v);
-    if(v > cnt) {
-      cnt = v; res = u;
-    }
-    if(v == cnt) {
-      res = min(res, u);
-    }
+  // print(dist[{c, d}], px[c][d], py[c][d]);
+  if(dist[c][d] == inf) {
+    no; return;
   }
-  if(res == -1) res = mx + 5;
+  yes;
+  print(dist[c][d]);
+  // print(p[{2, 1}]);
+  // print(p[p[p[p[{c, d}]]]]);
+  string res = "";
+  int prev_c = c, prev_d = d;
+
+  while(p[c][d].ff != -1) {
+    auto it = p[c][d];
+    c = it.ff, d = it.ss;
+    // c = p[{c, d}].ff, d = p[{c, d}].ss;
+  //   int temp_c = p[{c, d}].ff, d = p[{c, d}].ss;
+  //   // int temp_c = px[c][d]; d = py[c][d];
+    // c = temp_c;
+    f(prev_c, prev_d, c, d, res);
+  // //   // print(prev_c, prev_d, c, d, g[c][d]);
+
+    prev_c = c, prev_d = d;
+    // print(c, d);
+  }
+  // for(auto s : g) print(s);
+  // print(a, b);
+  // print(c, d);
+  reverse(all(res));
   print(res);
 }
 
 void solve() {
   int t = 1; 
-  cin >> t;
+  // cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);

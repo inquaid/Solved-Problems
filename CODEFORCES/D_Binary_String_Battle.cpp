@@ -1,3 +1,20 @@
+/**
+ * https://codeforces.com/contest/2123/problem/d
+ * observation:
+ *  1) if cnt(one) <= k alice wins
+ *  2) if 2 * k < n 
+ *        then bob can't keep up with alice
+ *      00100 | 000100
+ *      if bob's turn and k == 3 
+ *        left case:
+ *          00111
+ *          so alice can win by 00000
+ *        right case:
+ *          111100
+ *          its again more than k and will be in loop
+ *          thus alice can't win
+ * */
+
 #include <algorithm>
 #include <cstdint>
 #include <iostream>
@@ -112,48 +129,38 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+#define alice cout << "Alice\n"
+#define bob cout << "Bob\n"
+
+int f(int i, int n, int k) {
+  if(i - k < 0 and i + k >= n) {
+    return 0;
+  }
+  return 1;
+}
+
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  // bug(a);
-  unordered_map<int, int> mp;
-  int mx = a.back();
-  for (int i = 0; i < n - 1; ++i) {
-    if(a[i] > a[i + 1] or a[i + 1] % a[i] != 0) {
-      int cmn = __gcd(a[i], a[i + 1]);
+  int n, k; cin >> n >> k;
 
-      for(int d = 1; d * d <= cmn; d++) {
-        // print(a[i+1], d);
-        if(cmn % d == 0) {
-          // bug(cmn, d);
-
-          mp[a[i] / d]++;
-          if(cmn/d != d) mp[a[i] / (cmn/d)]++;
-          // bug(a[i + 1], d);
-          // if(a[i] % d == 0)
-          //   mp[a[i] / d]++;
-          // if(a[i + 1] / d != d) {
-          //   // bug(a[i + 1],a[i+1]/d);
-          //   if(a[i] % (a[i+1]/d) == 0)
-          //     mp[a[i] / (a[i+1]/d)]++;
-          // }
-        }
-      }
-    }
-    mx = max(mx, a[i]);
-  }
-  int res = -1, cnt = -1;
-  for(auto [u, v] : mp) {
-    bug(u, v);
-    if(v > cnt) {
-      cnt = v; res = u;
-    }
-    if(v == cnt) {
-      res = min(res, u);
-    }
-  }
-  if(res == -1) res = mx + 5;
-  print(res);
+  string s; cin >> s;
+  int one_cnt = count(all(s), '1');
+  if(one_cnt <= k ) {
+    bug(-1);
+    alice; return;
+  }  
+  // bob;
+  if(2*k <= n) {
+    bob;
+  } else alice;
+  return;
+  int cnt = 0;
+  for (int i = 0; i < n; ++i) {
+    if(s[i] == '1' and f(i, n, k)) cnt++;
+  }      
+  bug(cnt, k);
+  if(cnt > k) {
+    bob;
+  } else alice;
 }
 
 void solve() {

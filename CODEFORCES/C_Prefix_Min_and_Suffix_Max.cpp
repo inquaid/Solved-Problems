@@ -1,3 +1,21 @@
+/**
+ * https://codeforces.com/contest/2123/problem/C
+ * For each elem we have [min(a) | elem | max(a)]
+ * so 4 cases 
+ *    mn < elem > mx -> oky
+ *    mn > elem < mx -> oky
+ *    mn > elem > mx -> oky
+ *    mn < elem < mx -> not oky, here only s[i] will have '0'
+ * for finding min we just check every value after the operation mn = min(mn, a[i])
+ * for max we observe that a value will remain max until it has been checked
+ * for if we make a vector for maxs we will start from end of the array
+ * for n - 1 to 0:
+ *    mx = max(mx, a[i])
+ *    maxs.pb(mx)
+ * reverse(all(maxs))
+ * */
+
+
 #include <algorithm>
 #include <cstdint>
 #include <iostream>
@@ -112,47 +130,31 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+int f(int a, int mx, int mn) {
+  bug(a, mn,mx);
+  if(mn < a and a < mx) return 0;
+  return 1;
+}
+
 void tTestCase(int t) {
-  int n; cin >> n;
+  int n;cin >> n;
   vi a(n); cin >> a;
-  // bug(a);
-  unordered_map<int, int> mp;
-  int mx = a.back();
-  for (int i = 0; i < n - 1; ++i) {
-    if(a[i] > a[i + 1] or a[i + 1] % a[i] != 0) {
-      int cmn = __gcd(a[i], a[i + 1]);
-
-      for(int d = 1; d * d <= cmn; d++) {
-        // print(a[i+1], d);
-        if(cmn % d == 0) {
-          // bug(cmn, d);
-
-          mp[a[i] / d]++;
-          if(cmn/d != d) mp[a[i] / (cmn/d)]++;
-          // bug(a[i + 1], d);
-          // if(a[i] % d == 0)
-          //   mp[a[i] / d]++;
-          // if(a[i + 1] / d != d) {
-          //   // bug(a[i + 1],a[i+1]/d);
-          //   if(a[i] % (a[i+1]/d) == 0)
-          //     mp[a[i] / (a[i+1]/d)]++;
-          // }
-        }
-      }
-    }
+  int mx = 0, mn = a[0];
+  vi max_s;
+  for (int i = n-1; i >= 0; --i) {
     mx = max(mx, a[i]);
+    max_s.push_back(mx);
   }
-  int res = -1, cnt = -1;
-  for(auto [u, v] : mp) {
-    bug(u, v);
-    if(v > cnt) {
-      cnt = v; res = u;
-    }
-    if(v == cnt) {
-      res = min(res, u);
-    }
+  reverse(all(max_s));
+  string res = "1";
+  for (int i = 1; i < n - 1; ++i) {
+    mx = max_s[i+1];
+    if(f(a[i], mx, mn)) {
+      res += '1';
+    } else res += '0';
+    mn = min(mn, a[i]);
   }
-  if(res == -1) res = mx + 5;
+  res += '1';
   print(res);
 }
 
@@ -175,8 +177,15 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
-
+    solve();   return 0;
+    set<int> st;
+    st.insert(1);
+    st.insert(12);
+    st.insert(2);
+    st.insert(21);
+    auto it = st.end(); it--;
+    st.erase(it);
+    print(*st.begin(), *st.rbegin());
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

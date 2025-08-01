@@ -112,57 +112,37 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  // bug(a);
-  unordered_map<int, int> mp;
-  int mx = a.back();
-  for (int i = 0; i < n - 1; ++i) {
-    if(a[i] > a[i + 1] or a[i + 1] % a[i] != 0) {
-      int cmn = __gcd(a[i], a[i + 1]);
-
-      for(int d = 1; d * d <= cmn; d++) {
-        // print(a[i+1], d);
-        if(cmn % d == 0) {
-          // bug(cmn, d);
-
-          mp[a[i] / d]++;
-          if(cmn/d != d) mp[a[i] / (cmn/d)]++;
-          // bug(a[i + 1], d);
-          // if(a[i] % d == 0)
-          //   mp[a[i] / d]++;
-          // if(a[i + 1] / d != d) {
-          //   // bug(a[i + 1],a[i+1]/d);
-          //   if(a[i] % (a[i+1]/d) == 0)
-          //     mp[a[i] / (a[i+1]/d)]++;
-          // }
-        }
-      }
-    }
-    mx = max(mx, a[i]);
-  }
-  int res = -1, cnt = -1;
-  for(auto [u, v] : mp) {
-    bug(u, v);
-    if(v > cnt) {
-      cnt = v; res = u;
-    }
-    if(v == cnt) {
-      res = min(res, u);
+map<int, vi> g;
+vi vis, ans;
+void dfs(int u) {
+  vis[u] = 1;
+  for(auto v : g[u]) {
+    if(!vis[v]) {
+      dfs(v);
     }
   }
-  if(res == -1) res = mx + 5;
-  print(res);
+  ans.push_back(u);
 }
 
-void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+
+void solve(int n, int m) {
+  vis.assign(n + 1, 0);
+  g.clear();
+  ans.clear();
+  for (int i = 0; i < m; ++i) {
+    int a, b; cin >> a >> b;
+    g[a].push_back(b);
+    // g[b].push_back(a);
   }
+  for (int i = 1; i <= n; ++i) {
+    if(!vis[i])
+      dfs(i);
+  }
+  reverse(all(ans));
+  // print(ans);
+  for(auto i : ans) {
+    cout << i << " ";
+  } newl;
 }
 
 
@@ -174,8 +154,12 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     // auto t1 = std::chrono::high_resolution_clock::now();
-
-    solve();  // return 0;
+    int n, m; 
+    while(cin >> n >> m and !(n == 0 and m == 0)) {
+      solve(n, m);  // return 0;
+      // bug(n, m);
+      // cin >> n >> m;
+    }
 
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);

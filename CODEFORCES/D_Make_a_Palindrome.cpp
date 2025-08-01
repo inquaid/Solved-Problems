@@ -112,48 +112,56 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+int f(vi a, int k) {
+  sort(all(a));
+  return a[k - 1];
+}
+
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  // bug(a);
-  unordered_map<int, int> mp;
-  int mx = a.back();
-  for (int i = 0; i < n - 1; ++i) {
-    if(a[i] > a[i + 1] or a[i + 1] % a[i] != 0) {
-      int cmn = __gcd(a[i], a[i + 1]);
-
-      for(int d = 1; d * d <= cmn; d++) {
-        // print(a[i+1], d);
-        if(cmn % d == 0) {
-          // bug(cmn, d);
-
-          mp[a[i] / d]++;
-          if(cmn/d != d) mp[a[i] / (cmn/d)]++;
-          // bug(a[i + 1], d);
-          // if(a[i] % d == 0)
-          //   mp[a[i] / d]++;
-          // if(a[i + 1] / d != d) {
-          //   // bug(a[i + 1],a[i+1]/d);
-          //   if(a[i] % (a[i+1]/d) == 0)
-          //     mp[a[i] / (a[i+1]/d)]++;
-          // }
-        }
+  int n, k; cin >> n >> k;
+  vi b(n); cin >> b;
+  int val = f(b, k);
+  // print(val);
+  vi a;
+  for (int i = 0; i < n; ++i) {
+    if(b[i] <= val) a.push_back(b[i]);
+  }
+  bug(a);
+  // print(a);
+  int i = 0, j = a.size() - 1;
+  // vi res;
+  deque<int> r1, r2;
+  while(i <= j) {
+    if(i == j) {
+      r1.push_back(a[i]); i++;
+    }
+    else if(a[i] == a[j]) {
+      r1.push_back(a[i]); r2.push_front(a[j]);
+      i++; j--;
+    } else {
+      if(a[i] == val) {
+        a[i] = -1;
+        i++;
+      } else if(a[j] == val) {
+        a[j] = -1;
+        j--;
+      } else {
+        no; return;
       }
     }
-    mx = max(mx, a[i]);
   }
-  int res = -1, cnt = -1;
-  for(auto [u, v] : mp) {
-    bug(u, v);
-    if(v > cnt) {
-      cnt = v; res = u;
-    }
-    if(v == cnt) {
-      res = min(res, u);
-    }
-  }
-  if(res == -1) res = mx + 5;
-  print(res);
+  if(r1.size() + r2.size() >= k - 1) {
+    yes;
+  } else no; return;
+  for(auto i : r1) {
+    cout << i << " ";
+  } 
+  for(auto i : r2) {
+    cout << i << " ";
+  } 
+  newl;
+  // print(res);
+  // yes;
 }
 
 void solve() {

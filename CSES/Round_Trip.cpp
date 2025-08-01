@@ -112,57 +112,63 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  // bug(a);
-  unordered_map<int, int> mp;
-  int mx = a.back();
-  for (int i = 0; i < n - 1; ++i) {
-    if(a[i] > a[i + 1] or a[i + 1] % a[i] != 0) {
-      int cmn = __gcd(a[i], a[i + 1]);
+vi res, vis;
+map<int, vi> g;
+int root;
+int dfs(int u, int par) {
+  vis[u] = 1;
 
-      for(int d = 1; d * d <= cmn; d++) {
-        // print(a[i+1], d);
-        if(cmn % d == 0) {
-          // bug(cmn, d);
-
-          mp[a[i] / d]++;
-          if(cmn/d != d) mp[a[i] / (cmn/d)]++;
-          // bug(a[i + 1], d);
-          // if(a[i] % d == 0)
-          //   mp[a[i] / d]++;
-          // if(a[i + 1] / d != d) {
-          //   // bug(a[i + 1],a[i+1]/d);
-          //   if(a[i] % (a[i+1]/d) == 0)
-          //     mp[a[i] / (a[i+1]/d)]++;
-          // }
-        }
+  for(auto v : g[u]) {
+    if(!vis[v]) {
+      if(dfs(v, u)) {
+        res.push_back(v);
+        return 1;
       }
-    }
-    mx = max(mx, a[i]);
-  }
-  int res = -1, cnt = -1;
-  for(auto [u, v] : mp) {
-    bug(u, v);
-    if(v > cnt) {
-      cnt = v; res = u;
-    }
-    if(v == cnt) {
-      res = min(res, u);
+    } else if(v != par) {
+      res.push_back(v);
+      return 1;
     }
   }
-  if(res == -1) res = mx + 5;
-  print(res);
+  return 0;
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  int n, m; cin >> n >> m;
+  vis.assign(n + 1, 0);
+
+  for (int i = 0; i < m; ++i) {
+    int u, v; cin >> u >> v;
+    g[u].push_back(v);
+    g[v].push_back(u);
   }
+
+  // dfs(1);
+  int cnt = 0;
+  for (int i = 1; i <= n; ++i) {
+    // print(i, sz[i]);
+    if(!vis[i]) {
+      if(dfs(i, -1)) {
+        // bug(i);
+        // print("OK"); return;
+        // cnt++;
+        vi ans;
+        ans.push_back(res[0]);
+        for (int j = 1; j < res.size(); ++j) {
+          ans.push_back(res[j]);
+          if(res[j] == res[0]) {
+            break;
+          }
+        }
+        if(ans.back() != ans[0])
+          ans.push_back(ans[0]);
+        print(ans.size());
+        print(ans);
+        return;
+      }
+    }
+  }
+  // print(cnt);
+  print("IMPOSSIBLE");
 }
 
 

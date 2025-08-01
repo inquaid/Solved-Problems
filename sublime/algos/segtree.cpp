@@ -74,14 +74,15 @@ int main() {
   st.init(n);
 
   st.build(a);
-  for (int i = 0; i < m; ++i) {
-     int type; cin >> type;
-     if(type == 1) {
-        int i, v; cin >> i >> v;
-          st.set(i, v);
-     } else {
-        int l, r; cin >> l >> r;
-        cout << st.get(l, r) << endl;
-     }
-   } 
+  cout << st.get(0,4) << endl;
+  // for (int i = 0; i < m; ++i) {
+  //    int type; cin >> type;
+  //    if(type == 1) {
+  //       int i, v; cin >> i >> v;
+  //         st.set(i, v);
+  //    } else {
+  //       int l, r; cin >> l >> r;
+  //       cout << st.get(l, r) << endl;
+  //    }
+  //  } 
 }

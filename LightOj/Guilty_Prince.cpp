@@ -112,55 +112,58 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+int w, h, cnt; 
+vector<string> g;
+
+bool isValid(int i, int j) {
+  return 0 <= i and i < h and 0 <= j and j < w;
+}
+
+vi vx{0, 0, 1, -1};
+vi vy{1, -1, 0, 0};
+
+void f(int l, int r) {
+  for (int k = 0; k < 4; ++k) {
+    int x = vx[k], y = vy[k];
+    int i = l + x, j = r + y;
+    if(isValid(i, j) and g[i][j] == '.') {
+      cnt++;
+      g[i][j] = '!';
+      f(i, j);
+      
+    }  
+  }
+}
+
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  // bug(a);
-  unordered_map<int, int> mp;
-  int mx = a.back();
-  for (int i = 0; i < n - 1; ++i) {
-    if(a[i] > a[i + 1] or a[i + 1] % a[i] != 0) {
-      int cmn = __gcd(a[i], a[i + 1]);
-
-      for(int d = 1; d * d <= cmn; d++) {
-        // print(a[i+1], d);
-        if(cmn % d == 0) {
-          // bug(cmn, d);
-
-          mp[a[i] / d]++;
-          if(cmn/d != d) mp[a[i] / (cmn/d)]++;
-          // bug(a[i + 1], d);
-          // if(a[i] % d == 0)
-          //   mp[a[i] / d]++;
-          // if(a[i + 1] / d != d) {
-          //   // bug(a[i + 1],a[i+1]/d);
-          //   if(a[i] % (a[i+1]/d) == 0)
-          //     mp[a[i] / (a[i+1]/d)]++;
-          // }
-        }
+  cin >> w >> h;
+  g.clear();
+  for (int i = 0; i < h; ++i) {
+    string temp; cin >> temp;
+    g.push_back(temp);
+  }
+  int l = -1, r = -1;
+  for (int i = 0; i < h; ++i) {
+    for (int j = 0; j < w; ++j) {
+      if(g[i][j] == '@') {
+        l = i, r = j; break;
       }
-    }
-    mx = max(mx, a[i]);
+    } 
+    if(l != -1) break;
   }
-  int res = -1, cnt = -1;
-  for(auto [u, v] : mp) {
-    bug(u, v);
-    if(v > cnt) {
-      cnt = v; res = u;
-    }
-    if(v == cnt) {
-      res = min(res, u);
-    }
-  }
-  if(res == -1) res = mx + 5;
-  print(res);
+  cnt = 0;
+  f(l, r);
+  print(cnt + 1);
+  // for(auto i : g) 
+  //   print(i);
+  // print(l, r);
 }
 
 void solve() {
   int t = 1; 
   cin >> t;
   for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
+    cout << "Case " << i << ": ";
     tTestCase(i);
   }
 }
