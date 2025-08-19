@@ -112,31 +112,34 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-map<int, int> mp;
-vector<vector<int>> dp;
-int subset(vi &v, int n, int sum) {
+int k;
+vi coins, a, c;
+int f(int n, int sum) {
   if(n == 0) {
-    mp[sum]++;
-    return 0;
+    bug(sum);
+    return sum == k;
   }
-  if(dp[n][sum] != -1) return dp[n][sum];
-  return dp[n][sum] = subset(v, n-1, sum);
-  return dp[n][sum] = subset(v, n-1, sum + v[n-1]);
+  int flag = 0;
+  for (int i = 0; i <= c[n-1]; ++i) {
+    if(f(n - 1, sum + (a[n - 1] * i))) {
+      flag++;
+    }
+  }
+  return flag;
 }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi v(n); cin >> v;
-  dp.assign(n + 1, vi(100 + 1, -1));
-  subset(v, n, 0);
-  for(auto i : mp) {
-    print(i);
-  }
+  int n; cin >> n >> k;
+  a.resize(n); c.resize(n);
+  cin >> a >> c;
+  print(f(n, 0));
+  // print(coins);
+
 }
 
 void solve() {
   int t = 1; 
-  // cin >> t;
+  cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);

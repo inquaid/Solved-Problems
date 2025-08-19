@@ -112,18 +112,20 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n; cin >> n;
-}
+const int m = 1e9 + 7;
+vi dp;
+int f(int n) {
+  if(n < 0) return 0;
+  if(n == 0) return 1;
+  if(dp[n] != -1) return dp[n];
 
-void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
-  }
+  return dp[n] = (f(n - 1) % m + f(n - 2) % m + f(n - 3) % m + f(n - 4) % m + f(n - 5) % m + f(n - 6) % m) % m;
 }
+void solve() {
+  int n; cin >> n;
+  dp.assign(n + 1, -1);
+  print(f(n));
+} 
 
 
 int32_t main() {
@@ -135,10 +137,7 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    // solve();  // return 0;
-    // while(1) {
-      
-    // }
+    solve();  // return 0;
 
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);

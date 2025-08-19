@@ -116,13 +116,19 @@ void tTestCase(int t) {
   int n; cin >> n;
 }
 
-void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+int f(int n) {
+  int s = 0;
+  while(n) {
+    s += n % 10;
+    n /= 10;
   }
+  return s;
+}
+
+void solve() {
+  int n; cin >> n;
+  // print(f(n));
+  yesif(n % f(n) == 0);   
 }
 
 
@@ -135,10 +141,7 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    // solve();  // return 0;
-    // while(1) {
-      
-    // }
+    solve();  // return 0;
 
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);

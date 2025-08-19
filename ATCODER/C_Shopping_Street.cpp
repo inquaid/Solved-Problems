@@ -112,17 +112,61 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n; cin >> n;
+vector<vector<int>> f, p;
+int n; 
+const int inf = -1e9;
+vi vis;
+
+int f3(vi &vis) {
+  vi cnt(n, 0);
+  int sum = 0;
+  bool flag = 0;
+  for (int i = 0; i < n; ++i) {
+    int temp = 0;
+    for (int j = 0; j < 10; ++j) {
+      if(f[i][j] == 1 and vis[j] == 1) {
+        temp++; flag = 1;
+      }
+    } 
+    sum += p[i][temp];
+    // cnt[i] = temp;
+  } 
+  if(flag == 0) sum = inf;
+  return sum;
+}
+
+int f2(int i) {
+  if(i == 0) {
+    // print(vis);
+    return f3(vis);
+  }
+  int take = inf , notake = inf;
+  vis[i - 1] = 1;
+  take = f2(i - 1);
+  vis[i - 1] = 0;
+  notake = f2(i - 1);
+  return max(take, notake);
+  // return max(take, notake);
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
-  }
+  cin >> n;
+  vis.assign(10, 0);
+  
+
+  f.assign(n, vi(10, 0));
+  p.assign(n, vi(11, 0));
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < 10; ++j) {
+      cin >> f[i][j];
+    } 
+  } 
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < 11; ++j) {
+      cin >> p[i][j];
+    } 
+  } 
+  print(f2(10));
 }
 
 
@@ -135,10 +179,7 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    // solve();  // return 0;
-    // while(1) {
-      
-    // }
+    solve();  // return 0;
 
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);

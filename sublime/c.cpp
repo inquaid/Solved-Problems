@@ -110,18 +110,26 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(int a, int b) { return a > b; }
+bool comp(pii &a, pii &b) { return a.ff < b.ff; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  int temp; cin >> temp;
-  vi a(n - 1); cin >> a; 
-  for (int i = 1; i < n - 1; ++i) {
-    if(a[i-1] < a[i]) {
+  int n, k; cin >> n >> k;
+  vi a(n), b(n);
+  cin >> a >> b;
+  map<int, int> mp;
+  for (int i = 0; i < n; ++i) {
+    int mn = a[i] % k;
+    int mn2 = k - mn;
+    mp[mn]++; mp[mn2]++;
+  }
+  for (int i = 0; i < n; ++i) {
+    int need = b[i] % k;
+    if(mp[need] == 0) {
       no; return;
     }
+    mp[need]--; mp[k - need]--;
   }
-  yes;
+  yes; 
 }
 
 void solve() {

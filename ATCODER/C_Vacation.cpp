@@ -112,17 +112,34 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n; cin >> n;
+// vi vis, dp;
+vector<vi> cost, dp;
+int f(int n, int d) {
+  if(n == 0) {
+    return 0;
+  }
+  
+  if(dp[d][n] != -1) return dp[d][n];
+  int res = 0;
+  for (int i = 0; i < 3; ++i) {
+    if(i != d) {
+      res = max(res, cost[i][n - 1] + f(n - 1, i));
+    } 
+  } return dp[d][n] = res;
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  int n; cin >> n; 
+  dp.resize(4, vi(n + 1, -1));
+
+  cost.resize(3, vi(n, 0));
+  for (int i = 0; i < n; ++i) {
+    cin >> cost[0][i] >> cost[1][i] >> cost[2][i];
   }
+  // for (int i = 0; i < n; ++i) {
+  //   cout << " " << cost[0][i] << " " << cost[1][i] << " " << cost[2][i] << endl;
+  // }
+  print(f(n, 3));
 }
 
 
@@ -135,10 +152,7 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    // solve();  // return 0;
-    // while(1) {
-      
-    // }
+    solve();  // return 0;
 
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
