@@ -7,6 +7,7 @@
 #include <unordered_set>
 #include <vector>
 #include <queue>
+#include <stack>
 #include <math.h>
 #include <climits>
 #include <bitset>
@@ -112,42 +113,22 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-const int M = 1e9 + 7;
-
-int binpow(int a, int b) {
-  a %= M;
-  int res = 1ll;
-  while(b > 0) {
-    if(b&1)
-      res = res * a % M;
-    a = a * a % M;
-    b >>= 1;
-  } return res;
-}
-
-void tTestCase(int t) {
-  int n; cin >> n;
-  map<int, int> mp;
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp; mp[temp]++;
-  }
-  int ttl = 1;
-  // int ttl = binpow(2, mp.size()) - 1;
-  for(auto [val, cnt] : mp) {
-    ttl = (ttl % M * (cnt + 1) % M) % M;
-  }
-  print(ttl - 1);
-}
-
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  string s;
+  cin >> s;
+  int i = 0;
+  int cnt = 0;
+  stack<char> st;
+  for (int i = 0; i < s.size(); ++i) {
+    if(st.size()) {
+      if(st.top() == s[i]) {
+        cnt++; st.pop(); continue;
+      }
+    }
+    st.push(s[i]);
   }
+  yesif(cnt&1);
 }
-
 
 int32_t main() {
   ios_base::sync_with_stdio(false);

@@ -112,40 +112,48 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-const int M = 1e9 + 7;
+vi wt, val;
+int n, w;
+vector<vi> dp;
+const int inf = 1e12;
 
-int binpow(int a, int b) {
-  a %= M;
-  int res = 1ll;
-  while(b > 0) {
-    if(b&1)
-      res = res * a % M;
-    a = a * a % M;
-    b >>= 1;
-  } return res;
+int f(int n, int sum) {
+  if(n == 0) {
+    if(sum == 0) return 0;
+    return inf;
+  }
+  if(dp[n][sum] != -1) return dp[n][sum];
+  int take = inf, noTake = f(n - 1, sum);
+  if(sum >= val[n - 1]) {
+    take = wt[n - 1] + f(n-1, sum - val[n - 1]);
+  }
+  return dp[n][sum] = min(take, noTake);
 }
 
-void tTestCase(int t) {
-  int n; cin >> n;
-  map<int, int> mp;
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp; mp[temp]++;
-  }
-  int ttl = 1;
-  // int ttl = binpow(2, mp.size()) - 1;
-  for(auto [val, cnt] : mp) {
-    ttl = (ttl % M * (cnt + 1) % M) % M;
-  }
-  print(ttl - 1);
+void f2(int N, int Sum) {
+  dp[0][0] = 0;
+  for (int n = 1; n <= N; ++n) {
+    for (int sum = 0; sum <= Sum; ++sum) {
+      int take = wt[n - 1] + dp[n-1][sum - val[n - 1]] , noTake = dp[n - 1][sum];
+      dp[n][sum] = min(take, noTake);
+    }
+  } //return dp[N][Sum];
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  cin >> n >> w;
+  dp.assign(n + 1, vi(((n + 1) * 1000) + 5, inf));
+  wt.resize(n); val.resize(n);
+  for (int i = 0; i < n; ++i) {
+    cin >> wt[i] >> val[i];
   }
+  int ans = 0;
+  f2(n, (n + 1) * 1000);
+  for (int i = 0; i <= (n * 1000); ++i) {
+    if(dp[n][i] <= w) ans = i;
+  }
+  print(ans);
+  // print(f(n, w));
 }
 
 

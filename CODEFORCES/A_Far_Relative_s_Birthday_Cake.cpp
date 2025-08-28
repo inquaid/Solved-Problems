@@ -112,40 +112,26 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-const int M = 1e9 + 7;
-
-int binpow(int a, int b) {
-  a %= M;
-  int res = 1ll;
-  while(b > 0) {
-    if(b&1)
-      res = res * a % M;
-    a = a * a % M;
-    b >>= 1;
-  } return res;
-}
-
-void tTestCase(int t) {
-  int n; cin >> n;
-  map<int, int> mp;
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp; mp[temp]++;
-  }
-  int ttl = 1;
-  // int ttl = binpow(2, mp.size()) - 1;
-  for(auto [val, cnt] : mp) {
-    ttl = (ttl % M * (cnt + 1) % M) % M;
-  }
-  print(ttl - 1);
+int f(int n) {
+  return n * (n - 1) / 2;
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  int n; cin >> n;
+  vector<string> vs;
+  for (int i = 0; i < n; ++i) {
+    string temp; cin >> temp; vs.push_back(temp);
   }
+  int res = 0;
+  for (int i = 0; i < n; ++i) {
+    int cnt1 = 0, cnt2 = 0;
+    for (int j = 0; j < n; ++j) {
+      if(vs[i][j] == 'C') cnt1++;
+      if(vs[j][i] == 'C') cnt2++;
+    }
+    res += f(cnt1) + f(cnt2);
+  }
+  print(res);
 }
 
 

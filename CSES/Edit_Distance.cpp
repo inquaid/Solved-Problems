@@ -112,40 +112,41 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-const int M = 1e9 + 7;
+string a, b;
+const int inf = 1e9;
+vector<vi> dp;
 
-int binpow(int a, int b) {
-  a %= M;
-  int res = 1ll;
-  while(b > 0) {
-    if(b&1)
-      res = res * a % M;
-    a = a * a % M;
-    b >>= 1;
-  } return res;
+int f(int i, int j) {
+  if(i == 0 or j == 0) {
+    return abs(i - j);
+  }
+  if(dp[i][j] != -1) return dp[i][j];
+  if(a[i - 1] == b[j - 1]) {
+    return f(i - 1, j - 1);
+  }
+  return dp[i][j] = 1 + min({f(i, j - 1), f(i - 1, j), f(i - 1, j - 1)});
 }
 
-void tTestCase(int t) {
-  int n; cin >> n;
-  map<int, int> mp;
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp; mp[temp]++;
-  }
-  int ttl = 1;
-  // int ttl = binpow(2, mp.size()) - 1;
-  for(auto [val, cnt] : mp) {
-    ttl = (ttl % M * (cnt + 1) % M) % M;
-  }
-  print(ttl - 1);
+int f2(int n, int m) {
+  dp[0][0] = 0;
+  for (int i = 0; i <= n; ++i) {
+    for (int j = 0; j <= m; ++j) {
+      if(i == 0 or j == 0) {
+        dp[i][j] = abs(i - j);
+        continue;
+      }
+      if(a[i - 1] == b[j - 1]) {
+        dp[i][j] = dp[i-1][j-1];
+      } else
+        dp[i][j] = 1 + min({dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1]}); 
+    }
+  } return dp[n][m];
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
-  }
+  cin >> a >> b;
+  dp.assign(a.size() + 1, vi(b.size() + 1, inf));
+  print(f2(a.size(), b.size()));
 }
 
 

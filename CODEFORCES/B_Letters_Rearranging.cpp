@@ -112,31 +112,19 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-const int M = 1e9 + 7;
-
-int binpow(int a, int b) {
-  a %= M;
-  int res = 1ll;
-  while(b > 0) {
-    if(b&1)
-      res = res * a % M;
-    a = a * a % M;
-    b >>= 1;
-  } return res;
+int f(string &s) {
+  for (int i = 0; i < s.size() -1; ++i) {
+    if(s[i] != s[i + 1]) return 0;
+  } return 1;
 }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  map<int, int> mp;
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp; mp[temp]++;
+  string s; cin >> s;
+  sort(all(s));
+  if(f(s)) {
+    print(-1); return;
   }
-  int ttl = 1;
-  // int ttl = binpow(2, mp.size()) - 1;
-  for(auto [val, cnt] : mp) {
-    ttl = (ttl % M * (cnt + 1) % M) % M;
-  }
-  print(ttl - 1);
+  print(s);
 }
 
 void solve() {
@@ -158,7 +146,7 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
+    solve(); 
 
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);

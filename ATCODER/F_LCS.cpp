@@ -112,40 +112,48 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-const int M = 1e9 + 7;
-
-int binpow(int a, int b) {
-  a %= M;
-  int res = 1ll;
-  while(b > 0) {
-    if(b&1)
-      res = res * a % M;
-    a = a * a % M;
-    b >>= 1;
-  } return res;
-}
-
-void tTestCase(int t) {
-  int n; cin >> n;
-  map<int, int> mp;
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp; mp[temp]++;
+string a, b, res;
+vector<vi> dp;
+vi vis;
+int f(int i, int j) {
+  if(i == 0 or j == 0) return 0;
+  if(dp[i][j] != -1) return dp[i][j];
+  if(a[i - 1] == b[j - 1]) {
+    // res += a[i - 1]; 
+    vis[i - 1] = 1;
+    return dp[i][j] = 1 + f(i - 1, j - 1);
+    vis[i - 1] = 0;
+    // res.pop_back();
   }
-  int ttl = 1;
-  // int ttl = binpow(2, mp.size()) - 1;
-  for(auto [val, cnt] : mp) {
-    ttl = (ttl % M * (cnt + 1) % M) % M;
-  }
-  print(ttl - 1);
+  return dp[i][j] = max(f(i - 1, j), f(i, j - 1));
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  cin >> a >> b;
+  dp.assign(a.size() + 1, vi(b.size() + 1, -1));
+  vis.assign(a.size() + 1, 0);
+  // bug(a, b);
+  int temp = f(a.size(), b.size());
+  // print(res);
+  // print(temp);
+  int i = a.size(), j = b.size();
+  while(i > 0 and j > 0) {
+    if(a[i - 1] == b[j - 1]) {
+      res += a[i - 1];
+      i--; j--;
+    } else if(dp[i-1][j] > dp[i][j - 1])
+      i--;
+    else
+      j--;
   }
+  reverse(all(res));
+  print(res);
+  // for(auto i : dp) {
+    // print(i);
+  //   for(auto j : i) 
+  //     cout << j << "\t";
+  //   newl;
+  // } 
 }
 
 

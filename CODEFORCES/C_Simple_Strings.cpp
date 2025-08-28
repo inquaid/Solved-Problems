@@ -112,40 +112,53 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-const int M = 1e9 + 7;
+string s;
 
-int binpow(int a, int b) {
-  a %= M;
-  int res = 1ll;
-  while(b > 0) {
-    if(b&1)
-      res = res * a % M;
-    a = a * a % M;
-    b >>= 1;
-  } return res;
+void f(int i) {
+  if(s[i] == 'a') {
+    s[i] = 'b';
+  } else s[i] = 'a';
 }
 
-void tTestCase(int t) {
-  int n; cin >> n;
-  map<int, int> mp;
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp; mp[temp]++;
+void f2(int i, int l, int r) {
+  for (char ch = 'a'; ch <= 'z'; ++ch) {
+    if(l and r and s[i - 1] != ch and s[i + 1] != ch) {
+      s[i] = ch; return;
+    }
+    if(l and !r and s[i - 1] != ch) {
+      s[i] = ch; return;
+    }
+    if(!l and r and s[i + 1] != ch) {
+      s[i] = ch; return;
+    }
   }
-  int ttl = 1;
-  // int ttl = binpow(2, mp.size()) - 1;
-  for(auto [val, cnt] : mp) {
-    ttl = (ttl % M * (cnt + 1) % M) % M;
-  }
-  print(ttl - 1);
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  cin >> s;
+  if(s.size() == 2) {
+    if(s[0] == s[1]) f(0);
+    print(s); return;
   }
+  for (int i = 1; i + 1 < s.size(); ++i) {
+    if(s[i - 1] != s[i] and s[i] != s[i + 1]) continue;
+    if(s[i - 1] == s[i] and s[i] == s[i + 1]) {
+      f2(i, 1, 1);
+    }
+    if(s[i] == s[i + 1]) {
+      if(i + 2 == s.size()) {
+        f2(i, 1, 1); continue;
+      }
+      f2(i + 1, 1, 1);
+    } 
+    if(s[i - 1] == s[i]) {
+      if(i - 2 == -1) {
+        f2(i, 1, 1); continue;
+      }
+      f2(i - 1, 1, 1);
+    }
+  }
+  print(s);
 }
 
 
@@ -158,8 +171,10 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
-
+    solve();  return 0;
+    for (char i = 'a'; i <= 'z'; ++i) {
+      bug(i);
+    }
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

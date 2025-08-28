@@ -112,40 +112,52 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+vector<string> vs;
+vector<vi> dp;
 const int M = 1e9 + 7;
 
-int binpow(int a, int b) {
-  a %= M;
-  int res = 1ll;
-  while(b > 0) {
-    if(b&1)
-      res = res * a % M;
-    a = a * a % M;
-    b >>= 1;
-  } return res;
-}
-
-void tTestCase(int t) {
-  int n; cin >> n;
-  map<int, int> mp;
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp; mp[temp]++;
+int f(int n, int m) {
+  // bug(n, m);
+  if(n == 1 and m == 1) {
+    // if(n == 0 and m == 0) return 1;
+    return vs[0][0] == '.';
   }
-  int ttl = 1;
-  // int ttl = binpow(2, mp.size()) - 1;
-  for(auto [val, cnt] : mp) {
-    ttl = (ttl % M * (cnt + 1) % M) % M;
+  if(dp[n][m] != -1) return dp[n][m];
+  if(n == 1) {
+    if(vs[n - 1][m - 2] != '*')
+      return f(n, m - 1);
+    return 0;
   }
-  print(ttl - 1);
+  
+  if(m == 1) {
+    if(vs[n - 2][m - 1] != '*')
+      return f(n - 1, m);
+    return 0;
+  }
+  int res = 0;
+  if(vs[n - 1][m - 2] != '*')
+    res += f(n, m - 1) ;
+  if(vs[n - 2][m - 1] != '*')
+    res += f(n - 1, m) ;
+    // return f(n - 1, m) + f(n, m - 1);
+  // res = res ;
+  // bug(res, res );
+  dp[n][m] = res % M;
+  return dp[n][m];
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  int n; cin >> n;
+  dp.assign(n + 1, vi(n + 1, -1));
+  vs.resize(n);
+  for (int i = 0; i < n; ++i) {
+    cin >> vs[i];
   }
+  if(vs[n - 1][n - 1] == '*') {
+    print(0); return;
+  }
+  // bug(m);
+  print(f(n, n) % M);
 }
 
 

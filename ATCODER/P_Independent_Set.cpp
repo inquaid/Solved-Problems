@@ -112,40 +112,37 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+map<int, vi> g;
+vi vis;
+int black = 0, white = 1;
 const int M = 1e9 + 7;
+vector<vi> dp;
 
-int binpow(int a, int b) {
-  a %= M;
-  int res = 1ll;
-  while(b > 0) {
-    if(b&1)
-      res = res * a % M;
-    a = a * a % M;
-    b >>= 1;
-  } return res;
-}
-
-void tTestCase(int t) {
-  int n; cin >> n;
-  map<int, int> mp;
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp; mp[temp]++;
-  }
-  int ttl = 1;
-  // int ttl = binpow(2, mp.size()) - 1;
-  for(auto [val, cnt] : mp) {
-    ttl = (ttl % M * (cnt + 1) % M) % M;
-  }
-  print(ttl - 1);
+void dfs(int u, int par) {
+  int white = 1, black = 1;
+  // if(dp[1][u] != -1 and dp[0][u] != -1) return;
+  // if(dp[1][u] == -1) dp[1][u] 
+  for(auto v : g[u]) {
+    if(v != par) {
+      dfs(v, u);
+      dp[1][u] *= 1ll * (dp[1][v] + dp[0][v]) % M; dp[1][u] %= M;
+      dp[0][u] *= 1ll * dp[1][v] % M; dp[0][u] %= M;
+    }
+  } //return; // {white % M, black % M};
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  int n; cin >> n;
+  dp.assign(2, vi(n + 1, 1));
+  vis.assign(n + 1, 0);
+  for (int i = 1; i < n; ++i) {
+    int u, v; cin >> u >> v;
+    g[u].push_back(v); g[v].push_back(u);
   }
+  dfs(1, -1);
+  print((dp[1][1] + dp[0][1]) % M);
+  // auto ans = dfs(1, -1);
+  // print((ans.ff%M + ans.ss%M) % M);
 }
 
 

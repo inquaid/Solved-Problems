@@ -1,4 +1,2 @@
-a = list(map(int, input().split()))
-# print(n, a, b)
-# print(min(n*a, b))
-print(sum(a))
+n = int(input())
+print((1<<(n + 1)) - 2)

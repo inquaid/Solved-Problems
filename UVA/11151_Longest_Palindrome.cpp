@@ -112,36 +112,51 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-const int M = 1e9 + 7;
+string s, temp; 
+int res;
+// vi dp;
+vector<vi> dp;
 
-int binpow(int a, int b) {
-  a %= M;
-  int res = 1ll;
-  while(b > 0) {
-    if(b&1)
-      res = res * a % M;
-    a = a * a % M;
-    b >>= 1;
-  } return res;
+int f(int i, int j) {
+  if(i > j) return 0;
+  if(i == j) return 1;
+  if(dp[i][j] != -1) return dp[i][j];
+  if(s[i] == s[j]) {
+    return dp[i][j] = 2 + f(i + 1, j - 1);
+  }
+  return dp[i][j] = max(f(i + 1, j), f(i, j - 1));
+}
+
+int f2(int n) {
+  for (int i = n-1; i >= 0; --i) {
+    for (int j = i; j < n; ++j) {
+      if(i == j) {dp[i][j] = 1; continue;}
+      if(s[i] == s[j]) {
+        dp[i][j] = 2 + dp[i + 1][j - 1];
+      } else
+          dp[i][j] = max(dp[i + 1][j], dp[i][j - 1]);
+    }
+  }
+  // for(auto i : dp) print(i);
+  return dp[0][max(0ll, n - 1)];
 }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  map<int, int> mp;
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp; mp[temp]++;
-  }
-  int ttl = 1;
-  // int ttl = binpow(2, mp.size()) - 1;
-  for(auto [val, cnt] : mp) {
-    ttl = (ttl % M * (cnt + 1) % M) % M;
-  }
-  print(ttl - 1);
+  // cin >> s;
+  getline(cin, s);
+  dp.assign(s.size() + 1, vi(s.size() + 1, 0));
+  // string temp = "";
+  // if(t == 40) bug(s)
+  print(f2(s.size()));
+  // print(f(0, s.size() - 1));
+  // dp.clear();
+  // print(len("ABABA"));
 }
 
 void solve() {
   int t = 1; 
   cin >> t;
+  cin.ignore();
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);
@@ -158,8 +173,10 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
-
+    solve();  return 0;
+    // s = "";
+    // dp.assign(1, vi(1, 0));
+    // print(f2(0));
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;
