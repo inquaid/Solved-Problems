@@ -112,27 +112,25 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int f(int n) {
-  return n * (n + 1) / 2;
+void tTestCase(int t) {
+  int n; cin >> n;
 }
 
-void tTestCase(int t) {
-  int n, m, k; cin >> n >> m >> k;
-  if(m < (n - 1) or f(n - 1) < m) {
-    no; return;
+int isp(int n) {
+  for (int i = 2; i * i <= n; i++) {
+    if(n % i == 0) return 1;
   }
-  if(n == 1) {
-    yesif(k > 1); return;
-  }
-  yesif((f(n - 1) == m and k > 2) or k > 3);
+  return 0;
 }
 
 void solve() {
-  int t = 1; 
-  cin >> t;
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    tTestCase(i);
+  int n; cin >> n;
+  int i = 4;
+  while(1) {
+    if(isp(i) and isp(n + i)) {
+      print(n + i, i); break;
+    }
+    i++;
   }
 }
 

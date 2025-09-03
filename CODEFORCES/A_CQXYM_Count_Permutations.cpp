@@ -112,20 +112,17 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int f(int n) {
-  return n * (n + 1) / 2;
+map<int, int> fact;
+const int N = 2 * 1e5 + 5, M = 1e9 + 7;
+
+int inv(int a) {
+  return a <= 1 ? a : M - (long long)(M/a) * inv(M % a) % M;
 }
 
 void tTestCase(int t) {
-  int n, m, k; cin >> n >> m >> k;
-  if(m < (n - 1) or f(n - 1) < m) {
-    no; return;
-  }
-  if(n == 1) {
-    yesif(k > 1); return;
-  }
-  yesif((f(n - 1) == m and k > 2) or k > 3);
-}
+  int n; cin >> n;  
+  print(fact[2 * n] * inv(2) % M);
+} 
 
 void solve() {
   int t = 1; 
@@ -145,7 +142,10 @@ int32_t main() {
     // cout << fixed << setprecision(20);
 
     // auto t1 = std::chrono::high_resolution_clock::now();
-
+    fact[0] = fact[1] = 1;
+    for (int i = 2; i < N; ++i) {
+      fact[i] = (fact[i-1] % M * i % M) % M;
+    } 
     solve();  // return 0;
 
     // auto t2 = std::chrono::high_resolution_clock::now();
