@@ -112,50 +112,29 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-vi a;
-
-bool valid() {
-  // bug(a);
-  for (int i = 0; i < a.size(); ++i) {
-    for (int j = i + 1; j < a.size(); ++j) {
-      for (int k = j + 1; k < a.size(); ++k) {
-        if(a[k] + a[i] == (2 * a[j])) return 0;
-      }
-    }
-  }
-  return 1;
+int f(char c1, char c2, char c3, char c4) {
+  string s = ""; s += c1; s += c2; s += c3; s += c4; 
+  sort(all(s));
+  return (s[0] == s[1] and s[2] == s[3]);
 }
 
 void tTestCase(int t) {
   int n; cin >> n;
-  a.resize(n);
-  iota(all(a), 1);
-  // print(a);
-  do {
-    bug(a);
-    // print(a);
-    if(valid()) {
-      print(a);
-    }
-  } while(next_permutation(all(a)));
-}
-vi res;
-void f(int l, int r, vi lf, vi rf) {
-  if(l == r) {
-    res[l] = lf[l];
+  string s; cin >> s;
+  map<char, int> mp;
+  for(auto ch : s) mp[ch]++;
+  for(auto [i, cnt] : mp) {
+    if(cnt&1) {no; return;}
   }
-  int mid = l + (r - l) / 2;
-  vi temp(mid), t2(res.size() - )
+  yes;
 }
 
 void solve() {
   int t = 1; 
-  // cin >> t;
- 
-
+  cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
-    // tTestCase(i);
+    tTestCase(i);
   }
 }
 
@@ -169,7 +148,6 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    vi a;
     solve();  // return 0;
 
     // auto t2 = std::chrono::high_resolution_clock::now();

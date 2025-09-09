@@ -112,64 +112,54 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-vi a;
-
-bool valid() {
-  // bug(a);
-  for (int i = 0; i < a.size(); ++i) {
-    for (int j = i + 1; j < a.size(); ++j) {
-      for (int k = j + 1; k < a.size(); ++k) {
-        if(a[k] + a[i] == (2 * a[j])) return 0;
-      }
-    }
-  }
-  return 1;
-}
-
 void tTestCase(int t) {
   int n; cin >> n;
-  a.resize(n);
-  iota(all(a), 1);
-  // print(a);
-  do {
-    bug(a);
-    // print(a);
-    if(valid()) {
-      print(a);
-    }
-  } while(next_permutation(all(a)));
-}
-vi res;
-void f(int l, int r, vi lf, vi rf) {
-  if(l == r) {
-    res[l] = lf[l];
-  }
-  int mid = l + (r - l) / 2;
-  vi temp(mid), t2(res.size() - )
 }
 
 void solve() {
-  int t = 1; 
-  // cin >> t;
- 
-
-  for(int i = 1; i <= t; i++) {
-    // cout << "Case " << i << ": ";
-    // tTestCase(i);
+  int t, a, b;
+  cin >> t >> a >> b;
+  vi dp(t + 1, 0);
+  dp[0] = 1;
+  for (int i = 0; i <= t; ++i) {
+    if(dp[i]) {
+      if(i + a <= t)  
+        dp[i + a] = 1;
+      if(i + b <= t)  
+        dp[i + b] = 1;
+    }
   }
+  for (int i = 0; i <= t; ++i) {
+    if(dp[i]) {
+      dp[i / 2] = 1;
+    }
+  }
+
+  for (int i = 0; i <= t; ++i) {
+    if(dp[i]) {
+      if(i + a <= t)  
+        dp[i + a] = 1;
+      if(i + b <= t)  
+        dp[i + b] = 1;
+    }
+  }
+  int ans = 0;
+  for (int i = 0; i <= t; ++i) {
+    if(dp[i]) ans = i;
+  }
+  print(ans);
 }
 
 
 int32_t main() {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
-    // freopen("input.txt", "r" , stdin);
-    // freopen("output.txt", "w", stdout);
+    // freopen("feast.in", "r" , stdin);
+    // freopen("feast.out", "w", stdout);
     // cout << fixed << setprecision(20);
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    vi a;
     solve();  // return 0;
 
     // auto t2 = std::chrono::high_resolution_clock::now();

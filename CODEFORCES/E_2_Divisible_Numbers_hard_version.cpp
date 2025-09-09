@@ -112,50 +112,59 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-vi a;
+int a, b, c, d;
 
-bool valid() {
-  // bug(a);
-  for (int i = 0; i < a.size(); ++i) {
-    for (int j = i + 1; j < a.size(); ++j) {
-      for (int k = j + 1; k < a.size(); ++k) {
-        if(a[k] + a[i] == (2 * a[j])) return 0;
-      }
-    }
-  }
-  return 1;
+pii f(int x, int y) {
+  // a = 10, x = 4;
+  int ls1 = ((a / x) + 1) * x;
+  int ls2 = ((b / y) + 1) * y;
+  // bug(ls1, ls2);
+  if(ls1 <= c and ls2 <= d) return {ls1, ls2};
+  swap(x, y);
+  ls1 = ((a / x) + 1) * x;
+  ls2 = ((b / y) + 1) * y;
+  if(ls1 <= c and ls2 <= d) return {ls1, ls2};
+  
+  return {-1, -1};
 }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  a.resize(n);
-  iota(all(a), 1);
-  // print(a);
-  do {
-    bug(a);
-    // print(a);
-    if(valid()) {
-      print(a);
-    }
-  } while(next_permutation(all(a)));
-}
-vi res;
-void f(int l, int r, vi lf, vi rf) {
-  if(l == r) {
-    res[l] = lf[l];
+  cin >> a >> b >> c >> d;
+  vi da, db;
+  for (int d = 1; d * d <= a; ++d) {
+     if(a % d == 0) {
+      da.push_back(d);
+      if(d != a/d)
+        da.push_back(a/d);
+     }
   }
-  int mid = l + (r - l) / 2;
-  vi temp(mid), t2(res.size() - )
+  for (int d = 1; d * d <= b; ++d) {
+     if(b % d == 0) {
+      db.push_back(d);
+      if(d != b/d)
+        da.push_back(b/d);
+     }
+  } 
+  for (int i = 0; i < da.size(); ++i) {
+    for (int j = 0; j < db.size(); ++j) {
+      int u = da[i] * db[j];
+      int v = (a*b) / u;
+      if((a*b) % u) continue;
+      auto it = f(u, v);
+      if(it.ff != -1) {
+        print(it); return;
+      }
+    }
+  }
+  print(-1, -1);
 }
 
 void solve() {
   int t = 1; 
-  // cin >> t;
- 
-
+  cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
-    // tTestCase(i);
+    tTestCase(i);
   }
 }
 
@@ -169,7 +178,6 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    vi a;
     solve();  // return 0;
 
     // auto t2 = std::chrono::high_resolution_clock::now();
