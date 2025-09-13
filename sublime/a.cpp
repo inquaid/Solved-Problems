@@ -112,16 +112,23 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+const int m = 1e9 + 7;
+
+long long binpow(long long a, long long b) {
+  a %= m;
+  long long res = 1;
+  while (b > 0) {
+    if (b & 1)
+    res = res * a % m;
+    a = a * a % m;
+    b >>= 1;
+  }
+  return res;
+}
+
 void tTestCase(int t) {
-  int a, b; cin >> a >> b;
-  int temp = __gcd(a, b);
-  if(a == b) {
-    print(0); return;
-  }
-  if(temp == a or temp == b) {
-    print(1); return;
-  }
-  print(2);
+  int n, k; cin >> n >> k;
+  print(binpow(n, k));
 }
 
 void solve() {
@@ -140,7 +147,6 @@ int32_t main() {
     // freopen("input.txt", "r" , stdin);
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
-
     // auto t1 = std::chrono::high_resolution_clock::now();
 
     solve();  // return 0;

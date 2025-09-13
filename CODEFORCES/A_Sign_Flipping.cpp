@@ -112,30 +112,32 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-vi a,res;
-
-void subset(int n) {
-  if(n == 0) {
-    print(res); return;
-  }
-  res.push_back(a[n-1]);
-  subset(n - 1);
-  res.pop_back();
-  subset(n-1);
-}
-
-int subset_sum(int n, int sum) {
-  if(n == 0) {
-    return sum == 0;
-  }
-  return subset_sum(n - 1, sum - a[n-1]) or subset_sum(n-1, sum);
-  }
-
 void tTestCase(int t) {
   int n; cin >> n;
-  a.resize(n);
-  cin >> a;
-  subset(n);
+  int x = (n - 1) / 2;
+  vi a(n); cin >> a;
+  for (int i = 0; i < n; ++i) {
+    a[i] = abs(a[i]);
+  }
+  for (int i = 1; i < n; i += 2) {
+    a[i] = -a[i];
+  }
+  // for (int i = x; i + 1 < n; ++i) {
+  //   // a[i] = -abs(a[i]);
+  //   if(a[i + 1] > a[i]) {
+  //     a[i + 1] = -a[i+1];
+  //   }
+  // }
+  // bug(a);
+  print(a);
+  // int cnt1 = 0, cnt2 = 0, z = 0;
+  // for (int i = 0; i + 1 < n; ++i) {
+  //   bug(a[i], a[i+1], a[i+1]-a[i]);
+  //   if(a[i + 1] - a[i] < 0) cnt1++;
+  //   else if(a[i+1] - a[i] > 0) cnt2++;
+  //   else z++;
+  // }
+  // print(n, x, cnt1, cnt2, z);
 }
 
 void solve() {

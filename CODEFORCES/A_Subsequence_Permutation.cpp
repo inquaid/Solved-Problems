@@ -112,30 +112,17 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-vi a,res;
-
-void subset(int n) {
-  if(n == 0) {
-    print(res); return;
-  }
-  res.push_back(a[n-1]);
-  subset(n - 1);
-  res.pop_back();
-  subset(n-1);
-}
-
-int subset_sum(int n, int sum) {
-  if(n == 0) {
-    return sum == 0;
-  }
-  return subset_sum(n - 1, sum - a[n-1]) or subset_sum(n-1, sum);
-  }
-
 void tTestCase(int t) {
   int n; cin >> n;
-  a.resize(n);
-  cin >> a;
-  subset(n);
+  string s1, s2;
+  cin >> s1;
+  s2 = s1;
+  sort(all(s1));
+  int cnt = 0;
+  for (int i = 0; i < n; ++i) {
+    if(s1[i] != s2[i]) cnt++;
+  }
+  print(cnt);
 }
 
 void solve() {
