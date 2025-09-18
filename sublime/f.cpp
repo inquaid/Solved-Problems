@@ -127,7 +127,7 @@ void tTestCase(int t) {
   for (int i = 0; i < mx; ++i) {
     for (int j = 0; j < n; ++j) {
       bug(v[j].size(), i);
-      if(v[j].size() >= i) {
+      if(v[j].size() = i) {
         ans[i] = min(ans[i], v[j][i]);
       }
     }

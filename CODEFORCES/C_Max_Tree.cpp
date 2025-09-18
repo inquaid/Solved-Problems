@@ -110,36 +110,79 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(int a, int b) { return a > b; }
+bool comp(vi &a, vi &b) { return a.back() < b.back(); }
+
+map<int, vi> g;
+int n; 
+vi ans, vis;
+
+void dfs(int u) {
+  vis[u] = 1;
+  // print(u);
+  for(auto v : g[u]) {
+    if(!vis[v]) {
+      dfs(v);
+    }
+  }
+  ans.push_back(u);
+}
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int l = 0, r = 0;
-  for (int i = 0; i < n; ++i) {
-    if(a[i] == n) {
-      l = i; r = i;
+  cin >> n;
+  vis.assign(n + 1, 0);
+  g.clear();
+  vi p(n + 1);
+  // iota(all(p), 0);
+  // print(ans);
+  for (int i = 0; i < n - 1; ++i) {
+    int u, v, x, y; cin >> u >> v >> x >> y;
+    if(x > y) {
+      g[u].push_back(v);
+    } else if(y > x) {
+      g[v].push_back(u);
     }
   }
-  // bug(l, r);
-  int flag = n;
-  while(l >= 0 and r < n) {
-    bug(flag);
-    if(l - 1 >= 0 and a[l-1] + 1 == flag) {
-      // bug(l, r);
-      flag = a[l-1];
-      l--;
-    } else if(r + 1 < n and a[r + 1] + 1 == flag) {
-      // bug(l, r);
-      flag = a[r+1];
-      r++;
-    } else {
-      if(flag == 1) yes;
-      else no; 
-      return;
+  // bfs
+  vi ind(n + 1, 0);
+  for (int i = 1; i <= n; ++i) {
+    for(auto j : g[i]) {
+      ind[j]++;
     }
   }
-  yes;
+  queue<int> q;
+  for (int i = 1; i <= n; ++i) {
+    if(ind[i] == 0) q.push(i);
+  }
+  vi tp;
+  while(q.size()) {
+    int u = q.front(); q.pop();
+    tp.push_back(u);
+    for(auto v : g[u]) {
+      if(--ind[v] == 0) q.push(v);
+    }
+  }
+  vi res(n + 1, 0);
+  int cnt = n;
+  for(auto u : tp) res[u] = cnt--;
+  for (int i = 1; i <= n; ++i) {
+    cout << res[i] << " ";
+  } newl;
+
+  // dfs
+  // ans.clear();
+  // for (int i = 1; i <= n; ++i) {
+  //   if(!vis[i]) dfs(i);
+  // }
+  // reverse(all(ans));
+  // // print(ans);
+  // int cnt = n;
+  // vi res(n + 1, 0);
+  // for(auto elem : ans) {
+  //   res[elem] = cnt--;
+  // }
+  // for (int i = 1; i <= n; ++i) {
+  //   cout << res[i] << " ";
+  // } newl;
 }
 
 void solve() {

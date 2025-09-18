@@ -115,31 +115,32 @@ bool comp(int a, int b) { return a > b; }
 void tTestCase(int t) {
   int n; cin >> n;
   vi a(n); cin >> a;
-  int l = 0, r = 0;
-  for (int i = 0; i < n; ++i) {
-    if(a[i] == n) {
-      l = i; r = i;
-    }
-  }
-  // bug(l, r);
-  int flag = n;
-  while(l >= 0 and r < n) {
-    bug(flag);
-    if(l - 1 >= 0 and a[l-1] + 1 == flag) {
-      // bug(l, r);
-      flag = a[l-1];
-      l--;
-    } else if(r + 1 < n and a[r + 1] + 1 == flag) {
-      // bug(l, r);
-      flag = a[r+1];
-      r++;
+  int cnt = 0;
+  vi res;
+  int i = 1;
+  res.push_back(a[0]);
+  while(i < n) {
+    if(a[i - 1] < a[i]) {
+      while(i + 1 < n and a[i] < a[i + 1]) {
+        i++;
+      }
+      res.push_back(a[i]);
+      // cout << a[i] << " ";
     } else {
-      if(flag == 1) yes;
-      else no; 
-      return;
+      while(i + 1 < n and a[i] > a[i + 1]) {
+        i++;
+      }
+      res.push_back(a[i]);
+      // cout << a[i] << " ";
     }
-  }
-  yes;
+    i++;
+  } 
+  // for (int i = 0; i < res.size() - 1; ++i) {
+  //   cnt += abs(a[i] - a[i + 1]);
+  // }
+  // print(cnt);
+  print(res.size());
+  print(res);
 }
 
 void solve() {

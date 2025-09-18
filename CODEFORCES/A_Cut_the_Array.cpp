@@ -115,31 +115,32 @@ bool comp(int a, int b) { return a > b; }
 void tTestCase(int t) {
   int n; cin >> n;
   vi a(n); cin >> a;
-  int l = 0, r = 0;
+  int s1 = 0, s2 = 0, s3 = 0;
   for (int i = 0; i < n; ++i) {
-    if(a[i] == n) {
-      l = i; r = i;
+    for (int j = i; j < n; ++j) {
+      s1 = 0, s2 = 0, s3 = 0;
+      bool f1 = 0, f2 = 0, f3 = 0;
+      for (int k = 0; k <= i; ++k) {
+        s1 += a[k];
+        f1 = 1;
+      }
+      for (int k = i+1; k <= j; ++k) {
+        // cout << a[k] << " ";
+        s2 += a[k];
+        f2 = 1;
+      } 
+      for (int k = j+1; k < n; ++k) {
+        s3 += a[k];
+        f3 = 1;
+      }
+
+      if(f1 and f2 and f3 and ((s1%3 == s2% 3 and s2%3 == s3%3) or (s1%3 != s2% 3 and s2%3 != s3%3 and s1%3 !=s3%3))) {
+        bug(s1, s2, s3, s1%3, s2%3, s3%3);
+        print(i + 1, j + 1); return;
+      }
     }
   }
-  // bug(l, r);
-  int flag = n;
-  while(l >= 0 and r < n) {
-    bug(flag);
-    if(l - 1 >= 0 and a[l-1] + 1 == flag) {
-      // bug(l, r);
-      flag = a[l-1];
-      l--;
-    } else if(r + 1 < n and a[r + 1] + 1 == flag) {
-      // bug(l, r);
-      flag = a[r+1];
-      r++;
-    } else {
-      if(flag == 1) yes;
-      else no; 
-      return;
-    }
-  }
-  yes;
+  print(0, 0);
 }
 
 void solve() {

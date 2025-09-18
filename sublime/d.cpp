@@ -112,32 +112,40 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+map<int, vi> g;
+int n; 
+
+vi vis, ans;
+
+void dfs(int u) {
+  vis[u] = 1;
+  // print(u);
+  for(auto v : g[u]) {
+    if(!vis[v]) {
+      dfs(v);
+    }
+  }
+  ans.push_back(u);
+}
+
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi evn, odd;
-  int cnt = 0;
-  for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp;
-    if(temp&1) odd.push_back(temp);
-    else cnt += temp;
+  cin >> n;
+  vis.assign(n + 1, 0);
+  ans.clear();
+  for (int i = 1; i < n; ++i) {
+    int u, v; cin >> u >> v;
+    g[u].push_back(v);
   }
-  if(odd.empty()) {
-    print(0); return;
+  for (int i = 1; i <= n; ++i) {
+    if(!vis[i]) dfs(i);
   }
-  sort(all(odd), comp);
-  bug(odd.size(), (odd.size() / 2));
-  for (int i = 0; i < ceil(odd.size(), 2); ++i) {
-    cnt += odd[i];
-  }
-  // if(odd.size() == 1) {
-  //   cnt += odd[0];
-  // }
-  print(cnt);
+  reverse(all(ans));
+  print(ans);
 }
 
 void solve() {
   int t = 1; 
-  cin >> t;
+  // cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);

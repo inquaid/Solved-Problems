@@ -115,31 +115,46 @@ bool comp(int a, int b) { return a > b; }
 void tTestCase(int t) {
   int n; cin >> n;
   vi a(n); cin >> a;
-  int l = 0, r = 0;
+  int zero = 0;
   for (int i = 0; i < n; ++i) {
-    if(a[i] == n) {
-      l = i; r = i;
-    }
+    zero += (a[i] == 0);
   }
-  // bug(l, r);
-  int flag = n;
-  while(l >= 0 and r < n) {
-    bug(flag);
-    if(l - 1 >= 0 and a[l-1] + 1 == flag) {
-      // bug(l, r);
-      flag = a[l-1];
-      l--;
-    } else if(r + 1 < n and a[r + 1] + 1 == flag) {
-      // bug(l, r);
-      flag = a[r+1];
-      r++;
-    } else {
-      if(flag == 1) yes;
-      else no; 
-      return;
+  if(zero <= 1) {
+    if(zero == 1) {
+      vi vis(n + 1, 0);
+      int temp = 0;
+      for (int i = 0; i < n; ++i) {
+        temp ^= (i+1);
+        temp ^= a[i];
+      }
+      // print(temp); return;
+      for (int i = 0; i < n; ++i) {
+        if(a[i] == 0) a[i] = temp;
+      }
     }
+    int l = -1, r = -1;
+    for (int i = 0; i < n; ++i) {
+      if(a[i] != (i + 1)) {
+        if(l == -1) l = i;
+        r = i;
+      }
+    }
+    // bug(a);
+    if(l == -1) {
+      print(0); return;
+    }
+    print(r - l + 1);
+  } else {
+    int l = -1, r = -1;
+    for (int i = 0; i < n; ++i) {
+      if(a[i] != (i + 1) or a[i] == 0) {
+        if(l == -1) l = i;
+        r = i;
+      }
+    }
+    print(r - l + 1);
   }
-  yes;
+  // print(zero);
 }
 
 void solve() {

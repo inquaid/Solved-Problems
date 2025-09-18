@@ -110,35 +110,80 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(int a, int b) { return a > b; }
+bool comp(vi &a, vi &b) { return a.back() < b.back(); }
+
+map<int, vi> g;
+int n; 
+vi ans, vis;
+
+void dfs(int u) {
+  vis[u] = 1;
+  // print(u);
+  for(auto v : g[u]) {
+    if(!vis[v]) {
+      dfs(v);
+    }
+  }
+  ans.push_back(u);
+}
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  vi a(n); cin >> a;
-  map<int, int> mp;
-  for(auto elem : a) mp[elem]++;
-  for(auto [i, f] : mp) {
-    if(f % k != 0) {
-      print(0); return;
+  cin >> n;
+  vis.assign(n + 1, 0);
+  g.clear();
+  vi p(n + 1);
+  // iota(all(p), 0);
+  // print(ans);
+  for (int i = 0; i < n - 1; ++i) {
+    int u, v, x, y; cin >> u >> v >> x >> y;
+    if(x > y) {
+      g[u].push_back(v);
+    } else if(y > x) {
+      g[v].push_back(u);
     }
   }
-  // yes;
-  int cnt = 0, l = 0;
-  map<int, int> tmp, window;
-
-  for(auto i : mp) tmp[i.ff] = i.ss/k;
-  for (int r = 0; r < n; ++r) {
-    int val = a[r];
-    window[val]++;
-    while(window[val] > tmp[val]) {
-      window[a[l]]--;
-      l++;
+  // bfs
+  vi ind(n + 1, 0);
+  for (int i = 1; i <= n; ++i) {
+    for(auto j : g[i]) {
+      ind[j]++;
     }
-    cnt += (r- l + 1);
   }
+  queue<int> q;
+  for (int i = 1; i <= n; ++i) {
+    if(ind[i] == 0) q.push(i);
+  }
+  vi tp;
+  while(q.size()) {
+    int u = q.front(); q.pop();
+    tp.push_back(u);
+    for(auto v : g[u]) {
+      if(--ind[v] == 0) q.push(v);
+    }
+  }
+  vi res(n + 1, 0);
+  int cnt = n;
+  for(auto u : tp) res[u] = cnt--;
+  for (int i = 1; i <= n; ++i) {
+    cout << res[i] << " ";
+  } newl;
 
 
-  print(cnt);
+  // dfs
+  // ans.clear();
+  // for (int i = 1; i <= n; ++i) {
+  //   if(!vis[i]) dfs(i);
+  // }
+  // reverse(all(ans));
+  // // print(ans);
+  // int cnt = n;
+  // vi res(n + 1, 0);
+  // for(auto elem : ans) {
+  //   res[elem] = cnt--;
+  // }
+  // for (int i = 1; i <= n; ++i) {
+  //   cout << res[i] << " ";
+  // } newl;
 }
 
 void solve() {

@@ -110,29 +110,88 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(int a, int b) { return a > b; }
+bool comp(vi &a, vi &b) { return a.back() < b.back(); }
+
+map<int, vi> g;
+int n; 
+
+void bfs(int s) {
+
+  queue<int> q;
+  vector<bool> used(n + 1, 0);
+  vi d(n + 1, 0), p(n + 1, 0);
+
+  q.push(s);
+  used[s] = 1;
+  p[s] = 0;
+  while(q.size()) {
+    int u = q.front();
+    q.pop();
+    for(auto v : g[u]) {
+      if(!used[v]) {
+        used[v] = 1;
+        q.push(v);
+        d[v] = d[u] + 1;
+        p[v] = u;
+      }
+    }
+  }
+  vector<vi> v;
+  for (int i = 0; i <= n; ++i) {
+    // print(i, p[i], d[i]);
+    v.push_back({i, d[i]});
+  }
+  sort(all(v), comp);
+  map<int, int> res;
+  int cnt = n;
+  for(auto i : v) {
+    // print(i);
+    if(i[0] == 0) continue;
+    res[i[0]] = cnt; cnt--;
+  }
+  for (int i = 1; i <= n; ++i) {
+    cout << res[i] << " ";
+  } newl;
+}
 
 void tTestCase(int t) {
-  int n, m; cin >> n >> m;
-  int cnt = 0;
-  int prev_a = 0, prev_b = 0;
-  // cin >> prev_a >> prev_b;
-  for (int i = 0; i < n; ++i) {
-    int pres_a, pres_b;
-    cin >> pres_a >> pres_b;
-    int gap = pres_a - prev_a;
-    if(gap%2 == 0) {
-      if(prev_b == pres_b) cnt += gap;
-      else cnt += gap - 1;
-    } else {
-      if(prev_b != pres_b) cnt += gap;
-      else cnt += gap - 1;
+  cin >> n;
+  g.clear();
+  vi p(n + 1);
+  // iota(all(p), 0);
+  // print(ans);
+  for (int i = 0; i < n - 1; ++i) {
+    int u, v, x, y; cin >> u >> v >> x >> y;
+    if(x > y) {
+      g[u].push_back(v);
+    } else if(y > x) {
+      g[v].push_back(u);
     }
-    prev_a = pres_a; prev_b = pres_b; 
   }
-  int gap = m - prev_a;
-  cnt += gap;
-  print(cnt);
+  vi ind(n + 1, 0);
+  for (int i = 1; i <= n; ++i) {
+    for(auto j : g[i]) {
+      ind[j]++;
+    }
+  }
+  queue<int> q;
+  for (int i = 1; i <= n; ++i) {
+    if(ind[i] == 0) q.push(i);
+  }
+  vi tp;
+  while(q.size()) {
+    int u = q.front(); q.pop();
+    tp.push_back(u);
+    for(auto v : g[u]) {
+      if(--ind[v] == 0) q.push(v);
+    }
+  }
+  vi res(n + 1, 0);
+  int cnt = n;
+  for(auto u : tp) res[u] = cnt--;
+  for (int i = 1; i <= n; ++i) {
+    cout << res[i] << " ";
+  } newl;
 }
 
 void solve() {

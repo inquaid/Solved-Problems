@@ -113,33 +113,41 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(n); cin >> a;
-  int l = 0, r = 0;
-  for (int i = 0; i < n; ++i) {
-    if(a[i] == n) {
-      l = i; r = i;
-    }
+  int n, q; cin >> n >> q;
+  vi a(n + 2, -1);
+  for (int i = 1; i <= n; ++i) {
+    cin >> a[i];
   }
-  // bug(l, r);
-  int flag = n;
-  while(l >= 0 and r < n) {
-    bug(flag);
-    if(l - 1 >= 0 and a[l-1] + 1 == flag) {
-      // bug(l, r);
-      flag = a[l-1];
-      l--;
-    } else if(r + 1 < n and a[r + 1] + 1 == flag) {
-      // bug(l, r);
-      flag = a[r+1];
-      r++;
-    } else {
-      if(flag == 1) yes;
-      else no; 
-      return;
-    }
+  // print(a);
+  int ans = 0, i = 1;
+  while(i <= n) {
+    // cout << a[i] << " ";
+    ans++;
+    while(i + 1 <= n and a[i] == a[i + 1]) i++;
+    i++;
   }
-  yes;
+  bug(ans);
+  for (int i = 0; i < q; ++i) {
+    int idx, val; cin >> idx >> val;
+    int prev = a[idx];
+    a[idx] = val;
+    if(prev == val) {print(ans); continue;}
+    if(a[idx - 1] != prev and a[idx - 1] == a[idx]) {
+      ans--;
+    }
+    if(a[idx - 1] == prev and a[idx - 1] != a[idx]) {
+      ans++;
+    }
+    if(a[idx + 1] != prev and a[idx + 1] == a[idx]) {
+      ans--;
+    }
+    if(a[idx + 1] == prev and a[idx + 1] != a[idx]) {
+      ans++;
+    }
+    print(ans);
+    // print(a);
+
+  }
 }
 
 void solve() {
