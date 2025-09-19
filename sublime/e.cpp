@@ -168,7 +168,6 @@ void tTestCase(int t) {
     cout << res[i] << " ";
   } newl;
 
-
   // dfs
   // ans.clear();
   // for (int i = 1; i <= n; ++i) {

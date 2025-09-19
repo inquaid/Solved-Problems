@@ -112,17 +112,50 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+int temp;
+
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(2 * n); cin >> a;
-  sort(all(a));
-  // print(a);
-  print(a[n] - a[n-1]);
+  int n, k, m; cin >> n >> k >> m;
+  map<string, int> mp;
+  vector<string> vs;
+  vi a(n);
+  for (int i = 0; i < n; ++i) {
+    string s; cin >> s;
+    // bug(s);
+    vs.push_back(s);
+  }
+  for (int i = 0; i < n; ++i) {
+    cin >> a[i];
+    mp[vs[i]] = a[i];
+    // bug(vs[i], mp[vs[i]]);
+  }
+  vi v(n, 0);
+  for (int i = 0; i < k; ++i) {
+    int x; cin >> x;
+    int mn = 1e9;
+    for (int j = 0; j < x; ++j) {
+      cin >> v[j];
+      mn = min(mn, a[v[j] - 1]);
+    }
+    for (int j = 0; j < x; ++j) {
+      mp[vs[v[j] - 1]] = mn;
+    }
+    // bug(mn);
+  }
+  // for(auto s : mp) {
+  //   print(s);
+  // }
+  int res = 0;
+  for (int i = 0; i < m; ++i) {
+    string word; cin >> word;
+    res += mp[word];
+  }
+  print(res);
 }
 
 void solve() {
   int t = 1; 
-  cin >> t;
+  // cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);

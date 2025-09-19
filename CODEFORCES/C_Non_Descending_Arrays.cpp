@@ -112,12 +112,80 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
+vi a, b, ans; 
+int N;
+const int M = 998244353;
+vector<vi> dp;
+int subset(int n, int s) {
+  if(n == 0) {
+    return 1;
+  }
+  if(dp[n][s] != -1) return dp[n][s] % M;
+  int ai = 1e9, bi = 1e9;
+  if(n < N) {
+    ai = a[n]; bi = b[n];
+  }
+  int presAi = a[n-1], presBi = b[n-1];
+  // print( presAi, presBi, ai, bi);
+  // subset(n-1,0);
+  if(s == 1) { // swapped
+    swap(ai, bi);
+  } 
+  int res = 0;
+  for (int cnt = 0; cnt < 2; ++cnt) {
+    if(cnt) {
+      swap(presAi, presBi);
+    }
+    if(presAi <= ai and presBi <= bi) {
+      res += subset(n-1,cnt) % M;
+    }
+  }
+
+  return dp[n][s] = res%M;
+}
+
+void f() {
+  for (int n = 0; n <= N; ++n) {
+    for (int s = 0; s < 2; ++s) {
+      if(n == 0) {
+        dp[n][s] = 1; continue;
+      }
+      int ai = 1e9, bi = 1e9;
+      if(n < N) {
+        ai = a[n]; bi = b[n];
+      }
+      int presAi = a[n-1], presBi = b[n-1];
+      // print( presAi, presBi, ai, bi);
+      // subset(n-1,0);
+      if(s == 1) { // swapped
+        swap(ai, bi);
+      } 
+      int res = 0;
+      for (int cnt = 0; cnt < 2; ++cnt) {
+        if(cnt) {
+          swap(presAi, presBi);
+        }
+        if(presAi <= ai and presBi <= bi) {
+          res += dp[n-1][cnt] % M;
+        }
+      }
+      dp[n][s] = res%M; 
+    }
+  }
+  print(dp[N][1]);
+}
+
 void tTestCase(int t) {
-  int n; cin >> n;
-  vi a(2 * n); cin >> a;
-  sort(all(a));
-  // print(a);
-  print(a[n] - a[n-1]);
+  int n; cin >> n; N = n;
+  a.resize(n);
+  b.resize(n);
+  dp.assign(n + 1, vi(2, 0));
+  // dp.assign(n + 1, -1);
+  cin >> a >> b;
+  f();
+  // bug(a);
+  // subset(n);
+  // print(subset(n, 0));
 }
 
 void solve() {

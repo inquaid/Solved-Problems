@@ -114,15 +114,20 @@ bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
   int n; cin >> n;
-  vi a(2 * n); cin >> a;
-  sort(all(a));
-  // print(a);
-  print(a[n] - a[n-1]);
+  vi a(n);
+  cin >> a;
+  int odd = 0, evn = 0;
+  for(auto elem : a) {
+    if(elem&1) odd++;
+    else evn++;
+  }
+  if(odd and evn) sort(all(a));
+  print(a);
 }
 
 void solve() {
   int t = 1; 
-  cin >> t;
+  // cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);
