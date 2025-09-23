@@ -112,31 +112,51 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-void tTestCase(int t) {
-  int n, x; cin >> n >> x;
-  vi a(n), b(x);
-  cin >> a >> b;
-  sort(all(a), comp);
-  sort(all(b));
-  bug(a);
-  bug(b);
-  int i = 0, j = 0, res = 0;
-  for (int i = 0; i < n; i++, j++) {
-    // print(a[i]);
-    if(j < x) {
-      for (int k = 0; k < b[j] - 1; k++, i++) {
-        if(i < n) {
-          // cout << a[i] << " ";
-          res += a[i]; 
-        }
-      } 
-      // newl;      
-    } else {
-      res += a[i];
+int gcd(int a, int b, int& x, int& y) {
+    if (b == 0) {
+        x = 1;
+        y = 0;
+        return a;
+    }
+    int x1, y1;
+    int d = gcd(b, a % b, x1, y1);
+    x = y1;
+    y = x1 - y1 * (a / b);
+    return d;
+}
+
+bool find_pos_solution(int a, int b, int c) {
+    int x0 = 0, y0 = 0, g = 0;
+
+    g = gcd(abs(a), abs(b), x0, y0);
+    x0 *= (c/g);
+    y0 *= (c/g);
+    bug(g);
+    if (c % g) {
+        return false;
     }
 
-  }
-  print(res);
+    int k = ceil(-x0 * g/(b*1.0));
+    // bug(k);
+    // bug(ceil(-x0 * (g/(b*1.0))), k <= (y0 * floor(g/a)));
+    if(k <= floor(y0 * g/(a*1.0)))
+      return true;
+    return false;
+}
+
+void tTestCase(int t) {
+  int a, b, c; cin >> a >> b >> c;
+    // for (int i = 0; i < 10000; ++i) {
+    //   for (int j = 0; j < 10000; ++j) {
+    //     if(a*i+b*j == c) {
+    //       bug(i, j);
+    //       yes; return;
+    //          }
+    //   }
+    // }
+    // no; return;
+  // bug(a, b, c);
+  yesif(find_pos_solution(a, b, c));
 }
 
 void solve() {

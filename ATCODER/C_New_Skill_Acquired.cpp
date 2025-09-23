@@ -112,58 +112,54 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int msb(int n) {
-  int k = floor(log2(n)) + 1;
-  return ((1ll<<k) - 1 - n);
+map<int, vi> g;
+vi vis, done;
+
+void dfs(int u) {
+  bug(u);
+  vis[u] = 1;
+  done[u] = 1;
+  for(auto v : g[u]) {
+    if(!vis[v]) {
+      dfs(v);
+    }
+  }
 }
 
 void tTestCase(int t) {
-  int l, n; cin >> l >> n;
-
-  vi a(n - l + 1);
-  iota(all(a), l);
-  // print(a);
-  map<int, int> pos;
-  for (int i = 0; i < (n-l+1); ++i) {
-    pos[a[i]] = i;
+  int n; cin >> n;
+  vis.assign(n + 1, 0);
+  done.assign(n + 1, 0);
+  int u, v;
+  vector<vi> a;
+  for (int i = 0; i < n; ++i) {
+    cin >> u >> v;
+    g[v].push_back(i+1);
+    g[u].push_back(i+1);
+    a.push_back({u, v});
+    if(!u and !v) done[i + 1] = 1;
   }
-  // for(auto i : pos) print(i); return;
-  vi res(n - l + 1, -1);
-  vi vis(n - l + 1, -1);
-
-  for (int i = a.size() - 1; i >= 0; i--) {
-    int val = a[i];
-    if(vis[pos[val]] == -1) {
-      int x = val;
-      int y = msb(val);
-      int b = 0;
-      while(y < l) {
-        y |= (1ll<<b); b++;
-      }
-      bug(x, y);
-      if(vis[pos[y]] != -1) {
-        res[pos[x]] = pos[x];
-        vis[pos[x]] = 1; continue;  
-      }
-      res[pos[x]] = pos[y]; res[pos[y]] = pos[x];
-      vis[pos[x]] = vis[pos[y]] = 1;
+  for (int i = 1; i <= n; ++i) {
+    if(!vis[i] and done[i]) {
+      dfs(i);
     }
   }
   int cnt = 0;
-  for (int i = 0; i < res.size(); ++i) {
-    cnt += (a[i] | a[res[i]]);
-    print(a[i], a[res[i]]);
+  bug(done);
+  for (int i = 0; i < a.size(); ++i) {
+    if(done[a[i][0]] or done[a[i][1]] or (!a[i][0] and !a[i][1])) {
+      cnt++;
+    // bug(a[i][0], a[i][1]);
+    }
   }
+  // bug(done);
+  // for(auto elem : done) if(elem) cnt++;
   print(cnt);
-  // print(res);
-  for (int i = 0; i < res.size(); ++i) {
-    // print(a[pos[res[i]]]);
-  }
 }
 
 void solve() {
   int t = 1; 
-  cin >> t;
+  // cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);

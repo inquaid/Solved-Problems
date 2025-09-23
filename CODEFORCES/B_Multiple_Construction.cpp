@@ -112,53 +112,38 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int msb(int n) {
-  int k = floor(log2(n)) + 1;
-  return ((1ll<<k) - 1 - n);
-}
-
 void tTestCase(int t) {
-  int l, n; cin >> l >> n;
-
-  vi a(n - l + 1);
-  iota(all(a), l);
-  // print(a);
-  map<int, int> pos;
-  for (int i = 0; i < (n-l+1); ++i) {
-    pos[a[i]] = i;
+  int n; cin >> n;
+  vi a(2 * n, 0);
+  int evn = n;
+  if(n&1) evn--;
+  else evn -= 2;
+  int i = 0;
+  for (; i < n/2; i++) {
+    a[i] = evn; evn -= 2;
   }
-  // for(auto i : pos) print(i); return;
-  vi res(n - l + 1, -1);
-  vi vis(n - l + 1, -1);
-
-  for (int i = a.size() - 1; i >= 0; i--) {
-    int val = a[i];
-    if(vis[pos[val]] == -1) {
-      int x = val;
-      int y = msb(val);
-      int b = 0;
-      while(y < l) {
-        y |= (1ll<<b); b++;
-      }
-      bug(x, y);
-      if(vis[pos[y]] != -1) {
-        res[pos[x]] = pos[x];
-        vis[pos[x]] = 1; continue;  
-      }
-      res[pos[x]] = pos[y]; res[pos[y]] = pos[x];
-      vis[pos[x]] = vis[pos[y]] = 1;
-    }
+  if(n % 2 == 0) i--;
+  a[i] = n; 
+  a[i+n] = n;
+  int l = i + n - 1, r = i + n + 2;
+  i++;
+  evn = 2;
+  int temp = n;
+  if(n%2==0) temp--;
+  for (; i < temp; ++i) {
+    a[i] = evn; evn += 2;
   }
-  int cnt = 0;
-  for (int i = 0; i < res.size(); ++i) {
-    cnt += (a[i] | a[res[i]]);
-    print(a[i], a[res[i]]);
+  // a[l] = a[r] = -1;
+  int odd = 3;
+  while(odd < n) {
+    a[l] = a[r] = odd;
+    l--; r++; 
+    odd += 2;
   }
-  print(cnt);
-  // print(res);
-  for (int i = 0; i < res.size(); ++i) {
-    // print(a[pos[res[i]]]);
+  for (int i = 0; i < 2*n; ++i) {
+    if(a[i] == 0) a[i] = 1;
   }
+  print(a);
 }
 
 void solve() {

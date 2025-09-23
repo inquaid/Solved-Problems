@@ -112,53 +112,27 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int msb(int n) {
-  int k = floor(log2(n)) + 1;
-  return ((1ll<<k) - 1 - n);
-}
-
 void tTestCase(int t) {
-  int l, n; cin >> l >> n;
+  string s; cin >> s;
+  int one = count(all(s), '1'), zero = count(all(s), '0');
+  int ans = min(one, zero);
+  int c1 = 0, c0 = zero;
+  zero = 0;
+  for (int i = 0; i < s.size(); ++i) {
+    if(s[i] == '1') c1++;
+    else c0--;
+    ans = min(ans, c0 + c1);
 
-  vi a(n - l + 1);
-  iota(all(a), l);
-  // print(a);
-  map<int, int> pos;
-  for (int i = 0; i < (n-l+1); ++i) {
-    pos[a[i]] = i;
-  }
-  // for(auto i : pos) print(i); return;
-  vi res(n - l + 1, -1);
-  vi vis(n - l + 1, -1);
+    if(s[i] == '0') zero++;
+    else one--; 
 
-  for (int i = a.size() - 1; i >= 0; i--) {
-    int val = a[i];
-    if(vis[pos[val]] == -1) {
-      int x = val;
-      int y = msb(val);
-      int b = 0;
-      while(y < l) {
-        y |= (1ll<<b); b++;
-      }
-      bug(x, y);
-      if(vis[pos[y]] != -1) {
-        res[pos[x]] = pos[x];
-        vis[pos[x]] = 1; continue;  
-      }
-      res[pos[x]] = pos[y]; res[pos[y]] = pos[x];
-      vis[pos[x]] = vis[pos[y]] = 1;
-    }
+    ans = min(ans, zero + one);
+    // print(c0, c1);
   }
-  int cnt = 0;
-  for (int i = 0; i < res.size(); ++i) {
-    cnt += (a[i] | a[res[i]]);
-    print(a[i], a[res[i]]);
-  }
-  print(cnt);
-  // print(res);
-  for (int i = 0; i < res.size(); ++i) {
-    // print(a[pos[res[i]]]);
-  }
+  // int cnt = 0; 
+
+
+  print(ans);
 }
 
 void solve() {

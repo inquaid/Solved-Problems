@@ -112,53 +112,30 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int msb(int n) {
-  int k = floor(log2(n)) + 1;
-  return ((1ll<<k) - 1 - n);
+int pos(int n) {
+  return n * (n+1) / 2;
 }
 
 void tTestCase(int t) {
-  int l, n; cin >> l >> n;
-
-  vi a(n - l + 1);
-  iota(all(a), l);
-  // print(a);
-  map<int, int> pos;
-  for (int i = 0; i < (n-l+1); ++i) {
-    pos[a[i]] = i;
-  }
-  // for(auto i : pos) print(i); return;
-  vi res(n - l + 1, -1);
-  vi vis(n - l + 1, -1);
-
-  for (int i = a.size() - 1; i >= 0; i--) {
-    int val = a[i];
-    if(vis[pos[val]] == -1) {
-      int x = val;
-      int y = msb(val);
-      int b = 0;
-      while(y < l) {
-        y |= (1ll<<b); b++;
-      }
-      bug(x, y);
-      if(vis[pos[y]] != -1) {
-        res[pos[x]] = pos[x];
-        vis[pos[x]] = 1; continue;  
-      }
-      res[pos[x]] = pos[y]; res[pos[y]] = pos[x];
-      vis[pos[x]] = vis[pos[y]] = 1;
-    }
-  }
+  int n; cin >> n;
+  // vi a(n + 1, 0);
+  int prev = 0;
   int cnt = 0;
-  for (int i = 0; i < res.size(); ++i) {
-    cnt += (a[i] | a[res[i]]);
-    print(a[i], a[res[i]]);
+  // bug(n);
+  int l = 1, r = 100000;
+  while(l <= r) {
+    int mid = l + (r-l) / 2;
+    if(pos(mid) <= n) {
+      l = mid + 1;
+    } else 
+      r = mid - 1;
   }
-  print(cnt);
-  // print(res);
-  for (int i = 0; i < res.size(); ++i) {
-    // print(a[pos[res[i]]]);
-  }
+  print(n - (l-1));
+  // for (int i = 1; i <= n; ++i) {
+  //   cnt += (a[i] == 0);
+  // }
+  // print(n - cnt);
+  // bug(a);
 }
 
 void solve() {
@@ -174,7 +151,7 @@ void solve() {
 int32_t main() {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
-    // freopen("input.txt", "r" , stdin);
+    freopen("alimagde.in", "r" , stdin);
     // freopen("output.txt", "w", stdout);
     // cout << fixed << setprecision(20);
 

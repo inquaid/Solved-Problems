@@ -112,58 +112,56 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int msb(int n) {
-  int k = floor(log2(n)) + 1;
-  return ((1ll<<k) - 1 - n);
+int gcd(int a, int b, int& x, int& y) {
+    if (b == 0) {
+        x = 1;
+        y = 0;
+        return a;
+    }
+    int x1, y1;
+    int d = gcd(b, a % b, x1, y1);
+    x = y1;
+    y = x1 - y1 * (a / b);
+    return d;
+}
+
+bool find_pos_solution(int a, int b, int c) {
+    int x0 = 0, y0 = 0, g = 0;
+
+    g = gcd(abs(a), abs(b), x0, y0);
+    x0 *= (c/g);
+    y0 *= (c/g);
+    bug(g);
+    if (c % g) {
+        return false;
+    }
+
+    int k = ceil(-x0 * g/(b*1.0));
+    // bug(k);
+    bug(ceil(-x0 * (g/(b*1.0))), k <= (y0 * floor(g/a)));
+    if(k <= floor(y0 * g/(a*1.0)))
+      return true;
+    return false;
 }
 
 void tTestCase(int t) {
-  int l, n; cin >> l >> n;
-
-  vi a(n - l + 1);
-  iota(all(a), l);
-  // print(a);
-  map<int, int> pos;
-  for (int i = 0; i < (n-l+1); ++i) {
-    pos[a[i]] = i;
-  }
-  // for(auto i : pos) print(i); return;
-  vi res(n - l + 1, -1);
-  vi vis(n - l + 1, -1);
-
-  for (int i = a.size() - 1; i >= 0; i--) {
-    int val = a[i];
-    if(vis[pos[val]] == -1) {
-      int x = val;
-      int y = msb(val);
-      int b = 0;
-      while(y < l) {
-        y |= (1ll<<b); b++;
-      }
-      bug(x, y);
-      if(vis[pos[y]] != -1) {
-        res[pos[x]] = pos[x];
-        vis[pos[x]] = 1; continue;  
-      }
-      res[pos[x]] = pos[y]; res[pos[y]] = pos[x];
-      vis[pos[x]] = vis[pos[y]] = 1;
-    }
-  }
-  int cnt = 0;
-  for (int i = 0; i < res.size(); ++i) {
-    cnt += (a[i] | a[res[i]]);
-    print(a[i], a[res[i]]);
-  }
-  print(cnt);
-  // print(res);
-  for (int i = 0; i < res.size(); ++i) {
-    // print(a[pos[res[i]]]);
-  }
+  int a, b, c; cin >> a >> b >> c;
+    // for (int i = 0; i < 10000; ++i) {
+    //   for (int j = 0; j < 10000; ++j) {
+    //     if(a*i+b*j == c) {
+    //       bug(i, j);
+    //       yes; return;
+    //          }
+    //   }
+    // }
+    // no; return;
+  // bug(a, b, c);
+  yesif(find_pos_solution(a, b, c));
 }
 
 void solve() {
   int t = 1; 
-  cin >> t;
+  // cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);

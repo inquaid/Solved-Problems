@@ -114,27 +114,24 @@ bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
   int n, x; cin >> n >> x;
-  int odd = 0, even = 0;
+  int evn = 0, odd = 0;
+  int temp;
   for (int i = 0; i < n; ++i) {
-    int temp; cin >> temp; 
-    temp % 2 == 0 ? even++ : odd++;
+    cin >> temp;
+    if(temp&1) odd++;
+    else evn++;
   }
-  // print(odd, even);
-  if(!odd) {
-    no; return;
+  evn = min(evn, x - 1);
+  // bug(x-evn, (x-evn)&1);
+  if((x - evn)&1) {
+    yesif(evn + odd >= x);
+  } else {
+    if(evn) evn--;
+    else {
+      no; return;
+    }
+    yesif(evn + odd >= x);
   }
-  if(n == x) {
-    yesif(odd&1); return;
-  }
-  // yes;
-  int temp = x - even;
-  if(temp&1) {
-    yes; return;
-  } 
-  if(odd > temp and even) {
-    yes; return;
-  }
-  no;
 }
 
 void solve() {

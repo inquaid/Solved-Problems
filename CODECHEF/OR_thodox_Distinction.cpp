@@ -97,8 +97,8 @@ template <typename Container> void print_container(const Container &container) {
   cout << container << "\n";
 }
 
-#define yes cout << "Yes\n"
-#define no cout << "No\n"
+#define yes cout << "YES\n"
+#define no cout << "NO\n"
 #define yesif(flag) ((flag) ? yes : no)
 #define ff first
 #define ss second
@@ -112,53 +112,25 @@ template <typename Container> void print_container(const Container &container) {
 int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
-int msb(int n) {
-  int k = floor(log2(n)) + 1;
-  return ((1ll<<k) - 1 - n);
-}
-
 void tTestCase(int t) {
-  int l, n; cin >> l >> n;
-
-  vi a(n - l + 1);
-  iota(all(a), l);
-  // print(a);
-  map<int, int> pos;
-  for (int i = 0; i < (n-l+1); ++i) {
-    pos[a[i]] = i;
+  int n; cin >> n;
+  vi a(n); cin >> a;
+  if(n > 60) {
+    no; return;
   }
-  // for(auto i : pos) print(i); return;
-  vi res(n - l + 1, -1);
-  vi vis(n - l + 1, -1);
-
-  for (int i = a.size() - 1; i >= 0; i--) {
-    int val = a[i];
-    if(vis[pos[val]] == -1) {
-      int x = val;
-      int y = msb(val);
-      int b = 0;
-      while(y < l) {
-        y |= (1ll<<b); b++;
-      }
-      bug(x, y);
-      if(vis[pos[y]] != -1) {
-        res[pos[x]] = pos[x];
-        vis[pos[x]] = 1; continue;  
-      }
-      res[pos[x]] = pos[y]; res[pos[y]] = pos[x];
-      vis[pos[x]] = vis[pos[y]] = 1;
+  map<int, int> mp;
+  set<int> st;
+  for (int i = 0; i < a.size(); ++i) {
+    int cnt = 0ll;
+    for (int j = i; j < a.size(); ++j) {
+      cnt |= a[j];
+      st.insert(cnt);
     }
-  }
-  int cnt = 0;
-  for (int i = 0; i < res.size(); ++i) {
-    cnt += (a[i] | a[res[i]]);
-    print(a[i], a[res[i]]);
-  }
-  print(cnt);
-  // print(res);
-  for (int i = 0; i < res.size(); ++i) {
-    // print(a[pos[res[i]]]);
-  }
+    
+  } 
+  yesif(st.size() == (n*(n+1)) / 2);  
+    // bug(mp.size());
+    // yes;/
 }
 
 void solve() {
@@ -180,8 +152,28 @@ int32_t main() {
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 
-    solve();  // return 0;
-
+    solve();  return 0;
+    vi a = {1,10,6};
+    map<int, int> mp;
+    for (int i = 0; i < a.size(); ++i) {
+      for (int j = i; j < a.size(); ++j) {
+        int cnt = 0;
+        for (int k = i; k <= j; ++k) {
+          cnt |= a[k];
+          // cout << a[k] << " ";
+        } // newl;
+        mp[cnt]++;
+        if(mp[cnt] > 1) {
+          no; return 0;
+        }
+      }
+    }
+    bug(mp.size());
+    yes;
+    for(auto i : a) {
+      bitset<15> bs(i);
+      print(bs);
+    }
     // auto t2 = std::chrono::high_resolution_clock::now();
     // auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
     // cerr << "    time: " << duration.count() << " ms" << endl;

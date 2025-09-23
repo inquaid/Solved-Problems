@@ -2,7 +2,7 @@
 #include <fstream>
 using namespace std;
 
-const int ITER = 1000; // select the number of iterations
+const int ITER = 1500; // select the number of iterations
 
 int32_t main() {
   // Compilation commands (unchanged)

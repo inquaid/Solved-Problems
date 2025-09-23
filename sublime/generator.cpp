@@ -6,7 +6,7 @@
 
 using namespace std;
 #define int long long
-const int N = 20, max_t = 3, max_n = 5, max_val = 100;
+const int N = 60, max_t = 3, max_n = 60, max_val = 1e18;
 
 // NEVER use rand() function because rand() will always generate same random values even if you run the same code multiple times
 mt19937_64 rnd(chrono::steady_clock::now().time_since_epoch().count()); // using current time as seed, so it will always generate different random values if you run this code multiple times
@@ -22,7 +22,7 @@ int32_t main() {
   int n = get_rand(1, max_n);
   cout << n << endl;
   for (int i = 0; i < n; ++i) {
-    int val = get_rand(1, n);
+    int val = get_rand(1, max_val);
     cout << val << " ";
   } cout << endl;
   // for (int i = 0; i < n; ++i) {
