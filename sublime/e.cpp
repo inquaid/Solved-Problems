@@ -113,40 +113,25 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n; cin >> n;
-  string s; cin >> s;
-  vi a(n); iota(all(a), 1);
-  // print(a);
-  if(s[0] == '0' and s[1] == '1') {
-    no;return;
+  int n, d; cin >> n >> d;
+  int ans = 1e9;
+  if(ceil(log2(n)) == floor(log2(n))) {
+    ans = log2(n);
   }
-  // bug(s, s[n-1], s[n-2]);
-  if(s[n-1] == '0' and s[n-2] == '1') {
-    no;return;
-  }
-  for (int i = 1; i + 1 < n; ++i) {
-    if(s[i-1] == '1' and s[i] == '0' and s[i + 1] == '1') {
-      no; return;
-    //   if(i + 1 == n or s[i+1] != '0') {
-    //     no; return;
-    //   }
-    //   swap(a[i], a[i+1]);
+  // print(ans);
+  int m = n, cnt = 0;
+  while(m > 1) {
+    bool flag = 0;
+    if(m % d == 0) {
+      ans = min(ans, cnt + m / d);
+      flag = 1;
     }
+    cnt++;
+    if(m % 2 == 0)
+      m /= 2;
+    else if(!flag) break;
   }
-  for (int i = 0; i < n; ++i) {
-    if(s[i] == '0') {
-      int l = i, r = i;
-      while(i + 1 < n and s[i + 1] == '0') {
-        i++; r++;
-      }  
-      while(l <= r) {
-        swap(a[l], a[r]);
-        l++; r--;
-      }
-    }
-  }
-  yes;
-  print(a);
+  print(ans);
 }
 
 void solve() {

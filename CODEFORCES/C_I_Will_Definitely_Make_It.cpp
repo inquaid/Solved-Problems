@@ -110,34 +110,28 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(vi &a, vi &b) { 
-  if(a[0] != b[0]) return a[0] < b[0];
-
-  return a.back() < b.back();
-}
+bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
   int n, k; cin >> n >> k;
-  vector<vi> v;
-  int l, r, real;
-  for (int i = 0; i < n; ++i) {
-    cin >> l >> r >> real;
-    v.push_back({l, r, real});
+  vi a(n); cin >> a;
+  int temp = a[k - 1];
+  sort_unique(a);
+  // print(a);
+  int i = 0, prev = 0, gap = 0;
+  while(i < a.size() and a[i] < temp) i++;
+  // print(i);
+  vi gaps;
+  bug(a);
+  for ( ; i + 1 < a.size(); ++i) {
+    int time_need = a[i + 1] - a[i];
+    int time_have = a[i] - prev;
+    if(time_have < time_need) break;
+    prev += time_need;
+    // bug(time_need, time_have, prev);
   }
-  sort(all(v), comp);
-  bool flag = 0;
-  int res = 0;
-  for (int i = 0; i < n; ++i) {
-    int l = v[i][0], r = v[i][1], real = v[i][2];
-    if(l <= k and k <= r) {
-      flag = 1;
-    }
-    if(flag and l <= k and k <= r) {
-      k = max(k, real);
-    }
-  }
-  print(k);
-  // for(auto i : v) print(i); newl;
+  // print(i, n, a.size());
+  yesif(i + 1 == a.size());
 }
 
 void solve() {

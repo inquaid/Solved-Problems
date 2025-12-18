@@ -1,39 +1,4 @@
-boat accident, auch dube jae, lauch khuje pawa jae nh, submariene type kichu banabo, panir niche theke oita khuje ber krbe,
-
-disable people niye kaz, blind ppl , camera sending light to brain, so blind one can see,
-
-march rover project.
-
-
-
-
-
-Fly8 is a modern global education consultancy agency. Its primary mission is to guide and support students through the entire process of studying abroad. Fly8 assists students by providing expert advice on university and program selection, navigating complex application procedures, securing visas, preparing for entrance exams, arranging financial aid or scholarships, and offering pre-departure briefings. The agency acts as a dedicated partner, offering personalized strategies and hands-on assistance to simplify the international education journey, reduce student stress, and increase their chances of successful admission and transition to institutions worldwide.
-Primary Audience: Students aiming to study internationally.
-
-
-
-
-
-ConversaAI is a desktop application designed to help users learn and improve their English through natural, real-time conversations. It functions like a language companion that engages in interactive dialogue, offering instant feedback to correct grammar, suggest new vocabulary, and rephrase sentences to enrich language skills. The app aims to create an immersive and supportive learning environment by combining conversational practice with continuous, contextual language suggestions, allowing users to build fluency naturally. 
-
-Additionally, for questions beyond basic learning, ConversaAI can access the internet to provide broader information, making it a comprehensive and user-friendly tool for mastering English.
-
-
-
-
-Aero-Sense: The project aims to design and implement a microcontroller-based air quality monitoring system that measures and reports the purity of the surrounding air in real time. Utilizing a microcontroller, the system integrates several affordable yet reliable sensors: the PMS5003 for detecting particulate matter (PM2.5), the MH-Z19B for measuring carbon dioxide (CO₂) concentration, the SGP30 for monitoring volatile organic compounds (VOCs), and the DHT22 for recording temperature and humidity. Data collected by these sensors is processed and displayed into mobile phone, with the option to transmit readings wirelessly for remote monitoring and data analysis. The system provides a comprehensive, low-cost solution for assessing air quality, making it valuable for educational, research, and public awareness purposes. By making air pollution indicators accessible and understandable, this project empowers users to make informed decisions about their environment. Ultimate goal is to integrate IC's into mobile phone so that we can have the AQI built-in into mobile phones.
-
-
-1 
-I are seeking a high-impact, unique thesis topic suitable for MSc/PhD-level research in the fields of AI, ML, and DL, with a focus on a research project that has the potential to gain significant recognition. I aim for a topic that will contribute to solving important global issues and could lead to publication in top-tier journals. The chosen topic should help me stand out in the academic community and provide opportunities for higher studies and international job prospects. I'm looking for a topic that is innovative and has a super high impact factor, ensuring it can make a substantial contribution to society and the field of AI.
-
-
-I am seeking a high-impact, unique thesis topic suitable for MSc/PhD-level research in AI, ML, and DL, with the goal of contributing to solving important global issues and gaining significant recognition in top-tier journals. I aim for a topic that will not only help me stand out in the academic community but also open doors for higher studies and international job prospects. The chosen topic should be innovative, with a super high impact factor, ensuring it can make a substantial contribution to both society and the field of AI. As you navigate this process, you must be aware of the importance of selecting a topic with a feasible scope, ensuring access to necessary resources such as datasets, software tools, and mentorship. The topic should also have room for innovation, addressing existing gaps in the field while considering ethical considerations, especially if it involves sensitive data or societal impacts. Time management will be crucial to successfully balance research, writing, and testing, so careful planning and clear milestones are key. Additionally, the potential for future work is important—choosing a topic that leads to long-term research opportunities is essential for building a research career. Finally, staying connected with the broader research community through networking and understanding journal submission guidelines will further enhance the visibility and impact of my work.
-
-
-
-
-
-
-
+y neg forward
+  pos back
+x pos left
+  neg right00010000000000000000000000000000000000000000022222222211163

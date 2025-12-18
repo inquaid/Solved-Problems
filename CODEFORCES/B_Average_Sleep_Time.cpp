@@ -110,39 +110,29 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(vi &a, vi &b) { 
-  if(a[0] != b[0]) return a[0] < b[0];
-
-  return a.back() < b.back();
-}
+bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
   int n, k; cin >> n >> k;
-  vector<vi> v;
-  int l, r, real;
-  for (int i = 0; i < n; ++i) {
-    cin >> l >> r >> real;
-    v.push_back({l, r, real});
+  int s = 0;
+  vi a(n); cin >> a;
+  for (int i = 0; i < k; ++i) {
+    s += a[i];
   }
-  sort(all(v), comp);
-  bool flag = 0;
-  int res = 0;
-  for (int i = 0; i < n; ++i) {
-    int l = v[i][0], r = v[i][1], real = v[i][2];
-    if(l <= k and k <= r) {
-      flag = 1;
-    }
-    if(flag and l <= k and k <= r) {
-      k = max(k, real);
-    }
+  // bug(s);
+  int sum = s, cnt = 1;
+  for (int i = k; i < n; ++i) {
+    s += a[i]; s -= a[i-k];
+    // bug(s);
+    cnt++;
+    sum += s;
   }
-  print(k);
-  // for(auto i : v) print(i); newl;
+  print(sum / (cnt * 1.0));
 }
 
 void solve() {
   int t = 1; 
-  cin >> t;
+  // cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);
@@ -155,7 +145,7 @@ int32_t main() {
   cin.tie(NULL);
     // freopen("input.txt", "r" , stdin);
     // freopen("output.txt", "w", stdout);
-    // cout << fixed << setprecision(20);
+    cout << fixed << setprecision(10);
 
     // auto t1 = std::chrono::high_resolution_clock::now();
 

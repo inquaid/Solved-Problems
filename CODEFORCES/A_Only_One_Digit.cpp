@@ -110,34 +110,16 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(vi &a, vi &b) { 
-  if(a[0] != b[0]) return a[0] < b[0];
-
-  return a.back() < b.back();
-}
+bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  vector<vi> v;
-  int l, r, real;
-  for (int i = 0; i < n; ++i) {
-    cin >> l >> r >> real;
-    v.push_back({l, r, real});
+  int n; cin >> n;
+  int res = 1e9;
+  while(n) {
+    res = min(res, n % 10);
+    n /= 10;
   }
-  sort(all(v), comp);
-  bool flag = 0;
-  int res = 0;
-  for (int i = 0; i < n; ++i) {
-    int l = v[i][0], r = v[i][1], real = v[i][2];
-    if(l <= k and k <= r) {
-      flag = 1;
-    }
-    if(flag and l <= k and k <= r) {
-      k = max(k, real);
-    }
-  }
-  print(k);
-  // for(auto i : v) print(i); newl;
+  print(res);
 }
 
 void solve() {

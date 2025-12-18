@@ -110,39 +110,26 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(vi &a, vi &b) { 
-  if(a[0] != b[0]) return a[0] < b[0];
-
-  return a.back() < b.back();
-}
+bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  vector<vi> v;
-  int l, r, real;
+  int n; cin >> n;
+  vi a(n); cin >> a;
+  int sum = 0, min_odd = 1e9;
   for (int i = 0; i < n; ++i) {
-    cin >> l >> r >> real;
-    v.push_back({l, r, real});
-  }
-  sort(all(v), comp);
-  bool flag = 0;
-  int res = 0;
-  for (int i = 0; i < n; ++i) {
-    int l = v[i][0], r = v[i][1], real = v[i][2];
-    if(l <= k and k <= r) {
-      flag = 1;
-    }
-    if(flag and l <= k and k <= r) {
-      k = max(k, real);
+    sum += max(0ll, a[i]);
+    a[i] = abs(a[i]);
+    if(a[i]&1) {
+      min_odd = min(min_odd, a[i]);
     }
   }
-  print(k);
-  // for(auto i : v) print(i); newl;
+  if(sum % 2 == 0) sum -= min_odd;
+  print(sum); 
 }
 
 void solve() {
   int t = 1; 
-  cin >> t;
+  // cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);

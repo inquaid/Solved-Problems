@@ -110,34 +110,37 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(vi &a, vi &b) { 
-  if(a[0] != b[0]) return a[0] < b[0];
-
-  return a.back() < b.back();
-}
+bool comp(pii &a, pii &b) { return a.ss > b.ss; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  vector<vi> v;
-  int l, r, real;
-  for (int i = 0; i < n; ++i) {
-    cin >> l >> r >> real;
-    v.push_back({l, r, real});
-  }
-  sort(all(v), comp);
-  bool flag = 0;
-  int res = 0;
-  for (int i = 0; i < n; ++i) {
-    int l = v[i][0], r = v[i][1], real = v[i][2];
-    if(l <= k and k <= r) {
-      flag = 1;
-    }
-    if(flag and l <= k and k <= r) {
-      k = max(k, real);
+  int n; cin >> n;
+  vi a(n); cin >> a;
+  vector<pii> odd_freq;
+  map<int, int> mp;
+  for(auto elem : a) mp[elem]++;
+  int alice = 0, bob = 0;
+  for(auto [val, cnt] : mp) {
+    if(val&1) odd_freq.push_back({val, cnt});
+    else {
+      alice += ((val*cnt) / 2);
+      bob += ((val*cnt) / 2);
     }
   }
-  print(k);
-  // for(auto i : v) print(i); newl;
+  sort(all(odd_freq), comp);
+  for (int i = 0; i < odd_freq.size(); ++i) {
+    int val = odd_freq[i].ff, cnt = odd_freq[i].ss;
+    int mx = (ceil(val, 2) * cnt);
+    int mn = floor(val / 2.0) * cnt;
+    bug(mn, mx);
+    if(i % 2 == 0) { // alice
+      alice += mx;
+      bob += mn;
+    } else { // bob
+      bob += mx;
+      alice += mn;
+    }
+  }
+  print(alice, bob);
 }
 
 void solve() {

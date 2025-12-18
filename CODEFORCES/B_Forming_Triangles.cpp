@@ -110,34 +110,39 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(vi &a, vi &b) { 
-  if(a[0] != b[0]) return a[0] < b[0];
+bool comp(int a, int b) { return a > b; }
 
-  return a.back() < b.back();
+int nCr(int n, int k) {
+    int res = 1;
+    for (int i = n - k + 1; i <= n; ++i)
+        res *= i;
+    for (int i = 2; i <= k; ++i)
+        res /= i;
+    return res;
 }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  vector<vi> v;
-  int l, r, real;
+  int n; cin >> n;
+  map<int, int> mp;
+  int temp;
   for (int i = 0; i < n; ++i) {
-    cin >> l >> r >> real;
-    v.push_back({l, r, real});
+    cin >> temp; mp[temp]++;
   }
-  sort(all(v), comp);
-  bool flag = 0;
+  vi a;
+  for(auto [val, cnt] : mp) a.push_back(val);
+  // print(a);
   int res = 0;
-  for (int i = 0; i < n; ++i) {
-    int l = v[i][0], r = v[i][1], real = v[i][2];
-    if(l <= k and k <= r) {
-      flag = 1;
-    }
-    if(flag and l <= k and k <= r) {
-      k = max(k, real);
-    }
+  int c1 = 0;
+  for(auto [val, cnt] : mp) {
+    if(c1)
+      res += (nCr(cnt, 3) + (nCr(cnt, 2)  * c1));
+    else
+      res += nCr(cnt, 3);
+    c1 += cnt;
   }
-  print(k);
-  // for(auto i : v) print(i); newl;
+  bug(c1);
+  // bug(nCr(3,3))
+  print(res);
 }
 
 void solve() {

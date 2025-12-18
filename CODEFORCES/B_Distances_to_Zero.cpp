@@ -110,39 +110,34 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(vi &a, vi &b) { 
-  if(a[0] != b[0]) return a[0] < b[0];
-
-  return a.back() < b.back();
-}
+bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  vector<vi> v;
-  int l, r, real;
-  for (int i = 0; i < n; ++i) {
-    cin >> l >> r >> real;
-    v.push_back({l, r, real});
-  }
-  sort(all(v), comp);
+  int n; cin >> n;
+  vi a(n); cin >> a;
+  vi res(n, 1e9);
+  int cnt = 0;
   bool flag = 0;
-  int res = 0;
   for (int i = 0; i < n; ++i) {
-    int l = v[i][0], r = v[i][1], real = v[i][2];
-    if(l <= k and k <= r) {
-      flag = 1;
-    }
-    if(flag and l <= k and k <= r) {
-      k = max(k, real);
-    }
+    if(a[i] == 0) {cnt=0; flag = 1;}
+    else cnt++;
+    if(flag)
+      res[i] = cnt;
   }
-  print(k);
-  // for(auto i : v) print(i); newl;
+  cnt = 0; flag = 0;
+  for (int i = n-1; i >= 0; --i) {
+    if(a[i] == 0) {cnt=0; flag = 1;}
+    else cnt++;
+    if(flag)
+      res[i] = min(res[i], cnt);
+  }
+
+  print(res);
 }
 
 void solve() {
   int t = 1; 
-  cin >> t;
+  // cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);

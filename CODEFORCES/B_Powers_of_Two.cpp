@@ -110,39 +110,44 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(vi &a, vi &b) { 
-  if(a[0] != b[0]) return a[0] < b[0];
+bool comp(int a, int b) { return a > b; }
 
-  return a.back() < b.back();
+int f(int n) {
+  int cnt = 0;
+  for (int i = 0; i < 32; ++i) {
+    cnt += ((n>>i) & 1);
+  }
+  return cnt == 1;
 }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  vector<vi> v;
-  int l, r, real;
+  int n; cin >> n;
+  vi a(n); cin >> a;
+  map<int, int> mp;
+  for(auto elm : a) mp[elm]++;
+  map<int, int> m1;
+  int cnt = 0;
   for (int i = 0; i < n; ++i) {
-    cin >> l >> r >> real;
-    v.push_back({l, r, real});
-  }
-  sort(all(v), comp);
-  bool flag = 0;
-  int res = 0;
-  for (int i = 0; i < n; ++i) {
-    int l = v[i][0], r = v[i][1], real = v[i][2];
-    if(l <= k and k <= r) {
-      flag = 1;
-    }
-    if(flag and l <= k and k <= r) {
-      k = max(k, real);
+    for (int b = 0; b <= 32; ++b) {
+      int need = (1ll<<b) - a[i];
+      bug(need);  
+      if(need >= 0) {
+        // if(mp[need]) m1[need] = mp[need];
+        if(need == a[i]) cnt += (mp[need] - 1);
+        else cnt += mp[need];
+      } 
     }
   }
-  print(k);
-  // for(auto i : v) print(i); newl;
+  // for(auto i : m1) {
+  //   // bug(cnt, i.ss);
+  //   cnt /= i.ss;
+  // }
+  print(cnt / 2);
 }
 
 void solve() {
   int t = 1; 
-  cin >> t;
+  // cin >> t;
   for(int i = 1; i <= t; i++) {
     // cout << "Case " << i << ": ";
     tTestCase(i);

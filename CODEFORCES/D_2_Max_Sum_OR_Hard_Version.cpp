@@ -110,35 +110,38 @@ template <typename Container> void print_container(const Container &container) {
 #endif
 
 int ceil(int a,int b){ return (a+b-1)/b; }
-bool comp(vi &a, vi &b) { 
-  if(a[0] != b[0]) return a[0] < b[0];
-
-  return a.back() < b.back();
-}
+bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  int n, k; cin >> n >> k;
-  vector<vi> v;
-  int l, r, real;
-  for (int i = 0; i < n; ++i) {
-    cin >> l >> r >> real;
-    v.push_back({l, r, real});
+  int l, r; cin >> l >> r;
+  vi vis(r - l + 1, 0), res;
+  for (int i = l; i <= r; ++i) {
+    res.push_back(i);
   }
-  sort(all(v), comp);
-  bool flag = 0;
-  int res = 0;
-  for (int i = 0; i < n; ++i) {
-    int l = v[i][0], r = v[i][1], real = v[i][2];
-    if(l <= k and k <= r) {
-      flag = 1;
-    }
-    if(flag and l <= k and k <= r) {
-      k = max(k, real);
+  for (int b = 32; b >= 0; b--) {
+    int temp = (1ll<<b) - 1;
+    for (int i = r; i >= l; --i) {
+      int val = (temp ^ i);
+      if(l <= val and val <= r and !vis[i - l] and !vis[val - l]) {
+        // res[val-l] = i-l;
+        // res[i-l] = val - l;
+        swap(res[i-l], res[val-l]);
+        vis[val - l] = 1; 
+        vis[i-l] = 1;
+        bug(i, val, i - l, val - l);
+      }
     }
   }
-  print(k);
-  // for(auto i : v) print(i); newl;
-}
+  int ans = 0;
+  // swap(res[2], res[3]);
+  for (int i = 0; i < res.size(); ++i) {
+    // print(i + l, res[i]);
+    ans += ((i + l) | res[i]);
+    
+  }
+  print(ans);
+  print(res);
+}   
 
 void solve() {
   int t = 1; 

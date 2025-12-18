@@ -1,0 +1,5 @@
+{
+ "shell_cmd": "g++ -std=c++20 -DLOCAL \"$file\" -o \"$file_base_name\" && timeout 14s ./$file_base_name </home/turjo-pop/Documents/Solved-Problems/sublime/inputf.in > /home/turjo-pop/Documents/Solved-Problems/sublime/outputf.in"
+}
+
+
