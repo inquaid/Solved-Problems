@@ -1,4 +1,67 @@
-y neg forward
-  pos back
-x pos left
-  neg right00010000000000000000000000000000000000000000022222222211163
+{
+  "title": "Multi Modal Customizable Smart Wheelchair",
+  "abstract": {
+    "problem_statement": "Conventional joystick, voice, and EMG-based electric wheelchairs are difficult or impossible to use for people with high-level spinal cord injuries or very limited limb movement, and many existing alternative control systems are expensive, complex, or invasive.[web:123][web:139]",
+    "proposed_solution": "The project proposes a low-cost smart wheelchair that can be driven using two novel human–machine interfaces: (1) a respiration-based proportional control module that maps breathing patterns to wheelchair speed and direction, and (2) an infrared tongue-control module that uses non-contact IR sensors to detect tongue movements as discrete navigation commands.[web:135][web:141]",
+    "system_description": "The wheelchair integrates airflow or pressure sensors near the user’s mouth to capture breathing intensity and frequency, which a microcontroller converts into forward, reverse, and speed commands using adaptive thresholds. In parallel, a small 3D-printed facial module houses three IR transmitter–receiver pairs; when the user places the tongue into specific slots, the tongue blocks the IR beam and triggers left, right, or forward commands. A safety layer performs obstacle checks before executing any motion command.[web:135][web:141]",
+    "target_users": "Primary users are individuals with tetraplegia or severe upper-limb impairment who cannot reliably use standard joysticks, as well as users in low-resource settings who need simple, robust, and affordable wheelchair control solutions.[web:139][web:136]",
+    "expected_benefits": [
+      "Hands-free control for users with very limited or no arm/hand function.[web:139]",
+      "Non-invasive and comfortable interfaces that do not require surgery or implanted hardware.[web:141]",
+      "Lower hardware cost by using commodity airflow sensors, IR modules, and microcontrollers, making the system suitable for low- and middle-income countries.[web:135]",
+      "Improved independence and mobility with simple calibration and minimal training."
+    ]
+  },
+  "key_features": {
+    "respiration_based_control": {
+      "description": "Continuous monitoring of breathing pressure or airflow to generate proportional speed and basic directional commands (e.g., shallow breath = slow forward, strong breath = faster forward, patterned breaths for stop/reverse).",
+      "novelty": "Unlike traditional sip-and-puff systems that treat breath as simple on/off signals, this design treats respiration as an analog input for proportional control and mode switching.[web:135][web:133]"
+    },
+    "infrared_tongue_control": {
+      "description": "Three pairs of IR transmitter–receiver diodes arranged inside a compact, 3D-printed facial device worn near the mouth; tongue insertion into a slot blocks an IR beam and is read as left, right, or forward navigation commands.[web:141]",
+      "novelty": "Provides magnet-free tongue control using IR switching, avoiding the magnets and complex magnetic field mapping used in existing tongue-drive systems, while remaining simple and open to low-cost replication.[web:141]"
+    },
+    "safety_and_control_layer": {
+      "description": "A microcontroller-based control layer fuses respiration and tongue inputs with basic obstacle sensing before passing validated commands to the wheelchair motor driver.",
+      "novelty": "Combining two independent, low-cost physiological interfaces (breath and tongue) with a shared safety check is uncommon in current wheelchair control designs, which typically rely on a single interface such as EMG, EOG, or voice.[web:123][web:135]"
+    }
+  },
+  "patentable_aspects": {
+    "respiration_interface": {
+      "claimable_ideas": [
+        "Method of using continuous respiration amplitude and pattern (not just binary sip-and-puff) as a proportional control signal for wheelchair speed and direction.",
+        "Calibration algorithm that automatically learns user-specific breathing ranges and maps them to safe speed limits.",
+        "Fail-safe breathing pattern (e.g., specific short–long sequence) that immediately stops the wheelchair or switches control mode."
+      ],
+      "justification": "Most existing wheelchair systems use EMG/EOG, joystick, or binary sip-and-puff, and do not describe analog respiration-based proportional mapping with adaptive calibration for wheelchair navigation.[web:123][web:135]"
+    },
+    "infrared_tongue_module": {
+      "claimable_ideas": [
+        "Use of a fixed three-beam IR transmitter–receiver array in a small external facial mount, where tongue motion blocks individual beams to generate discrete navigation commands without any magnets or intraoral electronics.[web:141]",
+        "Geometric arrangement of IR beams and tongue slots that minimizes false triggers from lip or jaw movement while remaining non-invasive.",
+        "Low-cost, open-hardware tongue interface specifically optimized for wheelchair control rather than general HMI."
+      ],
+      "justification": "Recent work has introduced IR-based tongue control as an alternative to magnet-based systems, but the design space (beam geometry, housing, decoding logic) is still sparse and leaves room for novel configurations and methods.[web:141][web:146]"
+    },
+    "hybrid_control_architecture": {
+      "claimable_ideas": [
+        "Architecture that prioritizes respiration as a proportional speed channel and uses tongue IR switches as discrete direction/mode inputs, with a defined arbitration logic between both inputs.",
+        "Shared safety supervisor that monitors both interfaces and sensor feedback (e.g., obstacle detection) to override unsafe commands or automatically slow the wheelchair."
+      ],
+      "justification": "Most published systems focus on a single primary interface (e.g., only EMG, only eye gaze, or only tongue), whereas this design defines a specific hybrid interaction model and arbitration logic between two low-cost physiological channels.[web:123][web:135][web:141]"
+    }
+  },
+  "implementation_notes": {
+    "hardware_stack": [
+      "Differential pressure or airflow sensor near the mouth.",
+      "Three IR LED–photodiode or phototransistor pairs in a 3D-printed housing.",
+      "Microcontroller (e.g., Arduino/esp32) for signal acquisition and control logic.",
+      "Motor driver and battery system for the wheelchair base."
+    ],
+    "software_stack": [
+      "Signal filtering and thresholding for respiration amplitude.",
+      "State machine for tongue-switch commands (left, right, forward, stop).",
+      "Safety logic for command validation and emergency stop."
+    ]
+  }
+}

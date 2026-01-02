@@ -113,8 +113,8 @@ int ceil(int a,int b){ return (a+b-1)/b; }
 bool comp(int a, int b) { return a > b; }
 
 void tTestCase(int t) {
-  string s; cin >> s;
-  yesif(count(all(s), 'Y') <= 1);
+  int k, x; cin >> k >> x;
+  print((k*x) + 1);
 }
 
 void solve() {
